@@ -25,7 +25,6 @@ if (isset($_GET["supersplit"])) {
 }
 
 //transaction period //zz filter时间区间 --其实是开放了接口的
-//transaction period
 if (isset($_GET["start"]) && isset($_GET["end"])) { 
 	$sqltag="WHERE `time` BETWEEN '".$_GET["start"]." 00:00:00' AND '".$_GET["end"]." 23:59:59'";
 	$urltag="&start=".$_GET["start"]."&end=".$_GET["end"];	
@@ -42,7 +41,6 @@ if (isset($_GET["type"]) && !$_GET["type"]=="") {
 	}
 }
 
-//transaction type
 //transaction type  //zz filter'tran_type' --是入库还是取件（其实是有考虑的而且也实现了）
 if (isset($_GET["tran_type"]) && !$_GET["tran_type"]=="") { 
 	if($_GET["tran_type"] =="enter"){
