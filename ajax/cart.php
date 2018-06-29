@@ -11,12 +11,12 @@ include('..\lib\user_lib.php');
 
 check_user_cookie();
 
-if($_GET['do'] == 'clear'){
+if($_GET['do'] == 'clear'){ //zz get的参数‘do’作为flag标识了本次执行的行动
 	clear_cart();
 }
 
 if($_GET['do'] == 'proceed'){
-	$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";
+	$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";//proceed前check的逻辑是cart表中所有和当前用户相关的记录都会被使用（当做是全部的购物车--并没有购物车历史的记录，有的就是当前的）
 	$result_cart = mysql_query($sql_get_cart);
 	
 	if ( mysql_num_rows($result_cart) == 0){
@@ -24,11 +24,13 @@ if($_GET['do'] == 'proceed'){
 	}
 	while ($cart_row = mysql_fetch_assoc($result_cart)) {
 		$new_quantity = get_anything($cart_row[barcode],'quantity') + $cart_row[quantity];
+		//zz 下面更新part主表的剩余数量、进行实质减法
 		$update_sql = "UPDATE `".$cart_row[table]."` SET  `quantity` =  '".$new_quantity."' WHERE `barcode` =  '".$cart_row[barcode]."';";
 		if (!($result=mysql_query($update_sql))) { 
 			stop('DB Error!');
 		}else{
 			if($cart_row[quantity] != 0){
+			    //zz tran()用于添加transaction表的记录。type就是car或者part、就这两个string取其一。
 				tran($_COOKIE['ew_user_name'],$cart_row[barcode],str_replace("ew_", "",$cart_row[table]),$cart_row[quantity]);
 			}
 		}
@@ -38,7 +40,7 @@ if($_GET['do'] == 'proceed'){
 	if(!($result=mysql_query($sql_del))){ 
 			stop('DB Error!');
 		}else{
-			echo "<p>Your List has been proceeded successfully!</p>";
+			echo "<p>Your List has been proceeded successfully!</p>";//zz 这个echo就相当于return一个string了、由于这个file是以ajax res的形式存在的
 		}
 }
 

@@ -25,6 +25,7 @@ if (isset($_GET["supersplit"])) {
 }
 
 //transaction period //zz filter时间区间 --其实是开放了接口的
+//transaction period
 if (isset($_GET["start"]) && isset($_GET["end"])) { 
 	$sqltag="WHERE `time` BETWEEN '".$_GET["start"]." 00:00:00' AND '".$_GET["end"]." 23:59:59'";
 	$urltag="&start=".$_GET["start"]."&end=".$_GET["end"];	
@@ -41,7 +42,7 @@ if (isset($_GET["type"]) && !$_GET["type"]=="") {
 	}
 }
 
-//transaction type  //zz filter'tran_type' --是入库还是取件（其实是有考虑的而且也实现了）
+//transaction type
 if (isset($_GET["tran_type"]) && !$_GET["tran_type"]=="") { 
 	if($_GET["tran_type"] =="enter"){
 		$operator = ">";
@@ -57,7 +58,7 @@ if (isset($_GET["tran_type"]) && !$_GET["tran_type"]=="") {
 	}
 }
 
-//sort list based on inputs  //zz sort
+//sort list based on inputs
 if($_GET['sort']=='name'){
 	$sort = " ORDER BY `name` ASC ";
 	$urltag= $urltag."&sort=".$_GET['sort'];
@@ -76,20 +77,21 @@ if (isset($_GET["page"])) {
 }
 
 $start_from = ($page-1) * $split_by;
-$sql_code_1 = "SELECT * FROM `transaction_view`".$sqltag.$sort." LIMIT ".$start_from.",".$split_by.";";
+$sql_code_1 = "SELECT * FROM `transaction_view`".$sqltag.$sort." LIMIT ".$start_from.",".$split_by.";"; //zz LIMIT 就是SQL语句自带的分页效果。。从0开始也ok的，那样一开始就是第一个。。
 
 $result_info_1 = mysql_query($sql_code_1);
 
-$sql_code_2 = "SELECT COUNT(tid) FROM `transaction_view`".$sqltag.";"; 
+$sql_code_2 = "SELECT COUNT(tid) FROM `transaction_view`".$sqltag.";"; //zz $sqltag=基本就是各种filter例如type是零件还是车、transT是入库还是出库；
+//$urltag=url上的对应的filter例如各种query，$sort排序专用的sql的filter、其他像$start_from $split_by就是和分页有关的部分了
 
 $result_info_2 = mysql_query($sql_code_2);
 $row_2 = mysql_fetch_row($result_info_2); 
 $total_records = $row_2[0]; 
-$total_pages = ceil($total_records / $split_by);
+$total_pages = ceil($total_records / $split_by); 
 
 
 
-$title_by_page = "Transaction List";
+
 include('header.php');
 ?>
 
@@ -105,7 +107,7 @@ include('header.php');
 
 
 for ($i=1; $i<=$total_pages; $i++) { 
-            echo "<a href='tran_list.php?page=".$i.$urltag."'>".$i."</a> "; 
+            echo "<a href='tran_list.php?page=".$i.$urltag."'>".$i."</a> "; //zz 串上的这个$urltag可以有效地保证在翻页时仍保留原本的url参数（get query）
 }; 
 ?>
 </p>
