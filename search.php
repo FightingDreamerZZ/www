@@ -149,7 +149,7 @@ while ($row_1 = mysql_fetch_assoc($result_info_1)) {
 <p>Page:
 <?php 
 for ($i=1; $i<=$total_pages; $i++) { 
-            echo "<a href='search.php?".trim_url("&page=")."&page=".$i.$urltag."'>".$i."</a> "; 
+            echo "<a href='search.php?".trim_url("&page=")."&page=".$i.$urltag."'>".$i."</a> "; //zz 将原本的当前URL中“page=xx”及其之后的部分全抹去、挂上新的page
 }; 
 ?>
 </p>

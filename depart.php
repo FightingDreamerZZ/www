@@ -150,7 +150,9 @@ include('header.php');
 	xmlhttp.send();
 	}
 	
-	function proceed_cart() //zz 购物车结账也是直接来、啥参数都不用传（get、post）、用的是cookie里的参数早都有了（user）
+	function proceed_cart() //zz 购物车结账也是直接来、啥参数都不用传（get、post）、用的是cookie里的参数早都有了（user），具体逻辑在ajax/cart.php
+    //注意transaction的记录是发生在这步之后的、也就是说只放在购物车里相当于进了缓存还是不会买、只有proceed了这台购物车才算是flush/commit了、也会留下transaction（）
+    //详见ajax/cart.php
 	{
 	var xmlhttp;
 	var r=confirm("Are you willing to proceed you list?");//zz php的confirm用法、学习

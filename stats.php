@@ -10,7 +10,7 @@ include('lib/user_lib.php');
 
 check_user_cookie();
 
-
+//zz 把给定sql语句的查询结果的第一行第一列、完全无法查询就返回“ERROR”、查询结果为null则返回0
 function stats($sql_staus){
 	if($result_info_s = mysql_query($sql_staus)){
 		$row_s = mysql_fetch_row($result_info_s); 
