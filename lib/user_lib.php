@@ -155,7 +155,7 @@ function get_view($table){
 	}
 }
 
-//input a string, remove everything behind this string from URL_QUERY_STRING, return the result.
+//input a string, remove everything behind this string from URL_QUERY_STRING, return the result. //zz about pattern:"/"beginning&end -- every pattern begins&ends with this, "." -- any single char, "*" -- >=0 previousChar recurrence
 function trim_url($remove){
 	$urlqs=$_SERVER['QUERY_STRING'];
 	return preg_replace("/".$remove.".*/", "", $urlqs);
@@ -301,5 +301,22 @@ function get_thumb($origin_image_path){
 		return $origin_image_path;
 	}
 	
+}
+
+//zz
+//Utility to check if two strings are almost identical (only one or two char mismatch), for the purpose of search page's auto correction feature
+function check_string_similarity($str_input, $str_db, $max_num_of_deviation){
+    $array_str_input = str_split($str_input);
+    $array_str_db = str_split($str_db);
+    $flag=0;
+    for($i = 0; $i < sizeof($array_str_input); $i ++){
+        if($array_str_input[$i] !== $array_str_db[$i])
+            $flag ++;
+    }
+    if($flag <= $max_num_of_deviation) {
+        return true;
+    }
+    else
+        return false;
 }
 ?>

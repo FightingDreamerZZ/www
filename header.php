@@ -15,9 +15,10 @@ if(!$_COOKIE['ew_user_name']){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php //$title_by_page = "Default Page"?>
-<title><?php echo $title_by_page?> - AGT Warehouse Management System</title>
+<title><?php if(isset($title_by_page)){echo $title_by_page." - ";}?>AGT Warehouse Management System</title>
 <meta name="keywords" content="Elaine Warehouse" />
 <meta name="description" content="Elaine Warehouse - inventory control with barcode scanner embedded." />
+<!--    //zz 还预留了子页可能需要的css或js文件的ref-->
 <?php if(isset($loader1)){ echo($loader1);} ?>
 
 <link href="css/style.css" rel="stylesheet" type="text/css" />

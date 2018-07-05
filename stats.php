@@ -10,7 +10,7 @@ include('lib/user_lib.php');
 
 check_user_cookie();
 
-//zz 把给定sql语句的查询结果的第一行第一列、完全无法查询就返回“ERROR”、查询结果为null则返回0
+//zz 把给定sql语句的查询结果的第一行第一列、完全无法查询就返回“ERROR”、查询结果为null则返回0  （其实就是查询各种COUNT）
 function stats($sql_staus){
 	if($result_info_s = mysql_query($sql_staus)){
 		$row_s = mysql_fetch_row($result_info_s); 
@@ -26,8 +26,8 @@ function stats($sql_staus){
 
 //find quarter start date
 function getquarter($today){
-	if($today < date("Y-04-01")){
-		return date("Y-01-01");
+	if($today < date("Y-04-01")){  //zz date("Y-04-01")可以返回本年四月一号的dateObj，这里的str是format、锁定了0401、时间没给默认就是今天
+		return date("Y-01-01");  //学起来
 	}else if($today < date("Y-07-01")){
 		return date("Y-04-01");
 	}else if($today < date("Y-10-01")){
@@ -37,7 +37,7 @@ function getquarter($today){
 	}
 }
 
-//load stats information
+//load stats information //zz 程序写死了各种查询--其实也就是确定了所有想要的统计数据
 $stats[total] = stats("SELECT COUNT(barcode) FROM `ew_car` WHERE (`quantity` > '0');");
 $stats[finish] = stats("SELECT COUNT(barcode) FROM `ew_car` WHERE (`quantity` > '0') AND (`category` = 'finish' );");
 $stats[semi] = stats("SELECT COUNT(barcode) FROM `ew_car` WHERE (`quantity` > '0') AND (`category` = 'semi' );");
@@ -54,7 +54,7 @@ $stats[total_in] = stats("SELECT COUNT(barcode) FROM `ew_part` WHERE (`quantity`
 
 $system_day = date("2013-11-01");
 $today = date("Y-m-d");
-$this_month = date("Y-m-01");
+$this_month = date("Y-m-01"); //zz 本月第一天的dateObj下同
 $this_quarter = getquarter($today);
 $this_year = date("Y-01-01");
 
@@ -84,7 +84,7 @@ $part_depart[all] = stats("SELECT SUM(quantity) FROM `ew_transaction`WHERE `time
 
 
 
-$loader1 = "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"css/jsDatePick_ltr.min.css\" />";
+$loader1 = "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"css/jsDatePick_ltr.min.css\" />";//zz 还预留了子页可能需要的css或js文件的ref
 $loader2 = "<script type=\"text/javascript\" src=\"ajax/jsDatePick.min.1.3.js\"></script>";
 include('header.php');
 

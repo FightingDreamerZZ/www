@@ -223,6 +223,16 @@ include('header.php');
       document.form1.focus_on.focus();
 	  loadXMLDoc();
    }
+
+   document.addEventListener('DOMContentLoaded', function () {
+       document.form_application.radio_application.onchange=changeEventHandler;
+   },false);
+	function changeEventHandler(event) {
+        if(!event.target.value)
+            alert("haha");
+        else
+            alert("heihei"+event.target.value);
+    }
 </script>
 
 <div id="main">
@@ -247,11 +257,34 @@ include('header.php');
 	<li>Previous Stock: <?php echo $a_check[quantity];?></li>
 	<li>Stock Change: <?php echo $cart_amount;?></li>
 	<li>Expect Stock: <?php echo $a_check[quantity]+$cart_amount;?></li>
+    <li>Application of the Depart:
+        <span id="label_application_selected"></span>
+        <form name="form_application" id="form_application" method="post">
+            <input type="radio" name="radio_application" value="unknown" id="form_application_radio_unknown" checked />
+            <label for="form_application_radio_unknown"  >Unknown</label> <br/>
+            <input type="radio" name="radio_application" value="sold_retail" id="form_application_radio_sold_retail"/>
+            <label for="form_application_radio_sold_retail"  >Sold as retail</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="radio_application" value="sold_wholesale" id="form_application_radio_sold_wholesale"/>
+            <label for="form_application_radio_sold_wholesale"  >Sold as wholesale</label> <br/>
+            <input type="radio" name="radio_application" value="consumed_repair" id="form_application_radio_consumed_repair"/>
+            <label for="form_application_radio_consumed_repair"  >Consumed in repair</label>
+            <input type="radio" name="radio_application" value="consumed_assembly" id="form_application_radio_consumed_assembly"/>
+            <label for="form_application_radio_consumed_assembly"  >Consumed in assembly</label>
+        </form>
+        <style>
+            #form_application label{
+                width: 240px;
+                display: inline;
+                font-size: 12px;
+                margin-right: 0px;
+            }
+        </style>
+    </li>
 	<form name="form2" method="post">
 <!--        zz 传递已有参数用form时，用displayNone的textBox-->
 	    <input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>" autocomplete="off"/>
-	    DEPART:<input type="text" name="amount" value = "0" class="input_field_w w50" autocomplete="off"/>
-	    <input type="submit" class="submit_btn" name="decrease" value="More"/>
+	    Or customize a number:&nbsp;<input type="text" name="amount" value = "0" class="input_field_w w50" autocomplete="off"/>
+	    <input type="submit" class="submit_btn" name="decrease" value="to depart"/>
     </form>
 </ul>
 

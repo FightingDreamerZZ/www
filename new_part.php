@@ -6,8 +6,8 @@
 */
 
 error_reporting(E_ALL ^ E_NOTICE);
-include('lib\sql.php');
-include('lib\user_lib.php');
+include('lib/sql.php');
+include('lib/user_lib.php');
 
 check_user_cookie();
 
@@ -70,22 +70,23 @@ if($_POST['submit']){
 	
 	
 	$sub_category = "";
-	if(isset($_POST['sub1'])){
-		$sub_category = $sub_category.$_POST['sub1'].",";
-	}
-	if(isset($_POST['sub2'])){
-		$sub_category = $sub_category.$_POST['sub2'].",";
-	}
-	if(isset($_POST['sub3'])){
-		$sub_category = $sub_category.$_POST['sub3'].",";
-	}
-	if(isset($_POST['sub4'])){
-		$sub_category = $sub_category.$_POST['sub4'].",";
-	}
-	$sub_category = rtrim($sub_category, ",");
-	if($sub_category == ""){
-		$sub_category = "UNKNOW";
-	}
+//	if(isset($_POST['sub1'])){
+//		$sub_category = $sub_category.$_POST['sub1'].",";
+//	}
+//	if(isset($_POST['sub2'])){
+//		$sub_category = $sub_category.$_POST['sub2'].",";
+//	}
+//	if(isset($_POST['sub3'])){
+//		$sub_category = $sub_category.$_POST['sub3'].",";
+//	}
+//	if(isset($_POST['sub4'])){
+//		$sub_category = $sub_category.$_POST['sub4'].",";
+//	}
+//	$sub_category = rtrim($sub_category, ",");
+//	if($sub_category == ""){
+//		$sub_category = "UNKNOW";
+//	}
+    $sub_category = "AGT";
 	
 	$color = $_POST["color"];
 	check($color,20,"Color");
@@ -174,11 +175,11 @@ include('header.php');
   <option value="electrical">Electrical</option>
 
 </select><br />
-<label>For:</label>
-<input type="checkbox" name="sub1" value="CLUB">CLUB
-<input type="checkbox" name="sub2" value="EZGO">EZGO
-<input type="checkbox" name="sub3" value="AGT">AGT
-<input type="checkbox" name="sub4" value="YAMAHA">YAMAHA<br />
+<!--<label>For:</label>-->
+<!--<input type="checkbox" name="sub1" value="CLUB">CLUB-->
+<!--<input type="checkbox" name="sub2" value="EZGO">EZGO-->
+<!--<input type="checkbox" name="sub3" value="AGT">AGT-->
+<!--<input type="checkbox" name="sub4" value="YAMAHA">YAMAHA<br />-->
 <label>Color: </label><input type="text" name="color" value="default"/><br />
 <label>Purchase Price: </label><input type="text" name="p_price" value="0"/><br />
 <label>Wholesale Price: </label><input type="text" name="w_price"value="0"/><br />
@@ -198,7 +199,36 @@ include('header.php');
 <div class="col_w320 float_l">
 <h4>Photo Preview</h4>                         
 <a href="<?php echo($defaultset[photo]); ?>" target="_blank"><img width="300" height="300" class ="withborder" src="<?php echo($defaultset[photo]); ?>" class="image_wrapper" /></a>
-</div>    
+</div>
+
+    <button value="haha" onclick="hahaha()">ha</button>
+    <script>
+        // define a handler
+        function doc_keyUp(e) {
+
+            // this would test for whichever key is 40 and the ctrl key at the same time
+            if (e.key == "v") {
+                // call your function to do the thing
+                alert("haa");
+            }
+        }
+        // register the handler
+        document.addEventListener('keyup', doc_keyUp, false);
+        function hahaha() {
+            alert("hah");
+        }
+        $(window).keydown(function (e) {
+            if(e.key = "v"){
+                alert("haa");
+            }
+        })
+        $(document).keyPress(function (e) {
+            if(e.key = "v"){
+                alert("haa");
+            }
+        })
+
+    </script>
 
 <div class="cleaner h30"></div>
 <div class="cleaner"></div>
@@ -206,6 +236,9 @@ include('header.php');
 </div> <!-- end of a content box -->
 <div class="content_box_bottom"></div>
 </div> <!-- end of main -->
+
+
+
 <?PHP
 include('footer.php');
 ?>

@@ -11,7 +11,7 @@ if(!$_COOKIE['ew_admin_name'] || !$_COOKIE['ew_admin_verified']){
 	die('<meta http-equiv="refresh" content="0;URL=login.php">');
 }
 
-include('..\lib\sql.php');
+include('../lib/sql.php');//zz path forwardSlash tempForMac
 
 
 //page spliter

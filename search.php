@@ -100,7 +100,7 @@ include('header.php');
 		}
 	  }
 	
-	xmlhttp.open("POST","ajax/suggestion.php",true);
+	xmlhttp.open("POST","ajax/search_suggestion.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.setRequestHeader("Content-length", postdata.length);
 	xmlhttp.send(postdata);
@@ -117,14 +117,16 @@ include('header.php');
 
 
 <form name="form2" method="get" action="search.php" >
-	Smart Search:<select name="table" id="db_table" class="select_field">
-
-	<option value="ew_part" <?php if($table == 'ew_part'){ echo("selected=\"selected\"");} ?>>Part</option>
+	Smart Search:
+    <select name="table" id="db_table" class="select_field">
+    <option value="ew_part" <?php if($table == 'ew_part'){ echo("selected=\"selected\"");} ?>>Part</option>
     <option value="ew_car" <?php if($table == 'ew_car'){ echo("selected=\"selected\"");} ?>>Car</option>
-	</select><input type="text" id="keyword" name="keyword" class="input_field" value="<?php echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
+	</select>
+    <input type="text" id="keyword" name="keyword" class="input_field" value="<?php echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
 	<input type="submit" class="submit_btn" value="Search"/>
-	</form>
-	<p id="suggestion"></p>
+</form>
+
+<p id="suggestion"></p>
 
 <div id = "search_result">
 <ul>
@@ -148,12 +150,14 @@ while ($row_1 = mysql_fetch_assoc($result_info_1)) {
 <div class="cleaner"></div>
 <p>Page:
 <?php 
-for ($i=1; $i<=$total_pages; $i++) { 
-            echo "<a href='search.php?".trim_url("&page=")."&page=".$i.$urltag."'>".$i."</a> "; //zz 将原本的当前URL中“page=xx”及其之后的部分全抹去、挂上新的page
+for ($i=1; $i<=$total_pages; $i++) {
+    if($i == $page)
+        echo "<a href='search.php?".trim_url("&page=")."&page=".$page.$urltag."' style='text-decoration: none;'>".$i."</a> ";
+    else
+        echo "<a href='search.php?".trim_url("&page=")."&page=".$i.$urltag."'>".$i."</a> "; //zz 将原本的当前URL中“page=xx”及其之后的部分全抹去、挂上新的page
 }; 
 ?>
 </p>
-
 
 <div class="cleaner h30"></div>
 <div class="cleaner"></div>

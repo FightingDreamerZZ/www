@@ -35,7 +35,7 @@ function get_type($typecode){
 	}
 }
 
-include('..\lib\sql.php');
+include('../lib/sql.php');//zz path forwardSlash tempForMac
 
 
 //page spliter
