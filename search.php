@@ -130,20 +130,26 @@ include('header.php');
 
 <div id = "search_result">
 <ul>
-<p><?php echo($total_records); ?> result(s) was found in this query.</p>
+    <p><?php echo($total_records); ?> result(s) was found in this query.</p>
 
 <?php 
-while ($row_1 = mysql_fetch_assoc($result_info_1)) { 
+while ($row_1 = mysql_fetch_assoc($result_info_1)) {//while start
 ?>
 <!--    zz xsearch应该是专为searchSuggestion功能弄的一个column，有全部各个域的value串成一长string，也被用于display part details-->
-	<li><a href="<?php echo get_view($table); ?>?barcode=<?php echo $row_1["barcode"]; ?>"><?php echo $row_1["barcode"]; ?> <?php echo $row_1["name"]; ?></a> [Stock: <?php echo $row_1["quantity"]; ?>]
-	<br /><?php echo highlight($row_1["xsearch"],$highlight); if($row_1["des"]!=""){echo "<br />Description: ";echo $row_1["des"];}?>
+	<li>
+        <a href="<?php echo get_view($table); ?>?barcode=<?php echo $row_1["barcode"]; ?>">
+            <?php echo $row_1["barcode"]; ?>
+            <?php echo $row_1["name"]; ?>
+        </a>
+        [Stock: <?php echo $row_1["quantity"]; ?>]
+	    <br />
+        <?php echo highlight($row_1["xsearch"],$highlight); if($row_1["des"]!=""){echo "<br />Description: ";echo $row_1["des"];}?>
 	</li>
 	
 
 
 <?php 
-}; 
+}; //while end
 ?> 
 </ul>
 </div>

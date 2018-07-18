@@ -16,7 +16,7 @@ $sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' OR
 $result_info_a = mysql_query($sql_code_a);
 
 //load part info
-if (isset($_GET['barcode'])) { 
+if (isset($_GET['barcode'])) {
 	$barcode = $_GET['barcode'];
 	$table = get_table($barcode);
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
@@ -34,14 +34,20 @@ if($_POST['submitbarcode']){
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
+	$decrease_this_time = -1;
 	if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < 1){
 		stop('Not enough stock!');
 	}else{
-		cart($_COOKIE['ew_user_name'],$barcode,-1,$table);
+	    if($_GET['application']){
+            cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,$_GET['application']);//zz 一提交barcode或一扫描就自动添加一个购物车记录（减1的）
+        }
+		else{
+            cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,"unknown");
+        }
 	}
-	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
+	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);//zz 同时返回这条购物车记录的变化数量一栏（也就是"-1"）
 	$sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
-	$result_info_a = mysql_query($sql_code_a);//zz ??用途
+	$result_info_a = mysql_query($sql_code_a);
 
 }
 
@@ -58,8 +64,8 @@ if($_POST['add_assoc_part']){
 	$sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
 	$result_info_a = mysql_query($sql_code_a);
 	while ($row_a = mysql_fetch_assoc($result_info_a)){
-		if($_POST[$row_a["attach_part"]] == "1"){	//zz post的这个	"attach_part"好像是个flag、为1时说明正在做assoc的拿取
-			if((get_anything($row_a["attach_part"],"quantity") - ($row_a["amount"]*$set) + cart_amount($_COOKIE['ew_user_name'],$row_a["attach_part"])) < 0){
+		if($_POST[$row_a["attach_part"]] == "1"){	//zz 查看post里是否有这个放在"attach_part"列的、associate part的barcode，其是个flag、为1时说明正在做assoc的拿取
+			if((get_anything($row_a["attach_part"],"quantity") - ($row_a["amount"]*$set) + cart_amount($_COOKIE['ew_user_name'],$row_a["attach_part"])) < 0){//zz 这边没太看懂、为何还要再加个cart_amount()？？原有的数量、减去拿了多少套*每套的数量就得了呗？
 				stop('Not enough stock!');
 			}
 		}
@@ -69,8 +75,13 @@ if($_POST['add_assoc_part']){
 	$sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
 	$result_info_a = mysql_query($sql_code_a);
 	while ($row_a = mysql_fetch_assoc($result_info_a)){
-		if($_POST[$row_a["attach_part"]] == "1"){		
-			cart($_COOKIE['ew_user_name'],$row_a["attach_part"],-abs($row_a["amount"]*$set),$table);
+		if($_POST[$row_a["attach_part"]] == "1"){
+            if($_GET['application']) {
+                cart($_COOKIE['ew_user_name'], $row_a["attach_part"], -abs($row_a["amount"] * $set), $table, $_GET['application']);
+            }
+            else {
+                cart($_COOKIE['ew_user_name'], $row_a["attach_part"], -abs($row_a["amount"] * $set), $table, "unknown");
+            }
 		}
 	}
 	
@@ -84,8 +95,9 @@ if($_POST['decrease']){  //zz decrease是随便起的名字、其实是那个给
 	if($_POST['amount'] <= 0){
 		stop("Decrease amount must be greater than 0!");
 	}
-	$barcode = $_POST['barcode'];
+	$barcode = $_POST['barcode'];//zz ?之前post的数据这次post也能也还在吗？
 	$decrease = -abs($_POST['amount']);
+    $decrease_this_time = $decrease;
 	$table = get_table($barcode);
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
@@ -93,11 +105,30 @@ if($_POST['decrease']){  //zz decrease是随便起的名字、其实是那个给
 	if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < 1){
 		stop('Not enough stock!');
 	}else{
-		cart($_COOKIE['ew_user_name'],$barcode,$decrease,$table);
+        if($_GET['application']) {
+            cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $_GET['application']);//zz 注意cart()除了create同时还有edit的功能
+        }
+        else{
+            cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, "unknown");//zz 注意cart()除了create同时还有edit的功能
+        }
 	}
 	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
 	$sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
 	$result_info_a = mysql_query($sql_code_a);
+}
+
+//zz handler for radioBtnGrp - field "application" selecting: reload the page to update field "application"
+if($_GET['application']){
+    $barcode = $_GET['barcode'];
+    $cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
+    $table = get_table($barcode);
+    $appli = $_GET['application'];
+    $decrease_this_time = $_GET['decrease_this_time'];
+    //zz uncomment:
+    cart($_COOKIE['ew_user_name'],$barcode,$cart_amount,$table,$appli);
+
+    $sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
+    $result_info_a = mysql_query($sql_code_a);
 }
 
 $load = " onload=\"load()\"";
@@ -222,16 +253,77 @@ include('header.php');
    {
       document.form1.focus_on.focus();
 	  loadXMLDoc();
+
+	  //zz if(post里有focus_on等刚submit的痕迹){document.getElementById("redAlertTxtLblForRdBtnAppli").innerHTML = "Pls select where the part goes.."}
    }
 
+   //zz add listener for radioBtnGroup ("application"field) 's selecting(changing selected option) event, add action function
    document.addEventListener('DOMContentLoaded', function () {
-       document.form_application.radio_application.onchange=changeEventHandler;
+       var arrayRadio = document.form_application.radio_application;
+
+       for(var i = 0; i < arrayRadio.length; i++) {
+            arrayRadio[i].onchange = changeEventHandler;
+       }
    },false);
+
+    //zz add listener for radioBtnGroup ("application"field) 's selecting(changing selected option) event, define action
+	let valueSelectedInRadioGroup = "unknown";
 	function changeEventHandler(event) {
-        if(!event.target.value)
-            alert("haha");
-        else
-            alert("heihei"+event.target.value);
+        if(!event.target.value) {
+            alert("Error on getting value of the radio button..");
+            return;
+        }
+
+        valueSelectedInRadioGroup = event.target.value;
+        sendHttpRequest("depart.php",{"application":valueSelectedInRadioGroup,
+                                        "barcode":document.getElementById("barcode_main").value,
+                                        "decrease_this_time":<?php echo $decrease_this_time;?>},"GET");
+	}
+
+	//zz function(s) to remind user if they didnt select field"application" accidentally..
+
+	//zz toBeContinued。。
+	// function ajaxUpdateFieldAppli(selectedAppli) {
+     //    let xmlHttpReq;
+     //    if(window.XMLHttpRequest){
+     //        //ie7+, firefox, safari, chrome, opera
+     //        xmlHttpReq = new XMLHttpRequest();
+     //    }
+     //    else {
+     //        //ie5,6
+     //        xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+     //    }
+     //    xmlHttpReq.onreadystatechange = function () {
+     //        if (xmlHttpReq.readyState == 4 && xmlHttpReq.status == 200) {
+     //            //update innerHTML
+     //            //document.createElement("div")
+     //            document.getElementById("mycart").innerHTML = xmlHttpReq.responseText;
+     //        }
+     //    }
+     //    xmlHttpReq.open("GET","www.google.ca/search?q="+selectedAppli,true);
+     //    xmlHttpReq.send();
+    // }
+
+    //zz javascript mocked html form submition http req (post/get)
+	function sendHttpRequest(path, params, method) {
+        let formForPosting = document.createElement("form");
+        formForPosting.setAttribute("method", method);
+        formForPosting.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)){
+                var hiddenInputTag = document.createElement("input");
+                hiddenInputTag.setAttribute("type","hidden");
+                hiddenInputTag.setAttribute("name", key);
+                hiddenInputTag.setAttribute("value",params[key]);
+
+                formForPosting.appendChild(hiddenInputTag);
+            }
+        }
+
+        document.body.appendChild(formForPosting);
+        formForPosting.submit();
+        
     }
 </script>
 
@@ -252,14 +344,15 @@ include('header.php');
 </form>
 
 <ul class = "list">
-	<li>Barcode: <?php echo $barcode;?></li>
+    <li>Barcode: <?php echo $barcode;?></li>
 	<li>Name: <?php echo $a_check[name];?></li>
 	<li>Previous Stock: <?php echo $a_check[quantity];?></li>
-	<li>Stock Change: <?php echo $cart_amount;?></li>
+	<li>Stock Change: Total&nbsp;<?php echo $cart_amount;?>&nbsp;(Last time&nbsp;<?php echo $decrease_this_time;?>)</li>
 	<li>Expect Stock: <?php echo $a_check[quantity]+$cart_amount;?></li>
     <li>Application of the Depart:
         <span id="label_application_selected"></span>
         <form name="form_application" id="form_application" method="post">
+            <input type="hidden" value="<?php echo $barcode;?>" id="barcode_main"/>
             <input type="radio" name="radio_application" value="unknown" id="form_application_radio_unknown" checked />
             <label for="form_application_radio_unknown"  >Unknown</label> <br/>
             <input type="radio" name="radio_application" value="sold_retail" id="form_application_radio_sold_retail"/>
@@ -267,7 +360,7 @@ include('header.php');
             <input type="radio" name="radio_application" value="sold_wholesale" id="form_application_radio_sold_wholesale"/>
             <label for="form_application_radio_sold_wholesale"  >Sold as wholesale</label> <br/>
             <input type="radio" name="radio_application" value="consumed_repair" id="form_application_radio_consumed_repair"/>
-            <label for="form_application_radio_consumed_repair"  >Consumed in repair</label>
+            <label for="form_application_radio_consumed_repair"  >Warranty</label>
             <input type="radio" name="radio_application" value="consumed_assembly" id="form_application_radio_consumed_assembly"/>
             <label for="form_application_radio_consumed_assembly"  >Consumed in assembly</label>
         </form>

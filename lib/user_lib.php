@@ -8,7 +8,7 @@
 
 //input a message, die and alert this message, jump back to previous page.
 function stop($msg){
-		die("<script>window.alert('$msg');history.go(-1);</script>");
+		die("<script>window.alert('$msg');history.go(-1);</script>");//zz 后退一步的js实现、这也是挺强啊。。学起来
 	}
 
 //void(), check cookie existed, if not, die and jump to login page	
@@ -92,8 +92,8 @@ function highlight($text, $words) {
 }
 
 //input username, barcode, type, amount; add a record to transaction based on the given inputs
-function tran($user, $barcode,$type,$quantity) {
-    $sql_code = "INSERT INTO `eware`.`ew_transaction` (`tid`, `user`, `barcode`, `type`, `quantity`, `time`) VALUES (NULL, '".$user."', '".$barcode."', '".$type."', '".$quantity."', CURRENT_TIMESTAMP);";
+function tran($user, $barcode,$type,$quantity,$appli) {
+    $sql_code = "INSERT INTO `eware`.`ew_transaction` (`tid`, `user`, `barcode`, `type`, `quantity`, `time`, `application`) VALUES (NULL, '".$user."', '".$barcode."', '".$type."', '".$quantity."', CURRENT_TIMESTAMP, ".$appli.");";
 	if(!($result=mysql_query($sql_code))) { 
 			echo("<script>window.alert('DB Error!');</script>");
 			die('<meta http-equiv="refresh" content="0;URL=index.php">');
@@ -101,15 +101,22 @@ function tran($user, $barcode,$type,$quantity) {
 }
 
 //input username,barcode,quantity,table; add/update a record to cart based on the given inputs
-function cart($user,$barcode,$quantity,$table) {
+function cart($user,$barcode,$quantity,$table,$appli) {
 
 	$sql_check = "SELECT * FROM `ew_cart` WHERE `barcode` = '".$barcode."' AND `user` = '".$user."';";
 
 	$result_check=mysql_query($sql_check);
 
 	if(mysql_num_rows($result_check) == 0){
-		$sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', '".$quantity."');";
-	}else{
+		$sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`, `application`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', '".$quantity."', '".$appli."');";
+	}
+	else{
+	    //zz to be uncommented
+//        while($row_check = mysql_fetch_assoc($result_check)){
+//            if($row_check["application"] != $appli )
+//        }
+        //zz
+
 		$a_check = mysql_fetch_array($result_check);
 		$new_quantity = $a_check[quantity] + $quantity;
 		$sql_code = "UPDATE `ew_cart` SET `quantity` = '".$new_quantity."' WHERE `barcode` = '".$barcode."' AND `user` = '".$user."';";
@@ -205,7 +212,7 @@ function send_msg(){
 	if ( mysql_num_rows($result_info_2) == 0){
 		exit("Empty Cart =_=, you have nothing to save!");
 	}
-	$string = "Barcode,Name,Amount,Dealer Price,Retail Price<br>";
+	$string = "Barcode,Name,Amount,Dealer Price,Retail Price<  br>";
 	$i = 0;
 	$list[$i] = array('Barcode','Name','Amount','Dealer Price','Retail Price');
 	while ($row_2 = mysql_fetch_assoc($result_info_2)) {
@@ -319,4 +326,56 @@ function check_string_similarity($str_input, $str_db, $max_num_of_deviation){
     else
         return false;
 }
+
+//zz combine records in the transaction_view with same barcode by sum the quantity, returning a new array with 3 fields (barcode, name, quantity)..
+function combine_same_barcode($result_set_of_trans_view) {
+
+    $array_result_set_after_sort = array();
+    while ($row_before_sort = mysql_fetch_assoc($result_set_of_trans_view)){
+        $row_temp = null;
+        $row_temp = array();
+
+        if (count($array_result_set_after_sort) == 0) {
+            $row_temp['barcode'] = $row_before_sort['barcode'];
+            $row_temp['name'] = $row_before_sort['name'];
+            $row_temp['quantity'] = $row_before_sort['quantity'];
+            array_push($array_result_set_after_sort,$row_temp);
+        }
+        else {
+            foreach ($array_result_set_after_sort as $row_number => $row_exist) {
+                if($row_exist['barcode'] == $row_before_sort['barcode']){
+                    $array_result_set_after_sort[$row_number]['quantity'] = (int)$row_exist['quantity'] + (int)$row_before_sort['quantity'];
+                    break;
+                }
+                elseif($row_number == (count($array_result_set_after_sort) - 1)){
+                    $row_temp['barcode'] = $row_before_sort['barcode'];
+                    $row_temp['name'] = $row_before_sort['name'];
+                    $row_temp['quantity'] = $row_before_sort['quantity'];
+                    array_push($array_result_set_after_sort,$row_temp);
+                }
+            }
+        }
+    };
+    return $array_result_set_after_sort;
+}
+
+//zz sort --Sorting by multiple fields
+function sort_by_two_fields($array_to_sort, $first_field, $is_asc_1st_field, $second_field, $is_asc_2nd_field){
+    usort($array_to_sort,function (array $a1, array $b1) use (
+            &$first_field,
+            &$is_asc_1st_field,
+            &$second_field,
+            &$is_asc_2nd_field){
+        if(($r = $a1[$first_field]-$b1[$first_field]) != 0){
+            return ($is_asc_1st_field)?$r:-$r;
+        }
+        else{
+            $r = strcmp($a1[$second_field],$b1[$second_field]);
+            return ($is_asc_2nd_field)?$r:-$r;
+        }
+    });
+    $result=$array_to_sort;
+    return $result;
+}
+
 ?>

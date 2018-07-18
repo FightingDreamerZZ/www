@@ -1,0 +1,10 @@
+SELECT * FROM `ew_transaction` WHERE ctime > '2018-01-01' ORDER BY `ew_transaction`.`quantity` ASC;
+
+SELECT DISTINCT user FROM `ew_transaction` WHERE quantity <0 AND time > "2015-01-01" ORDER BY `ew_transaction`.`quantity` ASC
+
+SELECT *, SUM(quantity) FROM `ew_transaction` WHERE quantity <0 AND time > "2015-01-01" GROUP BY user
+
+SELECT * FROM `ew_transaction` WHERE time BETWEEN "2018-01-01" AND "2018-07-01" ORDER BY `ew_transaction`.`barcode` ASC
+
+
+SELECT * FROM `ew_transaction` WHERE time BETWEEN "2018-01-01" AND "2018-07-01" GROUP BY `ew_transaction`.`barcode`

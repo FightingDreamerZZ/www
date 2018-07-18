@@ -82,7 +82,24 @@ $car_depart[all] = stats("SELECT SUM(quantity) FROM `ew_transaction`WHERE `time`
 $part_enter[all] = stats("SELECT SUM(quantity) FROM `ew_transaction`WHERE `time` BETWEEN '".$system_day." 00:00:00' AND '".$today." 23:59:59' AND `type` = 'part' AND `quantity` > '0';");
 $part_depart[all] = stats("SELECT SUM(quantity) FROM `ew_transaction`WHERE `time` BETWEEN '".$system_day." 00:00:00' AND '".$today." 23:59:59' AND `type` = 'part' AND `quantity` < '0';");
 
+//zz
+//handler for parts consumption stats:
+if($_POST['start']){
+    $flag_has_post_start_date = $_POST['start'];
+    $sqltag="";
+    $urltag="";
+    $sqltag="WHERE `time` BETWEEN '".$_POST["start"]." 00:00:00' AND '".$_POST["end"]." 23:59:59'";
+    $urltag="&start=".$_GET["start"]."&end=".$_GET["end"];
+    $sqltag_append_for_type = "AND `type` = 'part' AND `quantity` < '0'";
+    $sqltag .= $sqltag_append_for_type;
 
+    $sql_code_11 = "SELECT * FROM `transaction_view`".$sqltag.";";
+    $result_info_11 = mysql_query($sql_code_11);
+
+    $array_result_set_after_combine = combine_same_barcode($result_info_11);
+    $array_result_set_after_sort =
+        sort_by_two_fields($array_result_set_after_combine,"quantity", true,"name",true);
+}
 
 $loader1 = "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"css/jsDatePick_ltr.min.css\" />";//zz 还预留了子页可能需要的css或js文件的ref
 $loader2 = "<script type=\"text/javascript\" src=\"ajax/jsDatePick.min.1.3.js\"></script>";
@@ -102,6 +119,17 @@ include('header.php');
 			target:"inputField2",
 			dateFormat:"%Y-%m-%d"
 		});
+
+        Object3 = new JsDatePick({
+            useMode:2,
+            target:"inputField3",
+            dateFormat:"%Y-%m-%d"
+        });
+        Object4 = new JsDatePick({
+            useMode:2,
+            target:"inputField4",
+            dateFormat:"%Y-%m-%d"
+        });
 	};
 	
 </script>
@@ -250,6 +278,71 @@ include('header.php');
 <div class="cleaner"></div>
 </div> <!-- end of a content box -->
 <div class="content_box_bottom"></div>
+
+    <div class="content_box_top"></div>
+    <div class="content_box">
+
+        <h2>Advanced Stats</h2>
+
+        <div class="cleaner"></div>
+        <h4>Parts Consumption Stats -- Most Consumed Parts</h4>
+        <b>Set time span:</b>
+        <form name="form3" method="post" action="stats.php" autocomplete="off">
+            Start:<input type="text" name="start" class="input_field_w w70" id="inputField3" value="<?php echo $this_month; ?>"/>
+            End:<input type="text" name="end" class="input_field_w w70" id="inputField4" value="<?php echo $today; ?>"/>
+<!--            Type:<select name="type" class="select_field">-->
+<!--                <option value="">All</option>-->
+<!--                <option value="car">Car</option>-->
+<!--                <option value="part">Part</option>-->
+<!--            </select>-->
+<!--            Transaction:<select name="tran_type" class="select_field">-->
+<!--                <option value="">All</option>-->
+<!--                <option value="enter">Arrive</option>-->
+<!--                <option value="depart">Depart</option>-->
+<!--            </select>-->
+            <input type="submit" class="submit_btn" value="Get Stats"/>
+        </form>
+
+
+        <!--    zz-->
+        <table <?php if(!$array_result_set_after_sort){echo "style=\"display:none;\"";}?>>
+            <tr>
+
+
+                <td>Barcode</td>
+                <td>Name</td>
+
+                <td>Total Consumption</td>
+
+            </tr>
+            <?php if($array_result_set_after_sort)
+            foreach ($array_result_set_after_sort as $item) {
+                ?>
+                <tr>
+
+
+                    <td>
+                        <a href="view_part.php
+                            ?barcode=<?php echo $item["barcode"]; ?>">
+                            <?php echo $item["barcode"]; ?>
+                        </a>
+                    </td>
+                    <td><?php echo $item["name"]; ?></td>
+
+                    <td><?php echo $item["quantity"]; ?></td>
+
+                </tr>
+                <?php
+            };
+            ?>
+        </table>
+        <!--    zz-->
+
+        <div class="cleaner h30"></div>
+        <div class="cleaner"></div>
+        <div class="cleaner"></div>
+    </div> <!-- end of a content box -->
+    <div class="content_box_bottom"></div>
 	 
 </div> <!-- end of main -->
 <?PHP

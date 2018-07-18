@@ -86,8 +86,7 @@ $sql_code_2 = "SELECT COUNT(tid) FROM `transaction_view`".$sqltag.";"; //zz $sql
 $result_info_2 = mysql_query($sql_code_2);
 $row_2 = mysql_fetch_row($result_info_2); 
 $total_records = $row_2[0]; 
-$total_pages = ceil($total_records / $split_by); 
-
+$total_pages = ceil($total_records / $split_by);
 
 
 
@@ -110,7 +109,6 @@ for ($i=1; $i<=$total_pages; $i++) {
 }; 
 ?>
 </p>
-
 
 <table>
 <tr>

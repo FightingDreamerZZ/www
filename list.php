@@ -124,7 +124,11 @@ while ($row_1 = mysql_fetch_assoc($result_info_1)) {
 ?> 
             <tr>
             
-            <td><a href="view_<?php if($table == "ew_car"){echo "car";}else{echo "part";} ?>.php?barcode=<?php echo $row_1["barcode"]; ?>"><?php echo $row_1["barcode"]; ?></a></td>
+            <td><a href="view_<?php if($table == "ew_car"){echo "car";}else{echo "part";} ?>.php
+                            ?barcode=<?php echo $row_1["barcode"]; ?>">
+                    <?php echo $row_1["barcode"]; ?>
+                </a>
+            </td>
             <td><?php echo $row_1["name"]; ?></td>
 			<td><?php echo $row_1["category"]; ?></td>
 			<?php if($table == "ew_part"){echo "<td>".$row_1["sub_category"]."</td>";} ?>

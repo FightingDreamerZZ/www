@@ -8,14 +8,15 @@
 error_reporting(E_ALL ^ E_NOTICE);
 include('lib/sql.php');
 include('lib/user_lib.php');
-$path1 = 'lib\sql.php';
-echo "$path1";
-$user = posix_getpwuid(posix_geteuid());
 
-//var_dump($user);
-//phpinfo();
-echo ini_get("allow_url_include");
-//var_dump(LIB_PATH.DS.'lib\user_lib.php');
+//$path1 = 'lib\sql.php';
+//echo "$path1";
+//$user = posix_getpwuid(posix_geteuid());
+////var_dump($user);
+////phpinfo();
+//echo ini_get("allow_url_include");
+////var_dump(LIB_PATH.DS.'lib\user_lib.php');
+
 //handle login request
 if($_GET['do']=='login'){
 	$user = $_POST["user"];

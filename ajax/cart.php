@@ -16,7 +16,7 @@ if($_GET['do'] == 'clear'){ //zz get的参数‘do’作为flag标识了本次�
 }
 
 if($_GET['do'] == 'proceed'){
-	$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";//proceed前check的逻辑是cart表中所有和当前用户相关的记录都会被使用（当做是全部的购物车--并没有购物车历史的记录，有的就是当前的）
+	$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";//zz proceed前check的逻辑是cart表中所有和当前用户相关的记录都会被使用（当做是全部的购物车--并没有购物车历史的记录，有的就是当前的）
 	$result_cart = mysql_query($sql_get_cart);
 	
 	if ( mysql_num_rows($result_cart) == 0){
@@ -30,8 +30,8 @@ if($_GET['do'] == 'proceed'){
 			stop('DB Error!');
 		}else{
 			if($cart_row[quantity] != 0){
-			    //zz tran()用于添加transaction表的记录。type就是car或者part、就这两个string取其一。
-				tran($_COOKIE['ew_user_name'],$cart_row[barcode],str_replace("ew_", "",$cart_row[table]),$cart_row[quantity]);
+			    //zz tran()用于添加transaction表的记录(上面已经改了实质的part或者car表了，这里再添加上关于本次trans的信息到trans表)。type就是car或者part、就这两个string取其一。
+				tran($_COOKIE['ew_user_name'],$cart_row[barcode],str_replace("ew_", "",$cart_row[table]),$cart_row[quantity],$cart_row[application]);
 			}
 		}
 	}
@@ -69,22 +69,24 @@ text-align: center;
 <table>
 <tr>
 
-<td>No</td>
-<td>Barcode</td>
-<td>Amount</td>
-<td>Name</td>
+    <td>No.</td>
+    <td>Barcode</td>
+    <td>Amount</td>
+    <td>Name</td>
+    <td>Application</td>
 
 </tr>
 <?php 
 $i = 0;
 while ($row_1 = mysql_fetch_assoc($result_info_1)) { 
 $i = $i+1;
-?> 
+?>
 <tr>
-<td><?php echo $i."."; ?></td>
-<td><a href="?barcode=<?php echo $row_1[barcode]; ?>"><?php echo $row_1[barcode]; ?></a></td>
-<td><?php echo $row_1[quantity]; ?></td>
-<td><?php echo get_name($row_1[barcode]); ?></td>
+    <td><?php echo $i."."; ?></td>
+    <td><a href="?barcode=<?php echo $row_1[barcode]; ?>"><?php echo $row_1[barcode]; ?></a></td>
+    <td><?php echo $row_1[quantity]; ?></td>
+    <td><?php echo get_name($row_1[barcode]); ?></td>
+    <td><?php echo $row_1["application"]; ?></td>
 </tr>
 <?php 
 }; 

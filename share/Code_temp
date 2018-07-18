@@ -1,0 +1,101 @@
+<?php
+//zz in index.php
+$r=-1;
+echo $r;
+echo -$r;
+
+
+$a = array();
+
+$b = array();
+$b["id"] = "1";
+$b["name"]="haha";
+$b["age"]="12";
+array_push($a,$b);
+$b = array();
+$b["id"] = "2";
+$b["name"]="heh2";
+$b["age"]="6";
+
+array_push($a,$b);
+$b = array(
+"id"=>"3",
+"name"=>"hh",
+"age"=>"7"
+);
+array_push($a,$b);
+$b = array(
+"id"=>"1",
+"name"=>"haa",
+"age"=>"11"
+);
+array_push($a,$b);
+$b = array(
+"id"=>"4",
+"name"=>"ha",
+"age"=>"10"
+);
+array_push($a,$b);
+foreach ($a as $k=>$v){
+print_r($v);
+echo "<br/>";
+}
+echo "<br/>";
+echo "<br/>";
+echo "<br/>";
+usort($a,function (array $a1, array $b1){
+if(($r = $b1["id"]-$a1["id"]) != 0){
+return $r;
+}
+else{
+return strcmp($b1["age"],$a1["age"]);
+}
+});
+
+foreach ($a as $k=>$v){
+print_r($v);
+echo "<br/>";
+}
+echo "<br/>";
+echo "<br/>";
+print_r($b);
+//zz
+
+//zz in tran_list.php:
+//zz
+$array_result_set_after_combine = combine_same_barcode($result_info_1);
+$array_result_set_after_sort =
+    sort_by_two_fields($array_result_set_after_combine,"quantity", true,"name",true);
+?>
+<!--    zz-->
+    <table>
+        <tr>
+
+
+            <td>Barcode</td>
+            <td>Name</td>
+
+            <td>Amount</td>
+
+        </tr>
+        <?php
+        foreach ($array_result_set_after_sort as $item) {
+            ?>
+            <tr>
+
+
+                <td><?php echo $item["barcode"]; ?></td>
+                <td><?php echo $item["name"]; ?></td>
+
+                <td><?php echo $item["quantity"]; ?></td>
+
+            </tr>
+            <?php
+        };
+        ?>
+    </table>
+<!--    zz-->
+
+<?php
+//depart.php
+//zz test: sendPostRequest("depart.php",{"focus_on":"115127525006","submitbarcode":"whatever"},"POST");
