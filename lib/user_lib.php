@@ -374,7 +374,43 @@ function combine_same_barcode($result_set_of_trans_view) {
     return $array_result_set_after_sort;
 }
 
-//zz sort --Sorting by multiple fields
+//zz combine records in the transaction_view with same application by sum the quantity, returning a new array with 2 fields (application, quantity)..
+function combine_same_appli($result_set_of_trans_view) {
+
+    $array_result_set_after_combine = array();
+    while ($row_before_combine = mysql_fetch_assoc($result_set_of_trans_view)){
+        $row_temp = null;
+        $row_temp = array();
+
+        if (count($array_result_set_after_combine) == 0) {
+
+            $row_temp['application'] = $row_before_combine['application'];
+            $row_temp['quantity'] = $row_before_combine['quantity'];
+            array_push($array_result_set_after_combine,$row_temp);
+        }
+        else {
+
+            foreach ($array_result_set_after_combine as $row_number => $row_exist) {
+
+
+                if($row_exist['application'] == $row_before_combine['application']){
+
+                    $array_result_set_after_combine[$row_number]['quantity'] = (int)$row_exist['quantity'] + (int)$row_before_combine['quantity'];
+                    break;
+                }
+                elseif($row_number == (count($array_result_set_after_combine) - 1)){
+                    $row_temp['application'] = $row_before_combine['application'];
+
+                    $row_temp['quantity'] = $row_before_combine['quantity'];
+                    array_push($array_result_set_after_combine,$row_temp);
+                }
+            }
+        }
+    };
+    return $array_result_set_after_combine;
+}
+
+//zz sort --Sorting by multiple fields, int sort on first field (by comparing how big the numeber is), if same, string compare sort on 2nd field..
 function sort_by_two_fields($array_to_sort, $first_field, $is_asc_1st_field, $second_field, $is_asc_2nd_field){
     usort($array_to_sort,function (array $a1, array $b1) use (
             &$first_field,
@@ -390,6 +426,17 @@ function sort_by_two_fields($array_to_sort, $first_field, $is_asc_1st_field, $se
         }
     });
     $result=$array_to_sort;
+    return $result;
+}
+
+function sort_by_one_field($array_to_sort, $field_to_sort_by, $is_asc){
+    usort($array_to_sort, function(array $a1, array $b1) use (
+            &$field_to_sort_by,
+            &$is_asc) {
+        $r = $a1[$field_to_sort_by]-$b1[$field_to_sort_by];
+        return ($is_asc)?$r:-$r;
+    });
+    $result = $array_to_sort;
     return $result;
 }
 
@@ -411,4 +458,108 @@ function direct_depart_or_enter($user,$barcode,$quantity,$table,$appli){
     return "direct writing success msg";
 }
 
+//zz return percentage compare of 4 seasons of the year selected, on sum amount of ALL parts consumed.. (Parameter: year as string, such as "2014")
+//returns null for DB error...
+function get_pctg_of_4seasons_of_the_y($year){
+    $q1s = $year."-01-01";
+    $q1e = $year."-03-31";
+    $q2s = $year."-04-01";
+    $q2e = $year."-06-30";
+    $q3s = $year."-07-01";
+    $q3e = $year."-09-30";
+    $q4s = $year."-10-01";
+    $q4e = $year."-12-31";
+
+    $query = array();
+    $query[0] = "SELECT SUM(quantity) FROM `ew_transaction` WHERE `time` BETWEEN '".$q1s." 00:00:00' AND '".$q1e." 23:59:59' AND `type` = 'part' AND `quantity` < '0';";
+    $query[1] = "SELECT SUM(quantity) FROM `ew_transaction` WHERE `time` BETWEEN '".$q2s." 00:00:00' AND '".$q2e." 23:59:59' AND `type` = 'part' AND `quantity` < '0';";
+    $query[2] = "SELECT SUM(quantity) FROM `ew_transaction` WHERE `time` BETWEEN '".$q3s." 00:00:00' AND '".$q3e." 23:59:59' AND `type` = 'part' AND `quantity` < '0';";
+    $query[3] = "SELECT SUM(quantity) FROM `ew_transaction` WHERE `time` BETWEEN '".$q4s." 00:00:00' AND '".$q4e." 23:59:59' AND `type` = 'part' AND `quantity` < '0';";
+
+    $result_amount = array();
+    foreach ($query as $key => $q){
+        if($result_info_s = mysql_query($q)){
+            $row_s = mysql_fetch_row($result_info_s);
+        }else{
+            return null;
+        }
+        if($row_s[0]==""){
+            $result_amount[$key] = '0';
+        }else{
+            $result_amount[$key] = $row_s[0];
+        }
+    }
+
+    $result_amount_sum = 0;
+    foreach ($result_amount as $result_amount_item){
+        $result_amount_sum += ((int)$result_amount_item);
+    }
+
+    $result = array();
+    foreach ($result_amount as $key => $result_amount_item){
+        $result[$key] = round(((int)$result_amount_item)/$result_amount_sum*100);
+    }
+
+    if(array_sum($result)<100){
+        $result[(array_search(max($result), $result))] = max($result)+(100-array_sum($result));
+    }
+    return $result;
+}
+
+//zz return the amount of ALL parts consumed each year of the past 5 years -- at the same time period being searched..
+//returned array's element will be null if DB error for that year..
+//return: $array_result[$i][$j] -- $i is year number, 0 = past year and 4 = 5years ago; $j is column (total_amount, date_start, date_end)
+function get_amt_same_period($time_start, $time_end){
+    $backtracking = 5;
+
+    $old_year_start = substr($time_start,0,4);
+    $time_start_wo_y = ltrim($time_start,$old_year_start);
+    $old_year_end = substr($time_end,0,4);
+    $time_end_wo_y = ltrim($time_end,$old_year_end);
+
+    $new_time_start=array();
+    for($i=0;$i<$backtracking;$i++){
+        $new_time_start[$i] = ((int)$old_year_start - $i - 1).$time_start_wo_y;
+    }
+    $new_time_end=array();
+    for($i=0;$i<$backtracking;$i++){
+        $new_time_end[$i] = ((int)$old_year_end - $i - 1).$time_end_wo_y;
+    }
+
+    $array_result = array();
+    for($i=0;$i<$backtracking;$i++){
+        $query = "SELECT SUM(quantity) FROM `ew_transaction` WHERE `time` BETWEEN '".$new_time_start[$i]."' AND '".$new_time_end[$i]."' AND `type` = 'part' AND `quantity` < '0';";
+
+        if($result_set = mysql_query($query)){
+            $row_s = mysql_fetch_row($result_set);
+            $array_result[$i]['total_amount'] = ($row_s[0] == "")?'0':$row_s[0];
+            $array_result[$i]['date_start'] = $new_time_start[$i];
+            $array_result[$i]['date_end'] = $new_time_end[$i];
+        }else{
+            $array_result[$i] = null;
+        }
+    }
+    return $array_result;
+    //"SELECT SUM(quantity) FROM `ew_transaction` WHERE `time` BETWEEN '".$q1s." 00:00:00' AND '".$q1e." 23:59:59' AND `type` = 'part' AND `quantity` < '0';";
+}
+
+//zz return transactions of last 30days
+
+
+//zz return transactions this year
+
+//zz return a combined list with price being considered..
+//barcode, name, p_price*amount (purchase total)
+//$appended_query: time span, car or part, depart or enter
+//returns null if db error
+function get_combined_same_barcode_sum_price($appended_query){
+
+    //SELECT barcode, name, SUM(quantity*p_price) FROM `transaction_view_w_pprice` GROUP BY `barcode`;
+    $query = "SELECT barcode, name, SUM(quantity*p_price) AS `total_cost` FROM `transaction_view_w_pprice` ".$appended_query." GROUP BY `barcode`;";
+    if($result_set = mysql_query($query)){
+        return $result_set;
+    }else{
+        return null;
+    }
+}
 ?>

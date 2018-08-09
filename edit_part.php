@@ -270,7 +270,23 @@ include('header.php');
 <label>Retail Price: </label><input type="text" name="r_price" value="<?php echo($a_check['r_price']); ?>"/><br />
 <label>Quantity: <?php echo($a_check['quantity']); ?></label><input type="text" style="display:none;" name="quantity" value="<?php echo($a_check['quantity']); ?>"/><br />
 <label>Warning Quantity: </label><input type="text" name="w_quantity" value="<?php echo($a_check['w_quantity']); ?>"/><br />
-<label>Location Zone: </label><input type="text" name="l_zone" value="<?php echo($a_check['l_zone']); ?>"/><br />
+<!--    zz-->
+<img src="images/map.gif" height="" width="300" style="margin-top: 10px;margin-bottom: 10px" usemap="#map1">
+<map id="map1" name="map2">
+    <area shape="rect" coords="98,46,240,104" alt="" title="P1" onclick="testzz()" style="cursor: pointer"/>
+    <script>
+        function testzz() {
+            // alert("haha");
+            // history.go(-1);
+            window.location = '#location_z';
+            document.getElementById("location_z").value="P1";
+            document.form.l_column.value = '';
+            document.form.l_column.focus();
+        }
+    </script>
+</map>
+<!--    zz-->
+<label>Location Zone: </label><!--zz --><input id="location_z" type="text" name="l_zone" value="<?php echo($a_check['l_zone']); ?>"/><br />
 <label>Location Column: </label><input type="text" name="l_column" value="<?php echo($a_check['l_column']); ?>"/><br />
 <label>Location Level: </label><input type="text" name="l_level" value="<?php echo($a_check['l_level']); ?>"/><br />
 <label>Description: </label><br/>

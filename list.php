@@ -124,8 +124,7 @@ while ($row_1 = mysql_fetch_assoc($result_info_1)) {
 ?> 
             <tr>
             
-            <td><a href="view_<?php if($table == "ew_car"){echo "car";}else{echo "part";} ?>.php
-                            ?barcode=<?php echo $row_1["barcode"]; ?>">
+            <td><a href="view_<?php if($table == "ew_car"){echo "car";}else{echo "part";} ?>.php?barcode=<?php echo $row_1["barcode"]; ?>">
                     <?php echo $row_1["barcode"]; ?>
                 </a>
             </td>

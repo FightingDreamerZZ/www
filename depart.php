@@ -11,6 +11,13 @@ include('lib/user_lib.php');
 
 check_user_cookie();
 
+//zz handler for check if is warehouse admin (able to omitOttosCart)
+$is_warehouse_admin = false;
+echo $_COOKIE['is_warehouse_admin'];
+if($_COOKIE['is_warehouse_admin'] && $_COOKIE['is_warehouse_admin'] == 'true'){
+    $is_warehouse_admin = true;
+}
+
 //zz handler for get cookie for store checkbox (omit ottos cart) check status
 if($_COOKIE['is_to_omit_cart']){
     //echo "cookie!cookie=".$_COOKIE['is_to_omit_cart'];
@@ -285,8 +292,8 @@ include('header.php');
 
    function load()
    {
-      document.form1.focus_on.focus();
-	  loadXMLDoc();
+      document.form1.focus_on.focus();//focus on 这个form的这个txtbox
+	  loadXMLDoc();//读取ajax返回的cart table
 
 	  //zz if(post里有focus_on等刚submit的痕迹){document.getElementById("redAlertTxtLblForRdBtnAppli").innerHTML = "Pls select where the part goes.."}
    }
@@ -360,19 +367,19 @@ include('header.php');
         document.body.appendChild(formForPosting);
         formForPosting.submit();
     }
-    function onclick_cb_ooc(){
-	    if(document.getElementById("cb_ooc").checked){
-	        var c = confirm("To check this option means you also omit the buffer and comparison function provided by the cart. Proceed with caution cause the changes made will be harder to reverse so will be the mistakes.");
-	        if(c == true)
-                sendHttpRequest("depart.php",{"is_to_omit_cart":true},"post");
-	        else
-                document.getElementById("cb_ooc").checked = false;
-        }
-        else{
-            sendHttpRequest("depart.php",{"is_to_omit_cart":false},"post");
+        function onclick_cb_ooc(){
+            if(document.getElementById("cb_ooc").checked){
+                var c = confirm("To check this option means you also omit the buffer and comparison function provided by the cart. Proceed with caution cause the changes made will be harder to reverse so will be the mistakes.");
+                if(c == true)
+                    sendHttpRequest("depart.php",{"is_to_omit_cart":true},"post");
+                else
+                    document.getElementById("cb_ooc").checked = false;
+            }
+            else{
+                sendHttpRequest("depart.php",{"is_to_omit_cart":false},"post");
 
+            }
         }
-	}
 	//zz last double check last defense
 	function directWriteLastCheck() {
         var c = confirm("msg double check present");
@@ -453,18 +460,23 @@ include('header.php');
             <input type="text" name="amount" value = "<?php if($suggested_decrease){echo $suggested_decrease;}else{echo "0";}?>"
                            class="input_field_w w50" autocomplete="off"/>
         </li>
-        <li>
+        <li style="
+                <?php
+                    if(!$is_warehouse_admin){
+                        echo "display:none;";
+                    }
+                ?>">
             Omit Otto's Cart (Admin Required):
             <input type="checkbox" onclick="onclick_cb_ooc()" id="cb_ooc" name="cb_ooc" value=""
                 <?php if($cookie_is_to_omit_cart == "true")echo "checked";?>
             />
         </li>
-	    <input type="submit" class="submit_btn" name="submit_confirm_decrease" id="submit_confirm_decrease" value="
-	        <?php
-                if ($cookie_is_to_omit_cart == "true")
-                    echo "Confirm & Directly Write to DB";
-                echo "Confirm";
-            ?>" style="float: right;" onclick="
+	    <input type="submit" class="submit_btn" name="submit_confirm_decrease" id="submit_confirm_decrease" style="float: right;margin-right: 20px"
+               value="<?php
+                        if ($cookie_is_to_omit_cart == "true")
+                            echo "Confirm & Directly Write to DB";
+                        echo "Confirm";
+                      ?>" onclick="
                 <?php
                     if($cookie_is_to_omit_cart == 'true')
                         echo 'directWriteLastCheck()';

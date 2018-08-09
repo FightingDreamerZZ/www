@@ -20,7 +20,10 @@ if($_GET['do']=='logout'){
 	setcookie('ew_user_verified',null,time()-3600);
 	setcookie('ea_user_verified',null,time()-3600);
 	setcookie('ec_user_verified',null,time()-3600);
-	die('<meta http-equiv="refresh" content="0;URL=login.php">');
+    setcookie('is_to_omit_cart',null,time()-3600);
+    setcookie('is_to_omit_cart_enter_page',null,time()-3600);
+    setcookie('is_warehouse_admin',null,time()-3600);
+    die('<meta http-equiv="refresh" content="0;URL=login.php">');
 }
 
 $display_plugin = check_user_cookie();

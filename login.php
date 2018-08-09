@@ -6,23 +6,23 @@
 */
 
 error_reporting(E_ALL ^ E_NOTICE);
-include('lib\sql.php');//zz path forwardSlash tempForMac
-include('lib\user_lib.php');
+include('lib/sql.php');//zz path forwardSlash tempForMac
+include('lib/user_lib.php');
 
 //handle login request
 if($_GET['do']=='login'){
 	$user = $_POST["user"];
-	$pass = $_POST["pass"];
+	$pass = (string)$_POST["pass"];
 	$sql_code = "select * from ew_user where user = '".$user."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
-	$ew_verified = $a_check['pass'];
-	if($ew_verified == $pass){
+	$ew_verified = (string)$a_check['pass'];
+	if(strcmp($ew_verified, $pass) == 0){
 	    //warehouse admin
         if($a_check['type'] == 5){
             setcookie('ew_user_name',$user,time()+7200);//zz in seconds -- 7200=60*60*2=2hrs
             setcookie('ew_user_verified',$ew_verified,time()+7200);
-            setcookie("is_warehouse_admin",true,time()+60*60*2);
+            setcookie("is_warehouse_admin",'true',time()+60*60*2);
 
             sys_log($user,"login to the system.");
             echo "<script>alert('Logging in as warehouse admin.');</script>";

@@ -10,6 +10,13 @@ include('lib/user_lib.php');
 
 check_user_cookie();
 
+//zz handler for check if is warehouse admin (able to omitOttosCart)
+$is_warehouse_admin = false;
+echo $_COOKIE['is_warehouse_admin'];
+if($_COOKIE['is_warehouse_admin'] && $_COOKIE['is_warehouse_admin'] == 'true'){
+    $is_warehouse_admin = true;
+}
+
 //zz handler for get cookie for storing checkbox (omit ottos cart)'s check status, toggle style
 if($_COOKIE['is_to_omit_cart_enter_page']){
     //echo "cookie!cookie=".$_COOKIE['is_to_omit_cart'];
@@ -229,22 +236,27 @@ include('header.php');
         Received Quantity:&nbsp;
         <input type="text" name="amount" value = "0" class="input_field_w w50" autocomplete="off"/>
     </li>
-    <li>
+    <li style="
+            <?php
+                if(!$is_warehouse_admin){
+                    echo "display:none;";
+                }
+            ?>">
         Omit Otto's Cart (Admin Required):
         <input type="checkbox" onclick="onclick_cb_ooc()" id="cb_ooc" name="cb_ooc" value=""
             <?php if($cookie_is_to_omit_cart == "true")echo "checked";?>
         />
     </li>
-	<input type="submit" class="submit_btn" name="submit_confirm_increase" value="
-	    <?php
-            if ($cookie_is_to_omit_cart == "true")
-                echo "Confirm & Directly Write to DB";
-            echo "Confirm";
-        ?>" onclick="
+	<input type="submit" class="submit_btn" name="submit_confirm_increase" style="float: right;margin-right: 20px"
+           value="<?php
+                    if ($cookie_is_to_omit_cart == "true")
+                        echo "Confirm & Directly Write to DB";
+                    echo "Confirm";
+                  ?>" onclick="
 	    <?php
             if($cookie_is_to_omit_cart == 'true')
                 echo 'directWriteLastCheck()';
-        ?>"/>
+        ?>"/><br/>
 </form>
 </ul>
 

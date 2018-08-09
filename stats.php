@@ -54,6 +54,7 @@ $stats[total_in] = stats("SELECT COUNT(barcode) FROM `ew_part` WHERE (`quantity`
 
 $system_day = date("2013-11-01");
 $today = date("Y-m-d");
+
 $this_month = date("Y-m-01"); //zz 本月第一天的dateObj下同
 $this_quarter = getquarter($today);
 $this_year = date("Y-01-01");
@@ -99,7 +100,33 @@ if($_POST['start']){
     $array_result_set_after_combine = combine_same_barcode($result_info_11);
     $array_result_set_after_sort =
         sort_by_two_fields($array_result_set_after_combine,"quantity", true,"name",true);
+
+    //combined and sorted trans on same applications, with sum of quantity
+    $sql_code_12 = "SELECT * FROM `transaction_view_w_appli`".$sqltag.";";
+    $result_info_12 = mysql_query($sql_code_12);
+    $array_result_set_after_combine_on_appli = combine_same_appli($result_info_12);
+//    $array_result_set_after_sort_w_appli = asort($array_result_set_after_combine_on_appli, )
+    $array_result_set_after_sort_w_appli = sort_by_one_field($array_result_set_after_combine_on_appli, "quantity", true);
+
+    //combined and sorted trans on barcodes, but with price involved -- items with most total purchase price
+    $result_set_after_combine_w_price = get_combined_same_barcode_sum_price($sqltag);
+    $array_result_set_after_combine_w_price = array();
+    while($row_1 = mysql_fetch_assoc($result_set_after_combine_w_price)){
+        array_push($array_result_set_after_combine_w_price,$row_1);
+    }
+    $array_result_set_after_sort_w_price = sort_by_one_field($array_result_set_after_combine_w_price,"total_cost",true);
+
+    //same period for past 5 years:
+    $array_result_same_period = array();
+    $array_result_same_period = get_amt_same_period($_POST["start"], $_POST["end"]);
+
+    //seasons (quarters) comparision in percentage:
+    $array_result_seasons_percentages = array();
+    $array_result_seasons_percentages = get_pctg_of_4seasons_of_the_y(substr($_POST["start"],0,4));
 }
+
+//zz Handler for parts consumption stats -- combined by same application and sort by sum quantity:
+
 
 $loader1 = "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"css/jsDatePick_ltr.min.css\" />";//zz 还预留了子页可能需要的css或js文件的ref
 $loader2 = "<script type=\"text/javascript\" src=\"ajax/jsDatePick.min.1.3.js\"></script>";
@@ -285,11 +312,18 @@ include('header.php');
         <h2>Advanced Stats</h2>
 
         <div class="cleaner"></div>
-        <h4>Parts Consumption Stats -- Most Consumed Parts</h4>
         <b>Set time span:</b>
         <form name="form3" method="post" action="stats.php" autocomplete="off">
-            Start:<input type="text" name="start" class="input_field_w w70" id="inputField3" value="<?php echo $this_month; ?>"/>
-            End:<input type="text" name="end" class="input_field_w w70" id="inputField4" value="<?php echo $today; ?>"/>
+            Start:<input type="text" name="start" class="input_field_w w70" id="inputField3" value="<?php
+                if($_POST['start'])
+                    echo $_POST['start'];
+                else
+                    echo $this_month; ?>"/>
+            End:<input type="text" name="end" class="input_field_w w70" id="inputField4" value="<?php
+                if($_POST['end'])
+                    echo $_POST['end'];
+                else
+                    echo $today; ?>"/>
 <!--            Type:<select name="type" class="select_field">-->
 <!--                <option value="">All</option>-->
 <!--                <option value="car">Car</option>-->
@@ -305,7 +339,9 @@ include('header.php');
 
 
         <!--    zz-->
-        <table <?php if(!$array_result_set_after_sort){echo "style=\"display:none;\"";}?>>
+        <div  <?php if(!$array_result_set_after_sort){echo "style=\"display:none;\"";}?>>
+        <h4>Parts Consumption Stats -- Top 10 Parts Consumed in Numbers:</h4>
+        <table>
             <tr>
 
 
@@ -315,15 +351,16 @@ include('header.php');
                 <td>Total Consumption</td>
 
             </tr>
-            <?php if($array_result_set_after_sort)
+            <?php
+            $limit = 10;
+            if($array_result_set_after_sort)
             foreach ($array_result_set_after_sort as $item) {
                 ?>
-                <tr>
+                <tr <?php if($limit <= 0){echo "style=\"display:none;\"";}?>>
 
 
                     <td>
-                        <a href="view_part.php
-                            ?barcode=<?php echo $item["barcode"]; ?>">
+                        <a href="view_part.php?barcode=<?php echo $item["barcode"]; ?>">
                             <?php echo $item["barcode"]; ?>
                         </a>
                     </td>
@@ -332,10 +369,87 @@ include('header.php');
                     <td><?php echo $item["quantity"]; ?></td>
 
                 </tr>
-                <?php
+                <?php $limit -= 1;
             };
             ?>
         </table>
+        </div>
+        <br/>
+
+        <div <?php if(!$array_result_set_after_sort_w_price){echo "style=\"display:none;\"";}?>>
+        <h4>Top 10 Parts Consumed in Total Cost:</h4>
+        <table>
+            <tr>
+                <td>Barcode</td>
+                <td>Name</td>
+                <td>Total Purchase Cost</td>
+            </tr>
+            <?php
+            $limit = 10;
+            if($array_result_set_after_sort_w_price)
+                foreach ($array_result_set_after_sort_w_price as $item) {
+                    ?>
+                    <tr <?php if($limit <= 0){echo "style=\"display:none;\"";}?>>
+                        <td>
+                            <?php echo $item["barcode"]; ?>
+                        </td>
+                        <td><?php echo $item["name"]; ?></td>
+                        <td><?php echo $item["total_cost"]; ?></td>
+
+                    </tr>
+                    <?php $limit -= 1;
+                };
+            ?>
+        </table>
+        </div>
+            <br/>
+
+        <div  <?php if(!$array_result_set_after_sort_w_appli){echo "style=\"display:none;\"";}?>>
+        <h4>Total Consumption for Each Application:</h4>
+        <table>
+            <tr>
+                <td>Application</td>
+                <td>Total Consumption</td>
+            </tr>
+            <?php if($array_result_set_after_sort_w_appli)
+                foreach ($array_result_set_after_sort_w_appli as $item) {
+                    ?>
+                    <tr>
+                        <td>
+                            <?php echo $item["application"]; ?>
+                        </td>
+                        <td><?php echo $item["quantity"]; ?></td>
+
+                    </tr>
+                    <?php
+                };
+            ?>
+        </table>
+        </div>
+            <br/>
+
+        <div class="post_box float_l" <?php if(!$array_result_same_period){echo "style=\"display:none;\"";}?>>
+            <h4>Same Time Period for Past 5 Years</h4>
+            <ul class = "list">
+                <?php foreach ($array_result_same_period as $v){?>
+                    <li <?php if(!$v){echo "style=\"display:none;\"";}?>>
+                        <?php echo "From ".$v['date_start']." to ".$v['date_end'].": ".$v['total_amount']; ?>
+                    </li>
+                <?php }?>
+            </ul>
+            <div class="cleaner"></div>
+        </div>
+
+        <div class="post_box float_r" <?php if(!$array_result_seasons_percentages){echo "style=\"display:none;\"";}?>>
+            <h4>Comparing Different Seasons in <?php echo substr($_POST["start"],0,4)?></h4>
+            <ul class = "list">
+                <li><?php echo "Spring: ".$array_result_seasons_percentages[0]."%"; ?></li>
+                <li><?php echo "Summer: ".$array_result_seasons_percentages[1]."%"; ?></li>
+                <li><?php echo "Autumn: ".$array_result_seasons_percentages[2]."%"; ?></li>
+                <li><?php echo "Winter: ".$array_result_seasons_percentages[3]."%"; ?></li>
+            </ul>
+            <div class="cleaner"></div>
+        </div>
         <!--    zz-->
 
         <div class="cleaner h30"></div>

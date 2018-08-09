@@ -23,3 +23,22 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 `ew_transaction`.`application` AS `application`,
 `ew_transaction`.`time` AS `time`
 from `ew_transaction` ;
+
+--zz: create view for trans list (with pprice this time)
+DROP TABLE IF EXISTS `transaction_view_w_pprice`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `transaction_view_w_pprice`  AS  select
+`ew_transaction`.`tid` AS `tid`,
+`ew_transaction`.`user` AS `user`,
+`ew_transaction`.`barcode` AS `barcode`,
+(select `barcode_view`.`name` AS `name` from `barcode_view` where (`ew_transaction`.`barcode` = `barcode_view`.`barcode`)) AS `name`,
+(select `ew_part`.`p_price` AS `p_price` from `ew_part` where (`ew_transaction`.`barcode` = `ew_part`.`barcode`)) AS `p_price`,
+`ew_transaction`.`type` AS `type`,
+`ew_transaction`.`quantity` AS `quantity`,
+`ew_transaction`.`application` AS `application`,
+`ew_transaction`.`time` AS `time`
+from `ew_transaction` ;
+
+SELECT barcode, name, SUM(quantity*p_price) FROM `transaction_view_w_pprice` GROUP BY `barcode`;
+
+SELECT SUM(quantity) FROM `ew_transaction` WHERE `time` BETWEEN '".$new_time_start[$i]."' AND '".$new_time_end[$i]."' AND `type` = 'part' AND `quantity` < '0';

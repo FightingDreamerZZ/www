@@ -201,34 +201,7 @@ include('header.php');
 <a href="<?php echo($defaultset[photo]); ?>" target="_blank"><img width="300" height="300" class ="withborder" src="<?php echo($defaultset[photo]); ?>" class="image_wrapper" /></a>
 </div>
 
-    <button value="haha" onclick="hahaha()">ha</button>
-    <script>
-        // define a handler
-        function doc_keyUp(e) {
 
-            // this would test for whichever key is 40 and the ctrl key at the same time
-            if (e.key == "v") {
-                // call your function to do the thing
-                alert("haa");
-            }
-        }
-        // register the handler
-        document.addEventListener('keyup', doc_keyUp, false);
-        function hahaha() {
-            alert("hah");
-        }
-        $(window).keydown(function (e) {
-            if(e.key = "v"){
-                alert("haa");
-            }
-        })
-        $(document).keyPress(function (e) {
-            if(e.key = "v"){
-                alert("haa");
-            }
-        })
-
-    </script>
 
 <div class="cleaner h30"></div>
 <div class="cleaner"></div>

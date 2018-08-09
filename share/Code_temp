@@ -201,4 +201,54 @@ if($_POST['is_to_omit_cart']){
     setcookie("is_to_omit_cart",$_POST['is_to_omit_cart'],time() + 60*60*2);
     echo "cookie!=post".$_POST['is_to_omit_cart'];
 }
+
+
+echo $ew_verified."<br/>";
+echo $pass;
+
+
+//zz
+$the_day_30days_before_today = date("Y-m-d", strtotime("-30 days"));
+echo "the_day_30days_before_today".$the_day_30days_before_today;
+//zz
+
+
+
+        //zz
+$result = get_pctg_of_4seasons_of_the_y("2017");
+var_dump($result);
+//zz
+
 ?>
+
+<!--        zz-->
+<?php var_dump($array_result_set_after_sort_w_appli);?>
+
+<button value="haha" onclick="hahaha()">ha</button>
+<script>
+    // define a handler
+    function doc_keyUp(e) {
+
+        // this would test for whichever key is 40 and the ctrl key at the same time
+        if (e.key == "v") {
+            // call your function to do the thing
+            alert("haa");
+        }
+    }
+    // register the handler
+    document.addEventListener('keyup', doc_keyUp, false);
+    function hahaha() {
+        alert("hah");
+    }
+    $(window).keydown(function (e) {
+        if(e.key = "v"){
+            alert("haa");
+        }
+    })
+    $(document).keyPress(function (e) {
+        if(e.key = "v"){
+            alert("haa");
+        }
+    })
+
+</script>
