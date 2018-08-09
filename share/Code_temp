@@ -99,3 +99,106 @@ $array_result_set_after_sort =
 <?php
 //depart.php
 //zz test: sendPostRequest("depart.php",{"focus_on":"115127525006","submitbarcode":"whatever"},"POST");
+
+    //depart.php
+
+if($_POST['confirm_decrease']){  //zz decrease是随便起的名字、其实是那个给用户自定义取多少件的小form、这是其handler
+    if($_POST['amount'] <= 0){
+        stop("Decrease amount must be greater than 0!");
+    }
+    $barcode = $_POST['barcode'];//zz ?之前post的数据这次post也能也还在吗？--其使用了hidden的input，form常用手法，学起来
+    $decrease = -abs($_POST['amount']);
+    $decrease_this_time = $decrease;
+    $appli = $_POST['appli'];
+    $table = get_table($barcode);
+    $sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
+    $result_info = mysql_query($sql_code);
+    $a_check = mysql_fetch_array($result_info);
+    if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < -$decrease){
+        stop('Not enough stock!');
+    }else{
+        if($_GET['application']) {
+            cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $_GET['application']);//zz 错误的理解、作纪念
+        }
+        else{
+            cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, "unknown");//zz
+        }
+    }
+    $cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
+    $sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
+    $result_info_a = mysql_query($sql_code_a);
+}
+
+//zz
+echo "radio_application!--".$appli."--";
+
+//下面用到的东东（来配合的
+?>
+<input type="text" style="display:none;" name="appli" id="hidden_input_appli" value = "
+            <?php
+//                if($appli){echo $appli;}
+//                else{echo "Unknown";}
+            ?>
+            Unknown
+        " autocomplete="off"/>
+
+Depart&nbsp;<input type="text" name="amount" value = "<?php if($suggested_decrease){echo $suggested_decrease;}else{echo "0";}?>"
+                   class="input_field_w w50" autocomplete="off"/> of this part with an application of
+<?php
+                if($appli)
+                    echo $appli;
+                else
+                    echo "Unknown";
+?>
+<a id="lbl_appli">Unknown</a>
+? &nbsp;
+<input type="submit" class="submit_btn" name="confirm_decrease" value="Confirm"/>
+
+<?php
+//login.php:
+
+    //以前的一些实验：
+//$path1 = 'lib\sql.php';
+//echo "$path1";
+//$user = posix_getpwuid(posix_geteuid());
+////var_dump($user);
+////phpinfo();
+//echo ini_get("allow_url_include");
+////var_dump(LIB_PATH.DS.'lib\user_lib.php');
+///
+    ?>
+    //depart.php
+<script>
+    //本来想整这个、后来发现也不对、就算改了cookies，现在页的马上要啊。。要不也得刷新页面一下、触发一下handler
+function ajax_sendHttpRequest(path, params, method) {
+    var xmlHttp;
+    if(window.XMLHttpRequest){
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlHttp = new XMLHttpRequest();
+    }
+    else{// code for IE6, IE5
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.onreadystatechange = function () {
+        if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+            //response
+        }
+    }
+        xmlHttp.open(method)
+    }
+</script>
+<?php
+//zz
+if($_COOKIE['is_to_omit_cart']){
+    echo "cookie!cookie=".$_COOKIE['is_to_omit_cart'];
+}
+if($_COOKIE['is_to_omit_cart']) {
+    echo "cookie!cookie=" . $_COOKIE['is_to_omit_cart'];
+    ...
+}
+if($_POST['is_to_omit_cart']){
+    $cookie_is_to_omit_cart = $_POST['is_to_omit_cart'];
+    setcookie("is_to_omit_cart",$_POST['is_to_omit_cart'],time() + 60*60*2);
+    echo "cookie!=post".$_POST['is_to_omit_cart'];
+}
+?>

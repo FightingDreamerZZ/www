@@ -6,10 +6,23 @@
 */
 
 error_reporting(E_ALL ^ E_NOTICE);
-include('lib/sql.php');
+include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');
 
 check_user_cookie();
+
+//zz handler for get cookie for store checkbox (omit ottos cart) check status
+if($_COOKIE['is_to_omit_cart']){
+    //echo "cookie!cookie=".$_COOKIE['is_to_omit_cart'];
+    $cookie_is_to_omit_cart = $_COOKIE['is_to_omit_cart'];
+}
+
+//zz handler for set cookie for store checkbox (omit ottos cart) check status
+if($_POST['is_to_omit_cart']){
+    $cookie_is_to_omit_cart = $_POST['is_to_omit_cart'];
+    setcookie("is_to_omit_cart",$_POST['is_to_omit_cart'],time() + 60*60*2);
+    //echo "cookie!post=".$_POST['is_to_omit_cart'];
+}
 
 //load associate part info
 $sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
@@ -27,24 +40,28 @@ if (isset($_GET['barcode'])) {
 	$result_info_a = mysql_query($sql_code_a);//zz ??用途
 }
 
-//handle barcode scaner input
+//zz now is only handler for getting data (changing is made by later handlers
 if($_POST['submitbarcode']){
 	$barcode = $_POST['focus_on'];//zz ?? 谁在focus_on里面放得barcode？《--原来是form当中的名字。。form用法：submitBtn的name可用来判断是否有submit（post参数里是否有）、具体的textbox的name可以用来取出所传的post参数. 别的就是form的action啊method啊
 	$table = get_table($barcode);
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
-	$decrease_this_time = -1;
-	if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < 1){
-		stop('Not enough stock!');
-	}else{
-	    if($_GET['application']){
-            cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,$_GET['application']);//zz 一提交barcode或一扫描就自动添加一个购物车记录（减1的）
-        }
-		else{
-            cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,"unknown");
-        }
-	}
+
+//	$decrease_this_time = -1;
+//	if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < 1){
+//		stop('Not enough stock!');
+//	}else{
+//	    if($_GET['application']){
+//            cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,$_GET['application']);//zz 一提交barcode或一扫描就自动添加一个购物车记录（减1的）
+//        }
+//		else{
+//            cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,"unknown");
+//        }
+//	}
+
+    $suggested_decrease = -1;
+
 	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);//zz 同时返回这条购物车记录的变化数量一栏（也就是"-1"）
 	$sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
 	$result_info_a = mysql_query($sql_code_a);
@@ -90,42 +107,59 @@ if($_POST['add_assoc_part']){
 
 }
 
-//handle manual input depart request
-if($_POST['decrease']){  //zz decrease是随便起的名字、其实是那个给用户自定义取多少件的小form、这是其handler
-	if($_POST['amount'] <= 0){
-		stop("Decrease amount must be greater than 0!");
+//zz now is main handler for final submit and write to DB
+if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其实是那个给用户自定义取多少件的小form、这是其handler
+	if($_POST['amount'] >= 0){
+		stop("Decrease amount must be smaller than 0!");
 	}
-	$barcode = $_POST['barcode'];//zz ?之前post的数据这次post也能也还在吗？
+	$barcode = $_POST['barcode'];//zz ?之前post的数据这次post也能也还在吗？--其使用了hidden的input，form常用手法，学起来
 	$decrease = -abs($_POST['amount']);
     $decrease_this_time = $decrease;
+    $appli = $_POST['radio_application'];
+
 	$table = get_table($barcode);
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
-	if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < 1){
-		stop('Not enough stock!');
-	}else{
-        if($_GET['application']) {
-            cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $_GET['application']);//zz 注意cart()除了create同时还有edit的功能
+
+	//zz codes below to be improved...
+	if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true")){
+        if($a_check[quantity] < -$decrease){
+            stop('Not enough stock!');
+        }else{
+            $msg_direct_depart = direct_depart_or_enter($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $appli);
+            ////zz 待总结：ctrl flow与msg的写法
+//            echo "
+//                <script>
+//                    var msg_direct_depart = ".$msg.";
+//                </script>";
         }
-        else{
-            cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, "unknown");//zz 注意cart()除了create同时还有edit的功能
+    }
+    else {
+        if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < -$decrease){
+            stop('Not enough stock!');
+        }else{
+            cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $appli);//zz 注意cart()除了create同时还有edit的功能
+
         }
-	}
+    }
+
 	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
 	$sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
 	$result_info_a = mysql_query($sql_code_a);
 }
 
+//zz 现在用不到了
 //zz handler for radioBtnGrp - field "application" selecting: reload the page to update field "application"
 if($_GET['application']){
     $barcode = $_GET['barcode'];
     $cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
     $table = get_table($barcode);
     $appli = $_GET['application'];
-    $decrease_this_time = $_GET['decrease_this_time'];
-    //zz uncomment:
-    cart($_COOKIE['ew_user_name'],$barcode,$cart_amount,$table,$appli);
+
+    //$decrease_this_time = $_GET['decrease_this_time'];
+    ////zz uncomment:
+    //cart($_COOKIE['ew_user_name'],$barcode,$cart_amount,$table,$appli);
 
     $sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
     $result_info_a = mysql_query($sql_code_a);
@@ -257,28 +291,30 @@ include('header.php');
 	  //zz if(post里有focus_on等刚submit的痕迹){document.getElementById("redAlertTxtLblForRdBtnAppli").innerHTML = "Pls select where the part goes.."}
    }
 
-   //zz add listener for radioBtnGroup ("application"field) 's selecting(changing selected option) event, add action function
-   document.addEventListener('DOMContentLoaded', function () {
-       var arrayRadio = document.form_application.radio_application;
+   // //zz add listener for radioBtnGroup ("application"field) 's selecting(changing selected option) event, add action function
+   // document.addEventListener('DOMContentLoaded', function () {
+   //     var arrayRadio = document.form_application.radio_application;
+   //
+   //     for(var i = 0; i < arrayRadio.length; i++) {
+   //          arrayRadio[i].onchange = changeEventHandler;
+   //     }
+   // },false);
 
-       for(var i = 0; i < arrayRadio.length; i++) {
-            arrayRadio[i].onchange = changeEventHandler;
-       }
-   },false);
-
-    //zz add listener for radioBtnGroup ("application"field) 's selecting(changing selected option) event, define action
-	let valueSelectedInRadioGroup = "unknown";
-	function changeEventHandler(event) {
-        if(!event.target.value) {
-            alert("Error on getting value of the radio button..");
-            return;
-        }
-
-        valueSelectedInRadioGroup = event.target.value;
-        sendHttpRequest("depart.php",{"application":valueSelectedInRadioGroup,
-                                        "barcode":document.getElementById("barcode_main").value,
-                                        "decrease_this_time":<?php echo $decrease_this_time;?>},"GET");
-	}
+    ////zz add listener for radioBtnGroup ("application"field) 's selecting(changing selected option) event, define action
+	//let valueSelectedInRadioGroup = "unknown";
+	//function changeEventHandler(event) {
+     //   if(!event.target.value) {
+     //       alert("Error on getting value of the radio button..");
+     //       return;
+     //   }
+    //
+     //   valueSelectedInRadioGroup = event.target.value;
+     //   document.getElementById("hidden_input_appli").value = valueSelectedInRadioGroup;
+     //   document.getElementById("lbl_appli").innerHTML = valueSelectedInRadioGroup;
+     //   //sendHttpRequest("depart.php",{"application":valueSelectedInRadioGroup,
+     //   //                                "barcode":document.getElementById("barcode_main").value,
+     //   //                                "decrease_this_time":<?php ////echo $decrease_this_time;?>////},"GET");
+	//}
 
 	//zz function(s) to remind user if they didnt select field"application" accidentally..
 
@@ -323,8 +359,31 @@ include('header.php');
 
         document.body.appendChild(formForPosting);
         formForPosting.submit();
-        
     }
+    function onclick_cb_ooc(){
+	    if(document.getElementById("cb_ooc").checked){
+	        var c = confirm("To check this option means you also omit the buffer and comparison function provided by the cart. Proceed with caution cause the changes made will be harder to reverse so will be the mistakes.");
+	        if(c == true)
+                sendHttpRequest("depart.php",{"is_to_omit_cart":true},"post");
+	        else
+                document.getElementById("cb_ooc").checked = false;
+        }
+        else{
+            sendHttpRequest("depart.php",{"is_to_omit_cart":false},"post");
+
+        }
+	}
+	//zz last double check last defense
+	function directWriteLastCheck() {
+        var c = confirm("msg double check present");
+        if(c == true){
+            //do nothing
+        }
+        else{
+            //JS的stop()或后退
+        }
+    }
+
 </script>
 
 <div id="main">
@@ -349,23 +408,35 @@ include('header.php');
 	<li>Previous Stock: <?php echo $a_check[quantity];?></li>
 	<li>Stock Change: Total&nbsp;<?php echo $cart_amount;?>&nbsp;(Last time&nbsp;<?php echo $decrease_this_time;?>)</li>
 	<li>Expect Stock: <?php echo $a_check[quantity]+$cart_amount;?></li>
-    <li>Application of the Depart:
-        <span id="label_application_selected"></span>
-        <form name="form_application" id="form_application" method="post">
+
+    <form name="form2" method="post" id="form_confirm_decrease">
+    <li>Application of the Depart:<br/>
+<!--        <span id="label_application_selected"></span>-->
+<!--        <form name="form_application" id="form_application" method="post">-->
             <input type="hidden" value="<?php echo $barcode;?>" id="barcode_main"/>
-            <input type="radio" name="radio_application" value="unknown" id="form_application_radio_unknown" checked />
-            <label for="form_application_radio_unknown"  >Unknown</label> <br/>
-            <input type="radio" name="radio_application" value="sold_retail" id="form_application_radio_sold_retail"/>
-            <label for="form_application_radio_sold_retail"  >Sold as retail</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="radio" name="radio_application" value="sold_wholesale" id="form_application_radio_sold_wholesale"/>
-            <label for="form_application_radio_sold_wholesale"  >Sold as wholesale</label> <br/>
-            <input type="radio" name="radio_application" value="consumed_repair" id="form_application_radio_consumed_repair"/>
-            <label for="form_application_radio_consumed_repair"  >Warranty</label>
-            <input type="radio" name="radio_application" value="consumed_assembly" id="form_application_radio_consumed_assembly"/>
-            <label for="form_application_radio_consumed_assembly"  >Consumed in assembly</label>
-        </form>
+            <input type="radio" name="radio_application" value="unknown" id="form_application_radio_unknown" checked
+                   title="The purpose of this departing is unknown.."/>
+            <label for="form_application_radio_unknown"
+                   title="The purpose of this departing is unknown..">Unknown</label>
+            <input type="radio" name="radio_application" value="sold_retail" id="form_application_radio_sold_retail" style="margin-left: 49px;"
+                   title="This part is sold to an individual customer.."/>
+            <label for="form_application_radio_sold_retail"
+                   title="This part is sold to an individual customer..">Sold as retail</label><br/>
+            <input type="radio" name="radio_application" value="sold_wholesale" id="form_application_radio_sold_wholesale"
+                   title="This part is sold to a dealer.."/>
+            <label for="form_application_radio_sold_wholesale"
+                   title="This part is sold to a dealer.." >Sold as wholesale</label>
+            <input type="radio" name="radio_application" value="consumed_repair" id="form_application_radio_consumed_repair"
+                   title="Consumed when repairing a vehicle in warranty.."/>
+            <label for="form_application_radio_consumed_repair"
+                   title="Consumed when repairing a vehicle in warranty.." >Warranty</label><br/>
+            <input type="radio" name="radio_application" value="consumed_assembly" id="form_application_radio_consumed_assembly"
+                   title="The part was used when assembling cars.."/>
+            <label for="form_application_radio_consumed_assembly"
+                   title="The part was used when assembling cars..">Consumed in assembly</label>
+<!--        </form>-->
         <style>
-            #form_application label{
+            #form_confirm_decrease label{
                 width: 240px;
                 display: inline;
                 font-size: 12px;
@@ -373,12 +444,32 @@ include('header.php');
             }
         </style>
     </li>
-	<form name="form2" method="post">
+
 <!--        zz 传递已有参数用form时，用displayNone的textBox-->
 	    <input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>" autocomplete="off"/>
-	    Or customize a number:&nbsp;<input type="text" name="amount" value = "0" class="input_field_w w50" autocomplete="off"/>
-	    <input type="submit" class="submit_btn" name="decrease" value="to depart"/>
-    </form>
+
+
+        <li>Depart Quantity:
+            <input type="text" name="amount" value = "<?php if($suggested_decrease){echo $suggested_decrease;}else{echo "0";}?>"
+                           class="input_field_w w50" autocomplete="off"/>
+        </li>
+        <li>
+            Omit Otto's Cart (Admin Required):
+            <input type="checkbox" onclick="onclick_cb_ooc()" id="cb_ooc" name="cb_ooc" value=""
+                <?php if($cookie_is_to_omit_cart == "true")echo "checked";?>
+            />
+        </li>
+	    <input type="submit" class="submit_btn" name="submit_confirm_decrease" id="submit_confirm_decrease" value="
+	        <?php
+                if ($cookie_is_to_omit_cart == "true")
+                    echo "Confirm & Directly Write to DB";
+                echo "Confirm";
+            ?>" style="float: right;" onclick="
+                <?php
+                    if($cookie_is_to_omit_cart == 'true')
+                        echo 'directWriteLastCheck()';
+                ?>"/>
+    </form><br/><br/>
 </ul>
 
 
@@ -443,13 +534,27 @@ include('header.php');
 	</form>
 
 	<div class="cleaner h20"></div>
-	
-	<h4>Otto's Cart</h4>
-	<button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
-	<button type="button" class="submit_btn" onclick="proceed_cart()">Proceed</button>
-	<button type="button" class="submit_btn" onclick="pending()">Pend to</button>
-	<input type="text" id="client" class="input_field_w w60" value="" autocomplete="off"/>
-	<div id="mycart"></div>
+
+    <div style="
+            <?php
+                if ($cookie_is_to_omit_cart == "true")
+                    echo "display: none";
+            ?>">
+        <h4>Otto's Cart</h4>
+        <button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
+        <button type="button" class="submit_btn" onclick="proceed_cart()">Proceed</button>
+        <button type="button" class="submit_btn" onclick="pending()">Pend to</button>
+        <input type="text" id="client" class="input_field_w w60" value="" autocomplete="off"/>
+        <div id="mycart"></div>
+    </div>
+    <div id="msg_direct_depart">
+        <?php
+            if($msg_direct_depart){
+                echo $msg_direct_depart;
+            }
+        ?>
+    </div>
+
 
 </div>
 

@@ -8,3 +8,18 @@ SELECT * FROM `ew_transaction` WHERE time BETWEEN "2018-01-01" AND "2018-07-01" 
 
 
 SELECT * FROM `ew_transaction` WHERE time BETWEEN "2018-01-01" AND "2018-07-01" GROUP BY `ew_transaction`.`barcode`
+
+
+--zz: create view for trans list (with appli this time)
+DROP TABLE IF EXISTS `transaction_view_w_appli`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `transaction_view_w_appli`  AS  select
+`ew_transaction`.`tid` AS `tid`,
+`ew_transaction`.`user` AS `user`,
+`ew_transaction`.`barcode` AS `barcode`,
+(select `barcode_view`.`name` AS `name` from `barcode_view` where (`ew_transaction`.`barcode` = `barcode_view`.`barcode`)) AS `name`,
+`ew_transaction`.`type` AS `type`,
+`ew_transaction`.`quantity` AS `quantity`,
+`ew_transaction`.`application` AS `application`,
+`ew_transaction`.`time` AS `time`
+from `ew_transaction` ;

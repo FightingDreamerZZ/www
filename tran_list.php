@@ -24,7 +24,7 @@ if (isset($_GET["supersplit"])) {
 	$split_by = '20';
 }
 
-//transaction period //zz filter时间区间 --其实是开放了接口的
+//transaction period //zz filter时间区间 --其实是开放了接口的 --其实也实现了功能在stats页
 if (isset($_GET["start"]) && isset($_GET["end"])) { 
 	$sqltag="WHERE `time` BETWEEN '".$_GET["start"]." 00:00:00' AND '".$_GET["end"]." 23:59:59'";
 	$urltag="&start=".$_GET["start"]."&end=".$_GET["end"];	
@@ -76,7 +76,7 @@ if (isset($_GET["page"])) {
 }
 
 $start_from = ($page-1) * $split_by;
-$sql_code_1 = "SELECT * FROM `transaction_view`".$sqltag.$sort." LIMIT ".$start_from.",".$split_by.";"; //zz LIMIT 就是SQL语句自带的分页效果。。从0开始也ok的，那样一开始就是第一个。。
+$sql_code_1 = "SELECT * FROM `transaction_view_w_appli`".$sqltag.$sort." LIMIT ".$start_from.",".$split_by.";"; //zz LIMIT 就是SQL语句自带的分页效果。。从0开始也ok的，那样一开始就是第一个。。
 
 $result_info_1 = mysql_query($sql_code_1);
 
@@ -119,6 +119,7 @@ for ($i=1; $i<=$total_pages; $i++) {
 <td>Type</td>
 <td>Amount</td>
 <td>Time</td>
+<td>Application</td>
 </tr>
 <?php 
 while ($row_1 = mysql_fetch_assoc($result_info_1)) { 
@@ -131,6 +132,7 @@ while ($row_1 = mysql_fetch_assoc($result_info_1)) {
 			<td><?php echo $row_1["type"]; ?></td>
 			<td><?php echo $row_1["quantity"]; ?></td>
             <td><?php echo $row_1["time"]; ?></td>
+            <td><?php echo $row_1["application"]; ?></td>
             </tr>
 <?php 
 }; 

@@ -1,4 +1,4 @@
-<?PHP
+﻿<?PHP
 /*
 * Copyright © 2013 Elaine Warehouse
 * File: login.php
@@ -6,16 +6,8 @@
 */
 
 error_reporting(E_ALL ^ E_NOTICE);
-include('lib/sql.php');
-include('lib/user_lib.php');
-
-//$path1 = 'lib\sql.php';
-//echo "$path1";
-//$user = posix_getpwuid(posix_geteuid());
-////var_dump($user);
-////phpinfo();
-//echo ini_get("allow_url_include");
-////var_dump(LIB_PATH.DS.'lib\user_lib.php');
+include('lib\sql.php');//zz path forwardSlash tempForMac
+include('lib\user_lib.php');
 
 //handle login request
 if($_GET['do']=='login'){
@@ -26,9 +18,20 @@ if($_GET['do']=='login'){
 	$a_check = mysql_fetch_array($result_info);
 	$ew_verified = $a_check['pass'];
 	if($ew_verified == $pass){
+	    //warehouse admin
+        if($a_check['type'] == 5){
+            setcookie('ew_user_name',$user,time()+7200);//zz in seconds -- 7200=60*60*2=2hrs
+            setcookie('ew_user_verified',$ew_verified,time()+7200);
+            setcookie("is_warehouse_admin",true,time()+60*60*2);
+
+            sys_log($user,"login to the system.");
+            echo "<script>alert('Logging in as warehouse admin.');</script>";
+            die('<meta http-equiv="refresh" content="0;URL=index.php">');
+        }
+
 		//super user
 		if($a_check['type'] == 1){
-			setcookie('ew_user_name',$user,time()+7200);
+			setcookie('ew_user_name',$user,time()+7200);//zz in seconds -- 7200=60*60*2=2hrs
 			setcookie('ew_user_verified',$ew_verified,time()+7200);
 			setcookie('ea_user_name',$user,time()+7200);
 			setcookie('ea_user_verified',$ew_verified,time()+7200);
@@ -68,6 +71,7 @@ if($_GET['do']=='login'){
 	
 }
 
+//handler to ignore login page with a status already logged in (and not yet log out manually..)
 if($_COOKIE['ew_user_name'] || $_COOKIE['ew_user_verified']){
 		die('<meta http-equiv="refresh" content="0;URL=index.php">');
 	}

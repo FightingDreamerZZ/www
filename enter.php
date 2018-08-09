@@ -5,10 +5,23 @@
 * This file performs enter related functions
 */
 error_reporting(E_ALL ^ E_NOTICE);
-include('lib/sql.php');
+include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');
 
 check_user_cookie();
+
+//zz handler for get cookie for storing checkbox (omit ottos cart)'s check status, toggle style
+if($_COOKIE['is_to_omit_cart_enter_page']){
+    //echo "cookie!cookie=".$_COOKIE['is_to_omit_cart'];
+    $cookie_is_to_omit_cart = $_COOKIE['is_to_omit_cart_enter_page'];
+}
+
+//zz handler for set cookie for storing checkbox (omit ottos cart)'s check status
+if($_POST['is_to_omit_cart']){
+    $cookie_is_to_omit_cart = $_POST['is_to_omit_cart'];
+    setcookie("is_to_omit_cart_enter_page",$_POST['is_to_omit_cart'],time() + 60*60*2);
+    //echo "cookie!post=".$_POST['is_to_omit_cart'];
+}
 
 //load profile if barcode is set
 if (isset($_GET['barcode'])) { 
@@ -27,24 +40,35 @@ if($_POST['submitbarcode']){
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
-	cart($_COOKIE['ew_user_name'],$barcode,1,$table);
+	////zz remove auto-enter or auto-increase...
+	//cart($_COOKIE['ew_user_name'],$barcode,1,$table,"N/A");//zz cart($user,$barcode,$quantity,$table,$appli)
 	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
 	
 }
 
 //handle manual enter request
-if($_POST['increase']){
+if($_POST['submit_confirm_increase']){
 
 	if($_POST['amount'] <= 0){
 		stop("Increase amount must be greater than 0!");
 	}
 	$barcode = $_POST['barcode'];
-	$increase = $_POST['amount'];
+	$increase = abs($_POST['amount']);
 	$table = get_table($barcode);
+
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
-	cart($_COOKIE['ew_user_name'],$barcode,$increase,$table);
+
+    //zz codes below to be improved...
+    if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true")){
+        $msg_direct_depart = direct_depart_or_enter($_COOKIE['ew_user_name'], $barcode, $increase, $table, "N/A");
+    }
+    else {
+        cart($_COOKIE['ew_user_name'], $barcode, $increase, $table, "N/A");//zz 注意cart()除了create同时还有edit的功能
+    }
+	//cart($_COOKIE['ew_user_name'],$barcode,$increase,$table,"N/A");
+
 	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
 	
 }
@@ -130,6 +154,53 @@ include('header.php');
       document.form1.focus_on.focus();
 	  loadXMLDoc();
    }
+
+    //zz javascript mocked html form submition http req (post/get)
+    function sendHttpRequest(path, params, method) {
+        let formForPosting = document.createElement("form");
+        formForPosting.setAttribute("method", method);
+        formForPosting.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)){
+                var hiddenInputTag = document.createElement("input");
+                hiddenInputTag.setAttribute("type","hidden");
+                hiddenInputTag.setAttribute("name", key);
+                hiddenInputTag.setAttribute("value",params[key]);
+
+                formForPosting.appendChild(hiddenInputTag);
+            }
+        }
+
+        document.body.appendChild(formForPosting);
+        formForPosting.submit();
+    }
+
+    //zz catching checkbox(omitOttosCart) click event
+    function onclick_cb_ooc(){
+        if(document.getElementById("cb_ooc").checked){
+            var c = confirm("To check this option means you also omit the buffer and comparison function provided by the cart. Proceed with caution cause the changes made will be harder to reverse so will be the mistakes.");
+            if(c == true)
+                sendHttpRequest("enter.php",{"is_to_omit_cart":true},"post");
+            else
+                document.getElementById("cb_ooc").checked = false;
+        }
+        else{
+            sendHttpRequest("enter.php",{"is_to_omit_cart":false},"post");
+
+        }
+    }
+
+    //zz catch submit btn last double check last defense
+    function directWriteLastCheck() {
+        var c = confirm("msg double check present");
+        if(c == true){
+            //do nothing
+        }
+        else{
+            //JS的stop()或后退
+        }
+    }
 </script>
 
 <div id="main">
@@ -154,8 +225,26 @@ include('header.php');
 	<li>Expect Stock: <?php echo $a_check[quantity]+$cart_amount;?></li>
 <form name="form2" method="post">
 	<input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>" autocomplete="off"/>
-	ENTER:<input type="text" name="amount" value = "0" class="input_field_w w50" autocomplete="off"/>
-	<input type="submit" class="submit_btn" name="increase" value="More"/>
+    <li>
+        Received Quantity:&nbsp;
+        <input type="text" name="amount" value = "0" class="input_field_w w50" autocomplete="off"/>
+    </li>
+    <li>
+        Omit Otto's Cart (Admin Required):
+        <input type="checkbox" onclick="onclick_cb_ooc()" id="cb_ooc" name="cb_ooc" value=""
+            <?php if($cookie_is_to_omit_cart == "true")echo "checked";?>
+        />
+    </li>
+	<input type="submit" class="submit_btn" name="submit_confirm_increase" value="
+	    <?php
+            if ($cookie_is_to_omit_cart == "true")
+                echo "Confirm & Directly Write to DB";
+            echo "Confirm";
+        ?>" onclick="
+	    <?php
+            if($cookie_is_to_omit_cart == 'true')
+                echo 'directWriteLastCheck()';
+        ?>"/>
 </form>
 </ul>
 
@@ -164,11 +253,23 @@ include('header.php');
 </div>
 
 <div class="col_w320 float_r">
-	<h4>Otto's Cart</h4>
-	<button type="button" class="submit_btn" onclick="clearcart()">Clear List</button>
-	<button type="button" class="submit_btn" onclick="proceed_cart()">Proceed List</button>
-	<div id="mycart"></div>
-
+    <div style="
+            <?php
+            if ($cookie_is_to_omit_cart == "true")
+                echo "display: none";
+            ?>">
+        <h4>Otto's Cart</h4>
+        <button type="button" class="submit_btn" onclick="clearcart()">Clear List</button>
+        <button type="button" class="submit_btn" onclick="proceed_cart()">Proceed List</button>
+        <div id="mycart"></div>
+    </div>
+    <div id="msg_direct_depart">
+        <?php
+        if($msg_direct_depart){
+            echo $msg_direct_depart;
+        }
+        ?>
+    </div>
 </div>
 
 <div class="cleaner h30"></div>

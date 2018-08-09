@@ -61,9 +61,10 @@ include('header.php');
 
 <form name="form2" method="get" action="search.php">
 	<select name="table" class="select_field">
-	<option value="ew_car">Car</option>
-	<option value="ew_part">Part</option>
-	</select><input type="text" name="keyword" class="input_field" value="<?php echo $temp_key; ?>" autocomplete="off"/>
+        <option value="ew_part">Part</option>
+	    <option value="ew_car">Car</option>
+	</select>
+    <input type="text" name="keyword" class="input_field" value="<?php echo $temp_key; ?>" autocomplete="off"/>
 	<input type="submit" class="submit_btn" value="Search"/>
 	</form>
 

@@ -6,7 +6,7 @@
 */
 
 error_reporting(E_ALL ^ E_NOTICE);
-include('lib/sql.php');
+include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');
 
 check_user_cookie();

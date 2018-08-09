@@ -10,7 +10,7 @@ $mysql_host = 'localhost';
 //DB username
 $mysql_user = 'root';
 //DB password
-$mysql_password = 'agtEcars123';
+$mysql_password = '';//zz tempForWinNotebook
 //Database name
 $mysql_dbname = 'eware';
 

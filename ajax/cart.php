@@ -35,7 +35,8 @@ if($_GET['do'] == 'proceed'){
 			}
 		}
 	}
-	send_msg();
+	////zz to be updated and uncommented 这边这个sendMsg相关的（csv文件）都还没改（针对新加的appli域）。。待完成并重新打开
+	//send_msg();
 	$sql_del = "DELETE FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";
 	if(!($result=mysql_query($sql_del))){ 
 			stop('DB Error!');

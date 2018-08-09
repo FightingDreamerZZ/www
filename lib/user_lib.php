@@ -93,17 +93,22 @@ function highlight($text, $words) {
 
 //input username, barcode, type, amount; add a record to transaction based on the given inputs
 function tran($user, $barcode,$type,$quantity,$appli) {
-    $sql_code = "INSERT INTO `eware`.`ew_transaction` (`tid`, `user`, `barcode`, `type`, `quantity`, `time`, `application`) VALUES (NULL, '".$user."', '".$barcode."', '".$type."', '".$quantity."', CURRENT_TIMESTAMP, ".$appli.");";
-	if(!($result=mysql_query($sql_code))) { 
+    //zz `eware`.
+    $sql_code = "INSERT INTO `ew_transaction` (`tid`, `user`, `barcode`, `type`, `quantity`, `application`, `time`) VALUES (NULL, '".$user."', '".$barcode."', '".$type."', ".$quantity.", '".$appli."', CURRENT_TIMESTAMP);";
+	if(!($result=mysql_query($sql_code))) {
 			echo("<script>window.alert('DB Error!');</script>");
 			die('<meta http-equiv="refresh" content="0;URL=index.php">');
 		}
 }
 
 //input username,barcode,quantity,table; add/update a record to cart based on the given inputs
+//zz now its combining records with same user, barcode and appli, not only same user, barcode. (seperated by different appli)
 function cart($user,$barcode,$quantity,$table,$appli) {
 
-	$sql_check = "SELECT * FROM `ew_cart` WHERE `barcode` = '".$barcode."' AND `user` = '".$user."';";
+    //if 3相等 update
+    //else insert
+
+	$sql_check = "SELECT * FROM `ew_cart` WHERE `barcode` = '".$barcode."' AND `user` = '".$user."' AND `application` = '".$appli."';";
 
 	$result_check=mysql_query($sql_check);
 
@@ -111,15 +116,25 @@ function cart($user,$barcode,$quantity,$table,$appli) {
 		$sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`, `application`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', '".$quantity."', '".$appli."');";
 	}
 	else{
-	    //zz to be uncommented
+//	    //zz
 //        while($row_check = mysql_fetch_assoc($result_check)){
-//            if($row_check["application"] != $appli )
+//            if($row_check["application"] == $appli){
+//                $sql_check1 = "SELECT * FROM `ew_cart` WHERE `barcode` = '".$barcode."'
+//                    AND `user` = '".$user."'
+//                    AND `application` = '".$appli."';";
+//                $a_check = mysql_fetch_array(mysql_query($sql_check1));
+//                $new_quantity = $a_check[quantity] + $quantity;
+//                $sql_code = "UPDATE `ew_cart` SET `quantity` = '".$new_quantity."' WHERE `barcode` = '".$barcode."'
+//                    AND `user` = '".$user."'
+//                    AND `application` = '".$appli."';";
+//            }
+//            elseif ()
 //        }
-        //zz
+//        //zz
 
 		$a_check = mysql_fetch_array($result_check);
 		$new_quantity = $a_check[quantity] + $quantity;
-		$sql_code = "UPDATE `ew_cart` SET `quantity` = '".$new_quantity."' WHERE `barcode` = '".$barcode."' AND `user` = '".$user."';";
+		$sql_code = "UPDATE `ew_cart` SET `quantity` = '".$new_quantity."' WHERE `barcode` = '".$barcode."' AND `user` = '".$user."' AND `application` = '".$appli."';";
 	}   
 	if(!($result=mysql_query($sql_code))) { 
 			echo("<script>window.alert('DB Error!');</script>");
@@ -376,6 +391,24 @@ function sort_by_two_fields($array_to_sort, $first_field, $is_asc_1st_field, $se
     });
     $result=$array_to_sort;
     return $result;
+}
+
+//zz directly write to DB -- for depart & enter
+function direct_depart_or_enter($user,$barcode,$quantity,$table,$appli){
+    $new_quantity = get_anything($barcode,'quantity') + $quantity;
+    //zz 下面更新part主表的剩余数量、进行实质减法
+    $update_sql = "UPDATE `".$table."` SET `quantity` = '".$new_quantity."' WHERE `barcode` = '".$barcode."';";
+    if (!($result=mysql_query($update_sql))) {
+        stop('DB Error!');
+    }else{
+        //zz 添加trans的记录，注意这里不需combine相同appli了、每一条trans记录都是独立、分开的
+        tran($user, $barcode, str_replace("ew_", "", $table), $quantity, $appli);
+    }
+
+    //zz to be implemented:
+    //send_msg()...
+
+    return "direct writing success msg";
 }
 
 ?>
