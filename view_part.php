@@ -56,9 +56,39 @@ include('header.php');
 	
    function load()
    {
-      document.form1.keyword.focus();
+      document.form_smart_search.keyword.focus();
 	  loadXMLDoc();
    }
+
+    function suggest(key)
+    {
+        document.getElementById("suggestion").style.display = "block";
+        var xmlhttp;
+        //var table = document.getElementById("db_table").value;
+        var table = "ew_part";
+        var postdata = "keyword="+encodeURIComponent(key)+"&table="+table;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+                document.getElementById("suggestion").innerHTML=xmlhttp.responseText;
+            }
+        }
+
+        xmlhttp.open("POST","ajax/search_suggestion.php",true);
+        xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlhttp.setRequestHeader("Content-length", postdata.length);
+        xmlhttp.send(postdata);
+
+    }
 </script>
 
 <div id="main">
@@ -68,11 +98,25 @@ include('header.php');
 
 <h2>View Parts</h2>
 <div class="cleaner"></div>
-			
-<p><form name="form1" method="post" action="search.php?do=barcode">
-Barcode Search: <input type="text" name="keyword" autocomplete="off"/>
-<input type="submit" name="submit" value="Go"/>
-</form></p>
+
+    <form name="form_smart_search" method="get" action="search.php" >
+        Smart Search for Parts:
+        <input type="hidden" name="table" value="ew_part"/>
+        <input type="text" id="keyword" name="keyword" class="input_field" value="<?php //echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
+        <input type="submit" class="submit_btn" value="Search"/>
+    </form>
+
+    <div id="suggestion" style="display: none"></div>
+
+<!--    zz original barcode search bar (exactly match, link to same page):-->
+<!--    <p>-->
+<!--        <form name="form1" method="post" action="search.php?do=barcode">-->
+<!--            Barcode Search:-->
+<!--            <input type="text" name="keyword" autocomplete="off"/>-->
+<!--            <input type="submit" name="submit" value="Go"/>-->
+<!--        </form>-->
+<!--    </p>-->
+
 <div class="cleaner h30"></div>
 <div class="col_w320 float_r">
 <ul class = "list">

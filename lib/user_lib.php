@@ -142,6 +142,11 @@ function cart($user,$barcode,$quantity,$table,$appli) {
 		}
 }
 
+function cart_edit($user,$barcode,$quantity,$table,$appli) {
+    //找到3相等的，update
+    
+}
+
 //input pid, delete record from pending table where pid = input.
 function del_pending($pid) {
 

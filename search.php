@@ -36,7 +36,7 @@ $start_from = ($page-1) * $split_by;
 //================
 
 
-
+//zz --main search handler, exact match search based on keyword and table:
 if (isset($_GET["keyword"])) { 
 	$temp_key = $_GET[keyword]; 
 } else { 

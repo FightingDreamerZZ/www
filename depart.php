@@ -72,7 +72,21 @@ if($_POST['submitbarcode']){
 	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);//zz 同时返回这条购物车记录的变化数量一栏（也就是"-1"）
 	$sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
 	$result_info_a = mysql_query($sql_code_a);
+}
 
+//zz --handler for cart entity editing request - data injecting only:
+if($_POST['is_edit_cart'] == 'true'){
+    $barcode = $_POST['barcode'];
+    $table = get_table($barcode);
+    $appli = $_POST['application'];
+
+    $sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
+    $result_info = mysql_query($sql_code);
+    $a_check = mysql_fetch_array($result_info);
+    $suggested_decrease = -1;
+    $cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
+    $sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
+    $result_info_a = mysql_query($sql_code_a);
 }
 
 // handle request: add associate parts to cart
@@ -114,7 +128,7 @@ if($_POST['add_assoc_part']){
 
 }
 
-//zz now is main handler for final submit and write to DB
+//zz now is main handler for final submit and write to DB (or write to cart if not ooc), also handles cart entity editing to write to cart
 if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其实是那个给用户自定义取多少件的小form、这是其handler
 	if($_POST['amount'] >= 0){
 		stop("Decrease amount must be smaller than 0!");
@@ -123,6 +137,7 @@ if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其
 	$decrease = -abs($_POST['amount']);
     $decrease_this_time = $decrease;
     $appli = $_POST['radio_application'];
+    $is_edit_cart = ($_POST['is_edit_cart'] == 'true')?true:false;
 
 	$table = get_table($barcode);
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
@@ -130,7 +145,7 @@ if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其
 	$a_check = mysql_fetch_array($result_info);
 
 	//zz codes below to be improved...
-	if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true")){
+	if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true") && !$is_edit_cart){
         if($a_check[quantity] < -$decrease){
             stop('Not enough stock!');
         }else{
@@ -142,12 +157,19 @@ if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其
 //                </script>";
         }
     }
-    else {
-        if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < -$decrease){
+    elseif(!$is_edit_cart) {
+        if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < -$decrease){//zz 关于这个逻辑待研究 - cart_amount这边可能有些问题
             stop('Not enough stock!');
         }else{
             cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $appli);//zz 注意cart()除了create同时还有edit的功能
 
+        }
+    }
+    else{
+        if(($a_check[quantity]) < -$decrease){ //zz 关于这个逻辑待研究 - cart_amount这边可能有些问题（加不加cart_amount那一长串？）
+            stop('Not enough stock!');
+        }else{
+            cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $appli);//zz 注意cart()除了create同时还有edit的功能
         }
     }
 
@@ -454,6 +476,7 @@ include('header.php');
 
 <!--        zz 传递已有参数用form时，用displayNone的textBox-->
 	    <input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>" autocomplete="off"/>
+        <input type="text" style="display:none;" name="is_edit_cart" value = "true" autocomplete="off"/>
 
 
         <li>Depart Quantity:
