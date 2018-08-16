@@ -58,6 +58,34 @@ $result_info_1 = mysql_query($sql_code_1);
 
 
 ?>
+
+<script>
+    //zz javascript mocked html form submition http req (post/get)
+    function sendHttpRequest(path, params, method) {
+        let formForPosting = document.createElement("form");
+        formForPosting.setAttribute("method", method);
+        formForPosting.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)){
+                var hiddenInputTag = document.createElement("input");
+                hiddenInputTag.setAttribute("type","hidden");
+                hiddenInputTag.setAttribute("name", key);
+                hiddenInputTag.setAttribute("value",params[key]);
+
+                formForPosting.appendChild(hiddenInputTag);
+            }
+        }
+
+        document.body.appendChild(formForPosting);
+        formForPosting.submit();
+    }
+
+    function edit_handler(barcode,appli){
+        sendHttpRequest("../depart.php",{"barcode":barcode, "application":appli, "is_edit_cart":"true"},"post");
+    }
+</script>
+
 <style>
 table,th,td
 {
@@ -70,6 +98,7 @@ text-align: center;
 <table>
 <tr>
 
+    <td></td>
     <td>No.</td>
     <td>Barcode</td>
     <td>Amount</td>
@@ -83,6 +112,7 @@ while ($row_1 = mysql_fetch_assoc($result_info_1)) {
 $i = $i+1;
 ?>
 <tr>
+    <td><a onclick="edit_handler(<?php echo $row_1[barcode]; ?>,<?php echo $row_1["application"]; ?>)">Edit</a></td>
     <td><?php echo $i."."; ?></td>
     <td><a href="?barcode=<?php echo $row_1[barcode]; ?>"><?php echo $row_1[barcode]; ?></a></td>
     <td><?php echo $row_1[quantity]; ?></td>

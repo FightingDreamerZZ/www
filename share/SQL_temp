@@ -9,6 +9,9 @@ SELECT * FROM `ew_transaction` WHERE time BETWEEN "2018-01-01" AND "2018-07-01" 
 
 SELECT * FROM `ew_transaction` WHERE time BETWEEN "2018-01-01" AND "2018-07-01" GROUP BY `ew_transaction`.`barcode`
 
+--zz: add 'application' column to transaction table:
+ALTER TABLE `ew_transaction` ADD `application` VARCHAR(20) NULL DEFAULT 'unknown' COMMENT 'Only for parts depart - sold_retail, sold_wholesale, consumed_repair, consumed_assembly, unknown' AFTER `quantity`;
+
 
 --zz: create view for trans list (with appli this time)
 DROP TABLE IF EXISTS `transaction_view_w_appli`;
@@ -42,3 +45,4 @@ from `ew_transaction` ;
 SELECT barcode, name, SUM(quantity*p_price) FROM `transaction_view_w_pprice` GROUP BY `barcode`;
 
 SELECT SUM(quantity) FROM `ew_transaction` WHERE `time` BETWEEN '".$new_time_start[$i]."' AND '".$new_time_end[$i]."' AND `type` = 'part' AND `quantity` < '0';
+
