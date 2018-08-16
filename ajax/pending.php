@@ -14,6 +14,7 @@ check_user_cookie();
 
 //pending($_COOKIE['ew_user_name'],"test","123",1,"ew_cart")
 
+//zz 现有的pending系统：在depart等页的cart部分点击pend按钮，可实质修改db、并添加一条pending表的记录，在pending页有所有的pending表的记录，flush按钮只是用来添加trans记录的因为实质db已改、不过倒是有个restore按钮可以rollback对实质表的那个修改。。
 if(isset($_GET['pendto'])){
 	$client = $_GET['pendto'];
 	$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";
