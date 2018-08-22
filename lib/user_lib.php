@@ -142,14 +142,13 @@ function cart($user,$barcode,$quantity,$table,$appli) {
 		}
 }
 
-function cart_edit($user,$barcode,$quantity,$table,$appli) {
+function cart_edit($user,$barcode,$quantity,$table,$appli,$appli_old) {
     //找到3相等的，update
-
 }
 
 function cart_just_scanned($user,$barcode,$table) {
     //always insert, no update, quantity can be either -1 or 0, now is experimenting -1, appli is always 'unknown'
-    $sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`, `application`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', -1, 'unknown');";
+    $sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`, `application`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', '-1', 'unknown');";
     if(!($result=mysql_query($sql_code))) {
         echo("<script>window.alert('DB Error!');</script>");
         die('<meta http-equiv="refresh" content="0;URL=index.php">');

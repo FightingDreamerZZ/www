@@ -54,18 +54,18 @@ if($_POST['submitbarcode']){
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
 
-    if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true")){}
-    else{
+    if (!$cookie_is_to_omit_cart || !($cookie_is_to_omit_cart == "true")){
         $decrease_this_time = -1;
         if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < 1){
             stop('Not enough stock!');
         }else{
-            if($_GET['application']){
-                cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,$_GET['application']);//zz 一提交barcode或一扫描就自动添加一个购物车记录（减1的）
-            }
-            else{
-                cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,"unknown");
-            }
+//            if($_GET['application']){
+//                cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,$_GET['application']);//zz 一提交barcode或一扫描就自动添加一个购物车记录（减1的）
+//            }
+//            else{
+//                cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,"unknown");
+//            }
+            cart_just_scanned($_COOKIE['ew_user_name'],$barcode,$table);
         }
     }
 
@@ -77,10 +77,11 @@ if($_POST['submitbarcode']){
 }
 
 //zz --handler for cart entity editing request - data injecting only:
-if($_POST['is_edit_cart'] == 'true'){
-    $barcode = $_POST['barcode'];
+if($_GET['is_edit_cart'] == 'true'){
+    $barcode = $_GET['barcode'];
     $table = get_table($barcode);
-    $appli = $_POST['application'];
+    $appli_old = $_GET['application'];
+    $is_edit_cart = "true";
 
     $sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
     $result_info = mysql_query($sql_code);
@@ -415,6 +416,12 @@ include('header.php');
         }
     }
 
+    //zz toBeContinueToResearch...
+    document.getElementById("btn_edit").addEventListener("click",function(e) {
+        // if(e.target && e.target.nodeName == "button") {
+            alert("haha");
+        // }
+    })
 </script>
 
 <div id="main">
@@ -478,7 +485,8 @@ include('header.php');
 
 <!--        zz 传递已有参数用form时，用displayNone的textBox-->
 	    <input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>" autocomplete="off"/>
-        <input type="text" style="display:none;" name="is_edit_cart" value = "true" autocomplete="off"/>
+        <input type="text" style="display:none;" name="is_edit_cart" value = "<?php echo ($is_edit_cart)?$is_edit_cart:"";?>" autocomplete="off"/>
+        <input type="text" style="display:none;" name="appli_old" value = "<?php echo ($appli_old)?$appli_old:"";?>" autocomplete="off"/>
 
 
         <li>Depart Quantity:
