@@ -105,25 +105,27 @@ if($_POST['submit']){
 	$category = $_POST["category"];
 	
 	
-	$sub_category = "";
-	if(isset($_POST['sub1'])){
-		$sub_category = $sub_category.$_POST['sub1'].",";
-	}
-	if(isset($_POST['sub2'])){
-		$sub_category = $sub_category.$_POST['sub2'].",";
-	}
-	if(isset($_POST['sub3'])){
-		$sub_category = $sub_category.$_POST['sub3'].",";
-	}
-	if(isset($_POST['sub4'])){
-		$sub_category = $sub_category.$_POST['sub4'].",";
-	}
-	$sub_category = rtrim($sub_category, ",");
-	if($sub_category == ""){
-		$sub_category = "UNKNOW";
-	}
-	
-	$color = $_POST["color"];
+//	$sub_category = "";
+//	if(isset($_POST['sub1'])){
+//		$sub_category = $sub_category.$_POST['sub1'].",";
+//	}
+//	if(isset($_POST['sub2'])){
+//		$sub_category = $sub_category.$_POST['sub2'].",";
+//	}
+//	if(isset($_POST['sub3'])){
+//		$sub_category = $sub_category.$_POST['sub3'].",";
+//	}
+//	if(isset($_POST['sub4'])){
+//		$sub_category = $sub_category.$_POST['sub4'].",";
+//	}
+//	$sub_category = rtrim($sub_category, ",");
+//	if($sub_category == ""){
+//		$sub_category = "UNKNOW";
+//	}
+
+    $sub_category = "AGT";//zz remove 'For' field
+
+    $color = $_POST["color"];
 	check($color,20,"Color");
 	
 	$p_price = $_POST["p_price"];
@@ -256,14 +258,14 @@ include('header.php');
   <option value="tire_and_rim" <?php if($a_check['category'] == 'tire_and_rim'){ echo("selected=\"selected\"");} ?>>Tire and Rim</option>
   <option value="mechanical" <?php if($a_check['category'] == 'mechanical'){ echo("selected=\"selected\"");} ?>>Mechanical</option>
   <option value="electrical" <?php if($a_check['category'] == 'electrical'){ echo("selected=\"selected\"");} ?>>Electrical</option>
-
 </select><br />
-<label>For: </label>
-<input type="checkbox" name="sub1" value="CLUB" <?php if (strpos($a_check['sub_category'], 'CLUB') !== false){echo "checked";} ?>>CLUB
-<input type="checkbox" name="sub2" value="EZGO" <?php if (strpos($a_check['sub_category'], 'EZGO') !== false){echo "checked";} ?>>EZGO
-<input type="checkbox" name="sub3" value="AGT" <?php if (strpos($a_check['sub_category'], 'AGT') !== false){echo "checked";} ?>>AGT
-<input type="checkbox" name="sub4" value="YAMAHA" <?php if (strpos($a_check['sub_category'], 'YAMAHA') !== false){echo "checked";} ?>>YAMAHA
-<br />
+
+<!--<label>For: </label>-->
+<!--<input type="checkbox" name="sub1" value="CLUB" --><?php //if (strpos($a_check['sub_category'], 'CLUB') !== false){echo "checked";} ?><!-- >CLUB-->
+<!--<input type="checkbox" name="sub2" value="EZGO" --><?php //if (strpos($a_check['sub_category'], 'EZGO') !== false){echo "checked";} ?><!-- >EZGO-->
+<!--<input type="checkbox" name="sub3" value="AGT" --><?php //if (strpos($a_check['sub_category'], 'AGT') !== false){echo "checked";} ?><!-- >AGT-->
+<!--<input type="checkbox" name="sub4" value="YAMAHA" --><?php //if (strpos($a_check['sub_category'], 'YAMAHA') !== false){echo "checked";} ?><!-- >YAMAHA-->
+<!--<br />-->
 <label>Color: </label><input type="text" name="color" value="<?php echo($a_check['color']); ?>"/><br />
 <label>Purchase Price: </label><input type="text" name="p_price" value="<?php echo($a_check['p_price']); ?>"/><br />
 <label>Wholesale Price: </label><input type="text" name="w_price" value="<?php echo($a_check['w_price']); ?>"/><br />

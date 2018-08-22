@@ -13,7 +13,6 @@ check_user_cookie();
 
 //zz handler for check if is warehouse admin (able to omitOttosCart)
 $is_warehouse_admin = false;
-echo $_COOKIE['is_warehouse_admin'];
 if($_COOKIE['is_warehouse_admin'] && $_COOKIE['is_warehouse_admin'] == 'true'){
     $is_warehouse_admin = true;
 }
@@ -55,17 +54,20 @@ if($_POST['submitbarcode']){
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
 
-//	$decrease_this_time = -1;
-//	if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < 1){
-//		stop('Not enough stock!');
-//	}else{
-//	    if($_GET['application']){
-//            cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,$_GET['application']);//zz 一提交barcode或一扫描就自动添加一个购物车记录（减1的）
-//        }
-//		else{
-//            cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,"unknown");
-//        }
-//	}
+    if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true")){}
+    else{
+        $decrease_this_time = -1;
+        if(($a_check[quantity]+cart_amount($_COOKIE['ew_user_name'],$barcode)) < 1){
+            stop('Not enough stock!');
+        }else{
+            if($_GET['application']){
+                cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,$_GET['application']);//zz 一提交barcode或一扫描就自动添加一个购物车记录（减1的）
+            }
+            else{
+                cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,"unknown");
+            }
+        }
+    }
 
     $suggested_decrease = -1;
 
@@ -133,7 +135,7 @@ if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其
 	if($_POST['amount'] >= 0){
 		stop("Decrease amount must be smaller than 0!");
 	}
-	$barcode = $_POST['barcode'];//zz ?之前post的数据这次post也能也还在吗？--其使用了hidden的input，form常用手法，学起来
+	$barcode = $_POST['barcode'];//zz ?之前post的数据这次post也能也还在吗？--其使用了hidden的input，form常用手法，以及连续的保存post/get scope数据，学起来
 	$decrease = -abs($_POST['amount']);
     $decrease_this_time = $decrease;
     $appli = $_POST['radio_application'];
@@ -271,7 +273,7 @@ include('header.php');
 	}
 	}
 	
-	function pending() //zz 待查：pending以及下面的pending.php到底是干啥的？
+	function pending() //zz 现有的pending系统：在depart等页的cart部分点击pend按钮，可实质修改db、并添加一条pending表的记录，在pending页有所有的pending表的记录，flush按钮只是用来添加trans记录的因为实质db已改、不过倒是有个restore按钮可以rollback对实质表的那个修改。。
 	{
 	var xmlhttp;
 	var client = document.getElementById("client").value;
@@ -442,7 +444,7 @@ include('header.php');
     <li>Application of the Depart:<br/>
 <!--        <span id="label_application_selected"></span>-->
 <!--        <form name="form_application" id="form_application" method="post">-->
-            <input type="hidden" value="<?php echo $barcode;?>" id="barcode_main"/>
+            <input type="hidden" value="<?php echo $barcode;?>" id="barcode_main"/> <!--zz toBeCheck: necessity-->
             <input type="radio" name="radio_application" value="unknown" id="form_application_radio_unknown" checked
                    title="The purpose of this departing is unknown.."/>
             <label for="form_application_radio_unknown"
