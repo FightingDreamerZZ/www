@@ -115,7 +115,7 @@ function cart($user,$barcode,$quantity,$table,$appli) {
 	if(mysql_num_rows($result_check) == 0){
 		$sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`, `application`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', '".$quantity."', '".$appli."');";
 	}
-	else{
+	else {
 //	    //zz
 //        while($row_check = mysql_fetch_assoc($result_check)){
 //            if($row_check["application"] == $appli){
@@ -142,9 +142,24 @@ function cart($user,$barcode,$quantity,$table,$appli) {
 		}
 }
 
-function cart_edit($user,$barcode,$quantity,$table,$appli) {
+function cart_edit($user,$barcode,$quantity,$table,$new_appli,$old_appli) {
     //找到3相等的，update
-    
+    $sql_check = "SELECT * FROM `ew_cart` WHERE `barcode` = '".$barcode."' AND `user` = '".$user."' AND `application` = '".$appli."';";
+
+    $result_check=mysql_query($sql_check);
+
+    if(mysql_num_rows($result_check) == 0){
+        $sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`, `application`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', '".$quantity."', '".$appli."');";
+    }
+    else{
+        $a_check = mysql_fetch_array($result_check);
+        $new_quantity = $a_check[quantity] + $quantity;
+        $sql_code = "UPDATE `ew_cart` SET `quantity` = '".$new_quantity."' WHERE `barcode` = '".$barcode."' AND `user` = '".$user."' AND `application` = '".$appli."';";
+        if(!($result=mysql_query($sql_code))) {
+            echo("<script>window.alert('DB Error!');</script>");
+            die('<meta http-equiv="refresh" content="0;URL=index.php">');
+        }
+    }
 }
 
 //input pid, delete record from pending table where pid = input.

@@ -76,7 +76,7 @@ if($_POST['submitbarcode']){
 	$result_info_a = mysql_query($sql_code_a);
 }
 
-//zz --handler for cart entity editing request - data injecting only:
+//zz --handler for cart entity editing request - data filling only:
 if($_POST['is_edit_cart'] == 'true'){
     $barcode = $_POST['barcode'];
     $table = get_table($barcode);
@@ -140,6 +140,7 @@ if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其
     $decrease_this_time = $decrease;
     $appli = $_POST['radio_application'];
     $is_edit_cart = ($_POST['is_edit_cart'] == 'true')?true:false;
+    $old_appli = $_POST['old_appli'];
 
 	$table = get_table($barcode);
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
@@ -147,7 +148,7 @@ if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其
 	$a_check = mysql_fetch_array($result_info);
 
 	//zz codes below to be improved...
-	if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true") && !$is_edit_cart){
+	if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true") && (!$is_edit_cart)){
         if($a_check[quantity] < -$decrease){
             stop('Not enough stock!');
         }else{
@@ -171,7 +172,7 @@ if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其
         if(($a_check[quantity]) < -$decrease){ //zz 关于这个逻辑待研究 - cart_amount这边可能有些问题（加不加cart_amount那一长串？）
             stop('Not enough stock!');
         }else{
-            cart($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $appli);//zz 注意cart()除了create同时还有edit的功能
+            cart_edit($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $appli, $old_appli);
         }
     }
 
