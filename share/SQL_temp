@@ -12,6 +12,8 @@ SELECT * FROM `ew_transaction` WHERE time BETWEEN "2018-01-01" AND "2018-07-01" 
 --zz: add 'application' column to transaction table:
 ALTER TABLE `ew_transaction` ADD `application` VARCHAR(20) NULL DEFAULT 'unknown' COMMENT 'Only for parts depart - sold_retail, sold_wholesale, consumed_repair, consumed_assembly, unknown' AFTER `quantity`;
 
+--zz: add 'application' column to cart table:
+ALTER TABLE `ew_cart` ADD `application` VARCHAR(20) NULL DEFAULT 'unknown' COMMENT 'Only for parts depart - sold_retail, sold_wholesale, consumed_repair, consumed_assembly, unknown' AFTER `quantity`;
 
 --zz: create view for trans list (with appli this time)
 DROP TABLE IF EXISTS `transaction_view_w_appli`;

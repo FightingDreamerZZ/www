@@ -142,6 +142,7 @@ function cart($user,$barcode,$quantity,$table,$appli) {
 		}
 }
 
+<<<<<<< HEAD
 function cart_edit($user,$barcode,$quantity,$table,$new_appli,$old_appli) {
     //找到3相等的，update
     $sql_check = "SELECT * FROM `ew_cart` WHERE `barcode` = '".$barcode."' AND `user` = '".$user."' AND `application` = '".$appli."';";
@@ -159,6 +160,15 @@ function cart_edit($user,$barcode,$quantity,$table,$new_appli,$old_appli) {
             echo("<script>window.alert('DB Error!');</script>");
             die('<meta http-equiv="refresh" content="0;URL=index.php">');
         }
+=======
+
+function cart_just_scanned($user,$barcode,$table) {
+    //always insert, no update, quantity can be either -1 or 0, now is experimenting -1, appli is always 'unknown'
+    $sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`, `application`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', '-1', 'unknown');";
+    if(!($result=mysql_query($sql_code))) {
+        echo("<script>window.alert('DB Error!');</script>");
+        die('<meta http-equiv="refresh" content="0;URL=index.php">');
+>>>>>>> 8145db9adac14be380855066ec74ac91ec515d77
     }
 }
 

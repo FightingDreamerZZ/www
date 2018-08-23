@@ -81,8 +81,9 @@ $result_info_1 = mysql_query($sql_code_1);
         formForPosting.submit();
     }
 
+    //zz toBeContinueToResearch...
     function edit_handler(barcode,appli){
-        sendHttpRequest("../depart.php",{"barcode":barcode, "application":appli, "is_edit_cart":"true"},"post");
+        sendHttpRequest("depart.php",{"barcode":barcode, "application":appli, "is_edit_cart":"true"},"post");
     }
 </script>
 
@@ -112,7 +113,10 @@ while ($row_1 = mysql_fetch_assoc($result_info_1)) {
 $i = $i+1;
 ?>
 <tr>
-    <td><a onclick="edit_handler(<?php echo $row_1[barcode]; ?>,<?php echo $row_1["application"]; ?>)">Edit</a></td>
+    <!--    zz toBeContinueToResearch..-->
+    <!--<td><button id="btn_edit" onclick="edit_handler(--><?php //echo $row_1[barcode]; ?><!--,--><?php //echo $row_1["application"]; ?><!--)">Edit</button></td>-->
+
+    <td><a href="?barcode=<?php echo $row_1[barcode]; ?>&appli=<?php echo $row_1["application"]; ?>&is_edit_cart=true">Edit</a></td>
     <td><?php echo $i."."; ?></td>
     <td><a href="?barcode=<?php echo $row_1[barcode]; ?>"><?php echo $row_1[barcode]; ?></a></td>
     <td><?php echo $row_1[quantity]; ?></td>
