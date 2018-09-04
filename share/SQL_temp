@@ -18,6 +18,9 @@ ALTER TABLE `ew_cart` ADD `application` VARCHAR(20) NULL DEFAULT 'unknown' COMME
 --zz: create view for trans list (with appli this time)
 DROP TABLE IF EXISTS `transaction_view_w_appli`;
 
+--zz: add "pending" col for cart table for "remove proceed of cart for non-admin" feature
+ALTER TABLE `ew_cart` ADD `pending` VARCHAR(10) NULL DEFAULT 'false' COMMENT 'If need to be approved by admin to proceed. Value - true or false (varchar10).' AFTER `application`;
+
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `transaction_view_w_appli`  AS  select
 `ew_transaction`.`tid` AS `tid`,
 `ew_transaction`.`user` AS `user`,

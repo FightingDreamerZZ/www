@@ -575,4 +575,26 @@ function get_combined_same_barcode_sum_price($appended_query){
         return null;
     }
 }
+
+//zz returns a assoc array with all the carts to be proceed, eg. array(3){"John"=>{[0]=>{"barcode"=>"xxx", "table"=>"xxx",...},[1]=>{}...}, "Otto"=>{}...}
+function get_carts_to_be_proceeded() {
+    $query = "SELECT * FROM `ew_cart` WHERE `pending` = 'true' ORDER BY `user`";//zz SELECT * FROM `ew_cart` WHERE `pending` = 'true' ORDER BY `user`
+    $result_set = mysql_query($query);
+    $assoc_array = array();
+    $user_temp = "";
+    while ($row = mysql_fetch_assoc($result_set)) {
+        if($row["user"] != $user_temp) {
+            $array = array();
+            array_push($array, $row);
+            $user_temp = $row["user"];
+            $assoc_array[$user_temp] = $array;
+        }
+        else {
+            array_push($assoc_array[$user_temp],$row);
+        }
+    }
+    return $assoc_array;
+}
 ?>
+
+
