@@ -81,6 +81,7 @@ include('header.php');
 	<a href="cart.php"><li><img src="images/icon/cart.png">Otto Cart[<?php echo $stats[total_cart]; ?>]</li></a>
 	<a href="serial.php"><li><img src="images/icon/serial.png">Serial Input</li></a>
 	<a href="images/map.gif" target="_blank"><li><img src="images/icon/map.png">Warehouse Map</li></a>
+    <a href="carts_to_proceed.php"><li><img src="images/icon/cart.png">Pending Carts[<?php echo $stats[total_cart]; ?>]</li></a>
 </ul>
 </div>
 

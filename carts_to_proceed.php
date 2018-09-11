@@ -11,9 +11,11 @@ include('lib/user_lib.php');
 
 check_user_cookie();
 
-//handler for initially generating all the pending carts, categorized by user, with links for details and operations
+//zz handler for initially generating all the pending carts, categorized by user, with links for details and operations
 $array_all_pending_carts = get_carts_to_be_proceeded();
 $total_count_all_pending_carts = sizeof($array_all_pending_carts);
+
+
 
 //Barcode Search handler
 if ($_GET['do']=='barcode') {
@@ -78,7 +80,7 @@ $row_2 = mysql_fetch_row($result_info_2);
 $total_records = $row_2[0];
 $total_pages = ceil($total_records / $split_by);
 
-$title_by_page = "Search";
+$title_by_page = "Pending Carts";
 include('header.php');
 ?>
 
@@ -140,7 +142,7 @@ include('header.php');
                 foreach ($array_all_pending_carts as $user => $users_cart) {//foreach start
                     ?>
                     <li>
-                        <a href="aa"><?php echo "User: ".$user;?></a>
+                        <a href="carts_to_proceed_detail.php"><?php echo "User: ".$user;?></a>
                         <table>
                     <tr>
                         <td>Barcode</td>

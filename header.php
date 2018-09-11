@@ -24,6 +24,8 @@ if(!$_COOKIE['ew_user_name']){
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <?php if(isset($loader2)){ echo($loader2);} ?>
 
+<!--zz including jQuery library-->
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <body<?php echo($load); ?>>
 <span id="top"></span>
