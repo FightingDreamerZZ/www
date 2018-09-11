@@ -142,25 +142,16 @@ function cart($user,$barcode,$quantity,$table,$appli) {
 		}
 }
 
-<<<<<<< HEAD
-function cart_edit($user,$barcode,$quantity,$table,$new_appli,$old_appli) {
+function cart_edit($user,$barcode,$quantity,$new_appli,$old_appli)
+{
     //找到3相等的，update
-    $sql_check = "SELECT * FROM `ew_cart` WHERE `barcode` = '".$barcode."' AND `user` = '".$user."' AND `application` = '".$appli."';";
+    $sql_code = "UPDATE `ew_cart` SET `quantity` = '" . $quantity . "', `application` = '".$new_appli."' WHERE `barcode` = '" . $barcode . "' AND `user` = '" . $user . "' AND `application` = '" .$old_appli. "';";
 
-    $result_check=mysql_query($sql_check);
-
-    if(mysql_num_rows($result_check) == 0){
-        $sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`, `application`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', '".$quantity."', '".$appli."');";
+    if (!($result = mysql_query($sql_code))) {
+        echo("<script>window.alert('DB Error!');</script>");
+        die('<meta http-equiv="refresh" content="0;URL=index.php">');
     }
-    else{
-        $a_check = mysql_fetch_array($result_check);
-        $new_quantity = $a_check[quantity] + $quantity;
-        $sql_code = "UPDATE `ew_cart` SET `quantity` = '".$new_quantity."' WHERE `barcode` = '".$barcode."' AND `user` = '".$user."' AND `application` = '".$appli."';";
-        if(!($result=mysql_query($sql_code))) {
-            echo("<script>window.alert('DB Error!');</script>");
-            die('<meta http-equiv="refresh" content="0;URL=index.php">');
-        }
-=======
+}
 
 function cart_just_scanned($user,$barcode,$table) {
     //always insert, no update, quantity can be either -1 or 0, now is experimenting -1, appli is always 'unknown'
@@ -168,7 +159,6 @@ function cart_just_scanned($user,$barcode,$table) {
     if(!($result=mysql_query($sql_code))) {
         echo("<script>window.alert('DB Error!');</script>");
         die('<meta http-equiv="refresh" content="0;URL=index.php">');
->>>>>>> 8145db9adac14be380855066ec74ac91ec515d77
     }
 }
 

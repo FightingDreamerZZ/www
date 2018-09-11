@@ -67,8 +67,9 @@ if($_POST['submit']){
 				|| ($_FILES["file"]["type"] == "image/x-png")
 				|| ($_FILES["file"]["type"] == "image/png")
 			)
-			&& ($_FILES["file"]["size"] < 2000000)
-			&& in_array($extension, $allowedExts)
+//			&& ($_FILES["file"]["size"] < 2000000)
+            && ($_FILES["file"]["size"] < 10000000)
+            && in_array($extension, $allowedExts)
 		){
 		  if ($_FILES["file"]["error"] > 0){
 				echo "Return Code: " . $_FILES["file"]["error"] . "<br>";

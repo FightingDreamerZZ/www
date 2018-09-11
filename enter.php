@@ -31,13 +31,28 @@ if($_POST['is_to_omit_cart']){
 }
 
 //load profile if barcode is set
-if (isset($_GET['barcode'])) { 
+if (isset($_GET['barcode']) && !isset($_GET['is_edit_cart'])) {
 	$barcode = $_GET['barcode'];
 	$table = get_table($barcode);
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
 	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
+}
+
+//zz --handler for cart edit (cart entity edit request) - data filling only:
+if($_GET['is_edit_cart'] == 'true'){
+    $barcode = $_GET['barcode'];
+    $table = get_table($barcode);
+    $appli_old = $_GET['appli']; //zz this is from ajax's cart.php, $_GET['appli'] is on the href url for edit..
+    $is_edit_cart = "true";
+
+    $sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
+    $result_info = mysql_query($sql_code);
+    $a_check = mysql_fetch_array($result_info);
+    $cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
+    $sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
+    $result_info_a = mysql_query($sql_code_a);
 }
 
 //handle barcode scanner inputs
@@ -47,13 +62,13 @@ if($_POST['submitbarcode']){
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
-	////zz remove auto-enter or auto-increase...
-	//cart($_COOKIE['ew_user_name'],$barcode,1,$table,"N/A");//zz cart($user,$barcode,$quantity,$table,$appli)
+	//zz resumed auto-enter or auto-increase...
+	cart($_COOKIE['ew_user_name'],$barcode,1,$table,"N/A");//zz cart($user,$barcode,$quantity,$table,$appli)
 	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
 	
 }
 
-//handle manual enter request
+//handle manual enter request, also "edit cart" submit
 if($_POST['submit_confirm_increase']){
 
 	if($_POST['amount'] <= 0){
@@ -62,19 +77,22 @@ if($_POST['submit_confirm_increase']){
 	$barcode = $_POST['barcode'];
 	$increase = abs($_POST['amount']);
 	$table = get_table($barcode);
+    $is_edit_cart_final_submit = ($_POST['is_edit_cart'] == 'true')?true:false;
 
-	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
+    $sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
 
     //zz codes below to be improved...
-    if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true")){
+    if ($cookie_is_to_omit_cart && ($cookie_is_to_omit_cart == "true") && (!$is_edit_cart_final_submit)){
         $msg_direct_depart = direct_depart_or_enter($_COOKIE['ew_user_name'], $barcode, $increase, $table, "N/A");
     }
-    else {
+    elseif(!$is_edit_cart_final_submit) {
         cart($_COOKIE['ew_user_name'], $barcode, $increase, $table, "N/A");//zz 注意cart()除了create同时还有edit的功能
     }
-	//cart($_COOKIE['ew_user_name'],$barcode,$increase,$table,"N/A");
+    else {//case for cart edit
+        cart_edit($_COOKIE['ew_user_name'], $barcode, $increase, "N/A", "N/A");
+    }
 
 	$cart_amount = cart_amount($_COOKIE['ew_user_name'],$barcode);
 	
@@ -218,7 +236,7 @@ include('header.php');
 <h2>Barcode Quick Enter</h2>
 <div class="cleaner"></div>
 <div class="col_w320 float_l">
-<form name="form1" method="post">
+<form name="form1" method="post" action="enter.php">
 	<label>Scan Barcode:</label>
 	<input type="text" name="focus_on" class="input_field_w w180" autocomplete="off"/>
 	<input type="submit" class="submit_btn" name="submitbarcode" value="Scan"/>
@@ -230,11 +248,15 @@ include('header.php');
 	<li>Current Stock: <?php echo $a_check[quantity];?></li>
 	<li>Stock Change: <?php echo $cart_amount;?></li>
 	<li>Expect Stock: <?php echo $a_check[quantity]+$cart_amount;?></li>
-<form name="form2" method="post">
+<form name="form2" method="post" action="enter.php">
+    <!--zz pre-set values:-->
 	<input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>" autocomplete="off"/>
+    <input type="text" style="display:none;" name="is_edit_cart" value = "<?php echo ($is_edit_cart)?$is_edit_cart:"";?>" autocomplete="off"/>
+    <input type="text" style="display:none;" name="appli_old" value = "<?php echo ($appli_old)?$appli_old:"";?>" autocomplete="off"/>
+
     <li>
         Received Quantity:&nbsp;
-        <input type="text" name="amount" value = "0" class="input_field_w w50" autocomplete="off"/>
+        <input type="text" name="amount" value = "1" class="input_field_w w50" autocomplete="off"/>
     </li>
     <li style="
             <?php
@@ -251,7 +273,10 @@ include('header.php');
            value="<?php
                     if ($cookie_is_to_omit_cart == "true")
                         echo "Confirm & Directly Write to DB";
-                    echo "Confirm";
+                    elseif ($is_edit_cart == "true")
+                        echo "Edit Record";
+                    else
+                        echo "Confirm";
                   ?>" onclick="
 	    <?php
             if($cookie_is_to_omit_cart == 'true')

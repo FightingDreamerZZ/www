@@ -139,24 +139,27 @@ include('header.php');
                 <?php
                 foreach ($array_all_pending_carts as $user => $users_cart) {//foreach start
                     ?>
-                    <li><?php echo "User: ".$user.".";?></li>
-                    <td>
-                        <tr>Barcode</tr>
-                        <tr>Quantity</tr>
-                        <tr>Application</tr>
-                    </td>
+                    <li>
+                        <a href="aa"><?php echo "User: ".$user;?></a>
+                        <table>
+                    <tr>
+                        <td>Barcode</td>
+                        <td>Quantity</td>
+                        <td>Application</td>
+                    </tr>
                     <?php
                     foreach ($users_cart as $row_c) {
                         ?>
-                        <td>
-                            <tr><?php echo $row_c['barcode']?></tr>
-                            <tr><?php echo $row_c['quantity']?></tr>
-                            <tr><?php echo $row_c['application']?></tr>
-                        </td>
+                        <tr>
+                            <td><?php echo $row_c['barcode']?></td>
+                            <td><?php echo $row_c['quantity']?></td>
+                            <td><?php echo $row_c['application']?></td>
+                        </tr>
+
                         <?php }?>
+                    </table>
 
-
-<!--                    <!--    zz xsearch应该是专为searchSuggestion功能弄的一个column，有全部各个域的value串成一长string，也被用于display part details-->-->
+<!--                    <!--    zz xsearch应该是专为searchSuggestion功能弄的一个column，有全部各个域的value串成一长string，也被用于display part details-->
 <!--                    <li>-->
 <!--                        <a href="--><?php //echo get_view($table); ?><!--?barcode=--><?php //echo $row_1["barcode"]; ?><!--">-->
 <!--                            --><?php //echo $row_1["barcode"]; ?>
@@ -168,7 +171,7 @@ include('header.php');
 <!--                    </li>-->
 
 
-
+                    </li>
                     <?php
                 }; //foreach end
                 ?>

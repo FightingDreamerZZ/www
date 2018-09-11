@@ -46,7 +46,7 @@ if (isset($_GET['barcode'])) {
 	$result_info_a = mysql_query($sql_code_a);//zz ??用途
 }
 
-//zz now is only handler for getting data (changing is made by later handlers
+//zz filling data into input fields, and auto -1 (auto add a -1 record with unknown appli)
 if($_POST['submitbarcode']){
 	$barcode = $_POST['focus_on'];//zz ?? 谁在focus_on里面放得barcode？《--原来是form当中的名字。。form用法：submitBtn的name可用来判断是否有submit（post参数里是否有）、具体的textbox的name可以用来取出所传的post参数. 别的就是form的action啊method啊
 	$table = get_table($barcode);
@@ -65,7 +65,8 @@ if($_POST['submitbarcode']){
 //            else{
 //                cart($_COOKIE['ew_user_name'],$barcode,$decrease_this_time,$table,"unknown");
 //            }
-            cart_just_scanned($_COOKIE['ew_user_name'],$barcode,$table);
+//            cart_just_scanned($_COOKIE['ew_user_name'],$barcode,$table);//zz 自动-1且always添加新纪录
+            cart($_COOKIE['ew_user_name'],$barcode,-1,$table,"unknown");//zz 自动-1、且会合并3相等的。。
         }
     }
 
@@ -76,17 +77,11 @@ if($_POST['submitbarcode']){
 	$result_info_a = mysql_query($sql_code_a);
 }
 
-<<<<<<< HEAD
 //zz --handler for cart entity editing request - data filling only:
-if($_POST['is_edit_cart'] == 'true'){
-    $barcode = $_POST['barcode'];
-=======
-//zz --handler for cart entity editing request - data injecting only:
 if($_GET['is_edit_cart'] == 'true'){
     $barcode = $_GET['barcode'];
->>>>>>> 8145db9adac14be380855066ec74ac91ec515d77
     $table = get_table($barcode);
-    $appli_old = $_GET['application'];
+    $appli_old = $_GET['appli']; //zz this is from ajax's cart.php, $_GET['application'] is on the href url for edit..
     $is_edit_cart = "true";
 
     $sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
@@ -147,7 +142,7 @@ if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其
     $decrease_this_time = $decrease;
     $appli = $_POST['radio_application'];
     $is_edit_cart = ($_POST['is_edit_cart'] == 'true')?true:false;
-    $old_appli = $_POST['old_appli'];
+    $appli_old = $_POST['appli_old'];
 
 	$table = get_table($barcode);
 	$sql_code = "select * from `".$table."` where barcode = '".$barcode."';";
@@ -175,11 +170,11 @@ if($_POST['submit_confirm_decrease']){  //zz decrease是随便起的名字、其
 
         }
     }
-    else{
+    else{//the case for cart editing
         if(($a_check[quantity]) < -$decrease){ //zz 关于这个逻辑待研究 - cart_amount这边可能有些问题（加不加cart_amount那一长串？）
             stop('Not enough stock!');
         }else{
-            cart_edit($_COOKIE['ew_user_name'], $barcode, $decrease, $table, $appli, $old_appli);
+            cart_edit($_COOKIE['ew_user_name'], $barcode, $decrease, $appli, $appli_old);
         }
     }
 
@@ -441,7 +436,7 @@ include('header.php');
 <div class="col_w320 float_l">
 
 <!--zz 这里不太懂、就算点击了sumit按钮可以让界面刷新并进行ajex读取cart等、仍不知道究竟这个input哪里refer了post的“barcode”参数、《--啊原来是有这两个关键字的都是用的nameAttribute还是form不熟啊。。 -->
-<form name="form1" method="post">
+<form name="form1" method="post" action="depart.php">
 	<label>Scan Barcode:</label>
 	<input type="text" name="focus_on" class="input_field_w w180" autocomplete="off"/>
 	<input type="submit" class="submit_btn" name="submitbarcode" value="Scan"/>
@@ -454,7 +449,7 @@ include('header.php');
 	<li>Stock Change: Total&nbsp;<?php echo $cart_amount;?>&nbsp;(Last time&nbsp;<?php echo $decrease_this_time;?>)</li>
 	<li>Expect Stock: <?php echo $a_check[quantity]+$cart_amount;?></li>
 
-    <form name="form2" method="post" id="form_confirm_decrease">
+    <form name="form2" method="post" id="form_confirm_decrease" action="depart.php">
     <li>Application of the Depart:<br/>
 <!--        <span id="label_application_selected"></span>-->
 <!--        <form name="form_application" id="form_application" method="post">-->
@@ -497,7 +492,7 @@ include('header.php');
 
 
         <li>Depart Quantity:
-            <input type="text" name="amount" value = "<?php if($suggested_decrease){echo $suggested_decrease;}else{echo "0";}?>"
+            <input type="text" name="amount" value = "<?php if($suggested_decrease){echo $suggested_decrease;}else{echo "-1";}?>"
                            class="input_field_w w50" autocomplete="off"/>
         </li>
         <li style="
@@ -515,7 +510,10 @@ include('header.php');
                value="<?php
                         if ($cookie_is_to_omit_cart == "true")
                             echo "Confirm & Directly Write to DB";
-                        echo "Confirm";
+                        elseif ($is_edit_cart == "true")
+                            echo "Edit Record";
+                        else
+                            echo "Confirm";
                       ?>" onclick="
                 <?php
                     if($cookie_is_to_omit_cart == 'true')
