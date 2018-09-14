@@ -11,12 +11,25 @@ include('../lib/user_lib.php');
 
 check_user_cookie();
 
+if(isset($_GET['user_of_cart'])){
+    $user_of_cart = $_GET['user_of_cart'];
+}
+else {
+
+    $user_of_cart = $_COOKIE['ew_user_name'];
+}
+
 if($_GET['do'] == 'clear'){ //zz get的参数‘do’作为flag标识了本次执行的行动
-	clear_cart();
+	clear_cart($user_of_cart);
+}
+
+//submit vs proceed: submit need to approve, proceed is final
+if ($_GET['do'] == 'submit') {
+    cart_submit($user_of_cart);
 }
 
 if($_GET['do'] == 'proceed'){
-	$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";//zz proceed前check的逻辑是cart表中所有和当前用户相关的记录都会被使用（当做是全部的购物车--并没有购物车历史的记录，有的就是当前的）
+	$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$user_of_cart."';";//zz proceed前check的逻辑是cart表中所有和当前用户相关的记录都会被使用（当做是全部的购物车--并没有购物车历史的记录，有的就是当前的）
 	$result_cart = mysql_query($sql_get_cart);
 	
 	if ( mysql_num_rows($result_cart) == 0){
@@ -31,13 +44,13 @@ if($_GET['do'] == 'proceed'){
 		}else{
 			if($cart_row[quantity] != 0){
 			    //zz tran()用于添加transaction表的记录(上面已经改了实质的part或者car表了，这里再添加上关于本次trans的信息到trans表)。type就是car或者part、就这两个string取其一。
-				tran($_COOKIE['ew_user_name'],$cart_row[barcode],str_replace("ew_", "",$cart_row[table]),$cart_row[quantity],$cart_row[application]);
+				tran($user_of_cart,$cart_row[barcode],str_replace("ew_", "",$cart_row[table]),$cart_row[quantity],$cart_row[application]);
 			}
 		}
 	}
 	////zz to be updated and uncommented 这边这个sendMsg相关的（csv文件）都还没改（针对新加的appli域）。。待完成并重新打开
 	//send_msg();
-	$sql_del = "DELETE FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";
+	$sql_del = "DELETE FROM `ew_cart` WHERE `user` = '".$user_of_cart."';";
 	if(!($result=mysql_query($sql_del))){ 
 			stop('DB Error!');
 		}else{
@@ -46,14 +59,14 @@ if($_GET['do'] == 'proceed'){
 }
 
 
-function clear_cart(){
-	$sql_del = "DELETE FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";
+function clear_cart($user_of_cart){
+	$sql_del = "DELETE FROM `ew_cart` WHERE `user` = '".$user_of_cart."';";
 	if(!($result=mysql_query($sql_del))){ 
 			stop('DB Error!');
 	}
 }
 
-$sql_code_1 = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."' ORDER BY `cid` ASC;";
+$sql_code_1 = "SELECT * FROM `ew_cart` WHERE `user` = '".$user_of_cart."' ORDER BY `cid` ASC;";
 $result_info_1 = mysql_query($sql_code_1);
 
 

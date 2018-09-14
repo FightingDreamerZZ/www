@@ -142,7 +142,7 @@ include('header.php');
                 foreach ($array_all_pending_carts as $user => $users_cart) {//foreach start
                     ?>
                     <li>
-                        <a href="carts_to_proceed_detail.php"><?php echo "User: ".$user;?></a>
+                        <a href="carts_to_proceed_detail.php?user=<?php echo $user;?>"><?php echo "User: ".$user;?></a>
                         <table>
                     <tr>
                         <td>Barcode</td>

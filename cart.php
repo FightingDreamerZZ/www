@@ -77,10 +77,10 @@ include('header.php');
 	xmlhttp.send();
 	}
 	
-	function proceed_cart()
+	function submit_cart()
 	{
 	var xmlhttp;
-	var r=confirm("Are you willing to proceed you list?");
+	var r=confirm("Are you willing to submit all the cart to get approved for proceeding?");
 	if (r==true){
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -97,7 +97,7 @@ include('header.php');
 		document.getElementById("mycart").innerHTML=xmlhttp.responseText;
 		}
 	  }
-	xmlhttp.open("GET","ajax/cart.php?do=proceed",true);
+	xmlhttp.open("GET","ajax/cart.php?do=submit",true);
 	xmlhttp.send();
 	}
 	}
@@ -140,7 +140,7 @@ include('header.php');
 <p>Hint: double click on the target amount would activate edit mode.</p>
 
 <button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
-	<button type="button" class="submit_btn" onclick="proceed_cart()">Proceed</button>
+	<button type="button" class="submit_btn" onclick="submit_cart()">Submit</button>
 	<button type="button" class="submit_btn" onclick="pending()">Pend to</button>
 	<input type="text" id="client" class="input_field_w w180" value="" autocomplete="off"/>
 

@@ -10,22 +10,37 @@ include('lib/user_lib.php');
 
 check_user_cookie();
 
-//handle change amount request
-if(isset($_GET['barcode']) && isset($_GET['new_value']) && $_GET['new_value'] != "" && $_GET['barcode'] != ""){
-	$barcode = $_GET['barcode'];
+if(!isset($_GET['user'])){
+    echo("<script>window.alert('Page Loading Error!');</script>");
+    die('<meta http-equiv="refresh" content="0;URL=index.php">');
+}
+
+$user_of_cart = $_GET['user'];
+
+//zz handler double-click to edit qty or appli -- main submit
+if(isset($_GET['new_value']) && $_GET['new_value'] != ""){
+    $barcode = $_GET['barcode'];
+    $appli = $_GET['appli'];
 	$new_value = $_GET['new_value'];
+    $field = $_GET['field'];
 	$stock = get_anything($barcode,"quantity");
-	//echo $stock;
-	if(($stock + $new_value) < 0){
-		stop('Not enough stock! Stock Available:'.$stock);
-	}else{
-		$sql_code = "UPDATE `ew_cart` SET `quantity` = '".$new_value."' WHERE `barcode` = '".$barcode."' AND `user` = '".$_COOKIE['ew_user_name']."';";
-		$result_update = mysql_query($sql_code);
-	}
+
+	switch($field){
+        case "appli":
+            cart_edit($user_of_cart, $barcode, "", $new_value, $appli);
+            break;
+        default:
+            if(($stock + $new_value) < 0){
+                stop('Not enough stock! Stock Available:'.$stock);
+            }else{
+                cart_edit($user_of_cart, $barcode,$new_value,"",$appli);
+            }
+            break;
+    }
 }
 
 //load cart
-$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";
+$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$user_of_cart."';";
 $result_cart = mysql_query($sql_get_cart);
 
 include('header.php');
@@ -33,9 +48,11 @@ include('header.php');
 ?>
 
 <script type="text/javascript">
-	function change(id_num)
+    //zz listener -- doubleClick to edit quantity
+	function edit_qty(id_num,appli)
 	{
 	var xmlhttp;
+	var field = "qty";
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
 	  xmlhttp=new XMLHttpRequest();
@@ -48,13 +65,42 @@ include('header.php');
 	  {
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		{
-		document.getElementById(id_num).innerHTML=xmlhttp.responseText;
+		document.getElementById(field+id_num+appli).innerHTML=xmlhttp.responseText;
 		}
-	  }
-	xmlhttp.open("GET","ajax/cart_edit.php?barcode="+id_num,true);
+	  };
+	xmlhttp.open("GET","ajax/cart_edit.php?barcode="+id_num
+	    +"&appli="+appli
+	    +"&field="+field
+	    +"&user=<?php echo $user_of_cart;?>",true);
 	xmlhttp.send();
 	}
-	
+
+    function edit_appli(id_num,appli)
+    {
+        let xmlhttp;
+        let field = "appli";
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+                document.getElementById(field+id_num+appli).innerHTML=xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET","ajax/cart_edit.php?barcode="+id_num
+            +"&appli="+appli
+            +"&field="+field
+            +"&user=<?php echo $user_of_cart;?>",true);
+        xmlhttp.send();
+    }
+
 	function clearcart()
 	{
 	var xmlhttp;
@@ -73,7 +119,8 @@ include('header.php');
 		document.getElementById("mycart").innerHTML=xmlhttp.responseText;
 		}
 	  }
-	xmlhttp.open("GET","ajax/cart.php?do=clear",true);
+	xmlhttp.open("GET","ajax/cart.php?do=clear" +
+        "&user_of_cart=<?php echo $user_of_cart;?>",true);
 	xmlhttp.send();
 	}
 	
@@ -97,7 +144,8 @@ include('header.php');
 		document.getElementById("mycart").innerHTML=xmlhttp.responseText;
 		}
 	  }
-	xmlhttp.open("GET","ajax/cart.php?do=proceed",true);
+	xmlhttp.open("GET","ajax/cart.php?do=proceed" +
+        "&user_of_cart=<?php echo $user_of_cart;?>",true);
 	xmlhttp.send();
 	}
 	}
@@ -124,10 +172,13 @@ include('header.php');
 		document.getElementById("mycart").innerHTML=xmlhttp.responseText;
 		}
 	  }
-	xmlhttp.open("GET","ajax/pending.php?pendto="+client,true);
+	xmlhttp.open("GET","ajax/pending.php?pendto="+client +
+        "&user_of_cart=<?php echo $user_of_cart;?>",true);
 	xmlhttp.send();
 	}
 	}
+
+	//zz
 
     $(document).ready(function() {
         // put your jQuery code here.
@@ -170,7 +221,7 @@ include('header.php');
 
         <td>Barcode</td>
         <td>Name</td>
-        <td>Category</td>
+        <td>Application</td>
         <td>Amount</td>
         <td>Deny<br/>(with comments)</td>
 
@@ -181,8 +232,12 @@ while ($row_1 = mysql_fetch_assoc($result_cart)) {
             <tr>
                 <td><?php echo $row_1["barcode"]; ?></td>
                 <td><?php echo get_name($row_1["barcode"]); ?></td>
-                <td><?php echo trim($row_1["table"], "ew_"); ?></td>
-                <td id="<?php echo $row_1["barcode"]; ?>" ondblclick="change('<?php echo $row_1["barcode"]; ?>')" onblur="changed()"><?php echo $row_1["quantity"]; ?></td>
+                <td id="<?php echo 'appli'.$row_1['barcode'].$row_1['application']; ?>"
+                    ondblclick="edit_appli('<?php echo $row_1["barcode"]; ?>','<?php echo $row_1["application"]; ?>')"
+                    onblur="changed()"><?php echo $row_1["application"]; ?></td>
+                <td id="<?php echo 'qty'.$row_1['barcode'].$row_1['application']; ?>"
+                    ondblclick="edit_qty('<?php echo $row_1["barcode"]; ?>','<?php echo $row_1["application"]; ?>')"
+                    onblur="changed()"><?php echo $row_1["quantity"]; ?></td>
                 <td>
                     <input type="checkbox" name="cb_<?php echo $row_1["barcode"]; ?>" value="1" onclick="onclick_cb_deny(this)">
                     <form name="form_comment_<?php echo $row_1["barcode"]; ?>" id="form_comment_<?php echo $row_1["barcode"]; ?>" style="display: none;">

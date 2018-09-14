@@ -249,12 +249,12 @@ include('header.php');
 	xmlhttp.send();
 	}
 	
-	function proceed_cart() //zz 购物车结账也是直接来、啥参数都不用传（get、post）、用的是cookie里的参数早都有了（user），具体逻辑在ajax/cart.php
+	function submit_cart() //zz 购物车结账也是直接来、啥参数都不用传（get、post）、用的是cookie里的参数早都有了（user），具体逻辑在ajax/cart.php
     //注意transaction的记录是发生在这步之后的、也就是说只放在购物车里相当于进了缓存还是不会买、只有proceed了这台购物车才算是flush/commit了、也会留下transaction（）
     //详见ajax/cart.php
 	{
 	var xmlhttp;
-	var r=confirm("Are you willing to proceed you list?");//zz php的confirm用法、学习
+	var r=confirm("Are you willing to submit all the cart to get approved for proceeding?");//zz php的confirm用法、学习
 	if (r==true){
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -271,7 +271,7 @@ include('header.php');
 		document.getElementById("mycart").innerHTML=xmlhttp.responseText;
 		}
 	  }
-	xmlhttp.open("GET","ajax/cart.php?do=proceed",true);
+	xmlhttp.open("GET","ajax/cart.php?do=submit",true);
 	xmlhttp.send();
 	}
 	}
@@ -592,7 +592,7 @@ include('header.php');
             ?>">
         <h4>Otto's Cart</h4>
         <button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
-        <button type="button" class="submit_btn" onclick="proceed_cart()">Proceed</button>
+        <button type="button" class="submit_btn" onclick="submit_cart()">Submit</button>
         <button type="button" class="submit_btn" onclick="pending()">Pend to</button>
         <input type="text" id="client" class="input_field_w w60" value="" autocomplete="off"/>
         <div id="mycart"></div>

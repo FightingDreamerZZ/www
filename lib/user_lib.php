@@ -145,12 +145,38 @@ function cart($user,$barcode,$quantity,$table,$appli) {
 function cart_edit($user,$barcode,$quantity,$new_appli,$old_appli)
 {
     //找到3相等的，update
-    $sql_code = "UPDATE `ew_cart` SET `quantity` = '" . $quantity . "', `application` = '".$new_appli."' WHERE `barcode` = '" . $barcode . "' AND `user` = '" . $user . "' AND `application` = '" .$old_appli. "';";
-
+    if ($quantity == "" && $new_appli != ""){
+        $sql_code = "UPDATE `ew_cart` SET `application` = '".$new_appli."' WHERE `barcode` = '" . $barcode . "' AND `user` = '" . $user . "' AND `application` = '" .$old_appli. "';";
+    }
+    elseif ($quantity != "" && $new_appli == ""){
+        $sql_code = "UPDATE `ew_cart` SET `quantity` = '" . $quantity . "' WHERE `barcode` = '" . $barcode . "' AND `user` = '" . $user . "' AND `application` = '" .$old_appli. "';";
+    }
+    else {
+        $sql_code = "UPDATE `ew_cart` SET `quantity` = '" . $quantity . "', `application` = '" . $new_appli . "' WHERE `barcode` = '" . $barcode . "' AND `user` = '" . $user . "' AND `application` = '" . $old_appli . "';";
+    }
     if (!($result = mysql_query($sql_code))) {
         echo("<script>window.alert('DB Error!');</script>");
         die('<meta http-equiv="refresh" content="0;URL=index.php">');
     }
+}
+
+//zz for depart page, cart page etc (through ajax's cart page)--submit all cart entities for a non-admin user
+// to get approved for further proceeding by admin users.
+function cart_submit($user_of_cart) {
+    $sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$user_of_cart."' AND `pending` = 'false';";//zz proceed前check的逻辑是cart表中所有和当前用户相关的记录都会被使用（当做是全部的购物车--并没有购物车历史的记录，有的就是当前的）
+    $result_cart = mysql_query($sql_get_cart);
+
+    if ( mysql_num_rows($result_cart) == 0){
+        exit("Empty Cart =_=, you have nothing to submit!");
+    }
+    else {
+        $sql_code = "UPDATE `ew_cart` SET `pending` = 'true' WHERE `user` = '" . $user_of_cart . "';";
+    }
+    if (!($result = mysql_query($sql_code))) {
+        echo("<script>window.alert('DB Error!');</script>");
+        die('<meta http-equiv="refresh" content="0;URL=index.php">');
+    }
+    echo("<script>window.alert('Submit successful!');</script>");
 }
 
 function cart_just_scanned($user,$barcode,$table) {
@@ -583,7 +609,14 @@ function get_combined_same_barcode_sum_price($appended_query){
     }
 }
 
-//zz returns a assoc array with all the carts to be proceed, eg. array(3){"John"=>{[0]=>{"barcode"=>"xxx", "table"=>"xxx",...},[1]=>{}...}, "Otto"=>{}...}
+//zz returns a assoc array with all the carts to be proceed, eg.
+// array(3){
+//  "John"=>{
+//      [0]=>{"barcode"=>"xxx", "table"=>"xxx",...},
+//      [1]=>{...}
+//      ...},
+//  "Otto"=>{...},
+//  ...}
 function get_carts_to_be_proceeded() {
     $query = "SELECT * FROM `ew_cart` WHERE `pending` = 'true' ORDER BY `user`";//zz SELECT * FROM `ew_cart` WHERE `pending` = 'true' ORDER BY `user`
     $result_set = mysql_query($query);
@@ -601,6 +634,12 @@ function get_carts_to_be_proceeded() {
         }
     }
     return $assoc_array;
+}
+
+//zz returns the count of carts to be proceed by user (size of the assoc array of all the carts to be proceed)
+function get_count_of_carts_tbp() {
+    $a = get_carts_to_be_proceeded();
+    return count($a);
 }
 ?>
 

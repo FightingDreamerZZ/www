@@ -25,7 +25,11 @@ if(!$_COOKIE['ew_user_name']){
 <?php if(isset($loader2)){ echo($loader2);} ?>
 
 <!--zz including jQuery library-->
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body<?php echo($load); ?>>
 <span id="top"></span>
