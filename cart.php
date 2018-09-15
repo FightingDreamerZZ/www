@@ -10,6 +10,12 @@ include('lib/user_lib.php');
 
 check_user_cookie();
 
+//zz handler for check if is warehouse admin
+$is_warehouse_admin = false;
+if($_COOKIE['is_warehouse_admin'] && $_COOKIE['is_warehouse_admin'] == 'true'){
+    $is_warehouse_admin = true;
+}
+
 //handle change amount request
 if(isset($_GET['barcode']) && isset($_GET['new_value']) && $_GET['new_value'] != "" && $_GET['barcode'] != ""){
 	$barcode = $_GET['barcode'];
@@ -24,9 +30,13 @@ if(isset($_GET['barcode']) && isset($_GET['new_value']) && $_GET['new_value'] !=
 	}
 }
 
-//load cart
-$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."';";
+//load cart--unsubmitted
+$sql_get_cart = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."' AND `pending` = 'false';";
 $result_cart = mysql_query($sql_get_cart);
+
+//load cart--submitted
+$sql_get_cart_submitted = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."' AND `pending` = 'true';";
+$result_cart_submitted = mysql_query($sql_get_cart_submitted);
 
 include('header.php');
 
@@ -77,10 +87,11 @@ include('header.php');
 	xmlhttp.send();
 	}
 	
-	function submit_cart()
+	function submit_or_proceed_cart()
 	{
 	var xmlhttp;
-	var r=confirm("Are you willing to submit all the cart to get approved for proceeding?");
+	var r=confirm("Are you willing to <?php echo ($is_warehouse_admin)?"proceed all of the cart to database? Please note: this process is irreversible and has to be taken seriously..":
+        "submit all of the cart to get approved for proceeding?";?>");
 	if (r==true){
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -94,10 +105,11 @@ include('header.php');
 	  {
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		{
-		document.getElementById("mycart").innerHTML=xmlhttp.responseText;
+            window.location.reload(true);
+		    // document.getElementById("mycart").innerHTML=xmlhttp.responseText;
 		}
 	  }
-	xmlhttp.open("GET","ajax/cart.php?do=submit",true);
+	xmlhttp.open("GET","ajax/cart.php?do=<?php echo ($is_warehouse_admin)?'proceed':'submit';?>",true);
 	xmlhttp.send();
 	}
 	}
@@ -136,11 +148,11 @@ include('header.php');
 <div class="content_box_top"></div>
 <div class="content_box">
 <div id ="mycart" >
-<h2>OTTO'S CART</h2>
+<h2>MY CART</h2>
 <p>Hint: double click on the target amount would activate edit mode.</p>
 
 <button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
-	<button type="button" class="submit_btn" onclick="submit_cart()">Submit</button>
+	<button type="button" class="submit_btn" onclick="submit_or_proceed_cart()"><?php echo ($is_warehouse_admin)?"Proceed":"Submit";?></button>
 	<button type="button" class="submit_btn" onclick="pending()">Pend to</button>
 	<input type="text" id="client" class="input_field_w w180" value="" autocomplete="off"/>
 
@@ -149,7 +161,7 @@ include('header.php');
 
 <td>Barcode</td>
 <td>Name</td>
-<td>Category</td>
+<td>Application</td>
 <td>Amount</td>
 
 </tr>
@@ -159,7 +171,7 @@ while ($row_1 = mysql_fetch_assoc($result_cart)) {
             <tr>
             <td><?php echo $row_1["barcode"]; ?></td>
             <td><?php echo get_name($row_1["barcode"]); ?></td>
-            <td><?php echo trim($row_1["table"], "ew_"); ?></td>
+            <td><?php echo $row_1["application"]; ?></td>
             <td id="<?php echo $row_1["barcode"]; ?>" ondblclick="change('<?php echo $row_1["barcode"]; ?>')" onblur="changed()"><?php echo $row_1["quantity"]; ?></td>
             </tr>
 <?php 
@@ -167,6 +179,31 @@ while ($row_1 = mysql_fetch_assoc($result_cart)) {
 ?> 
 </table>
 </div>
+
+    <div class="with_hr">&nbsp;</div>
+    <h6>All submitted entities:</h6>
+    <table>
+        <tr>
+
+            <td>Barcode</td>
+            <td>Name</td>
+            <td>Application</td>
+            <td>Amount</td>
+
+        </tr>
+        <?php
+        while ($row_1 = mysql_fetch_assoc($result_cart_submitted)) {
+            ?>
+            <tr>
+                <td><?php echo $row_1["barcode"]; ?></td>
+                <td><?php echo get_name($row_1["barcode"]); ?></td>
+                <td><?php echo $row_1["application"]; ?></td>
+                <td><?php echo $row_1["quantity"]; ?></td>
+            </tr>
+            <?php
+        };
+        ?>
+    </table>
 
 <div class="cleaner h30"></div>
 <div class="cleaner"></div>

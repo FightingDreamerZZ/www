@@ -49,6 +49,7 @@ include('header.php');
 
 <script type="text/javascript">
     //zz listener -- doubleClick to edit quantity
+    //here id_num == barcode
 	function edit_qty(id_num,appli)
 	{
 	var xmlhttp;
@@ -68,7 +69,7 @@ include('header.php');
 		document.getElementById(field+id_num+appli).innerHTML=xmlhttp.responseText;
 		}
 	  };
-	xmlhttp.open("GET","ajax/cart_edit.php?barcode="+id_num
+	xmlhttp.open("GET","ajax/cart_edit_for_carts_tbp.php?barcode="+id_num
 	    +"&appli="+appli
 	    +"&field="+field
 	    +"&user=<?php echo $user_of_cart;?>",true);
@@ -94,11 +95,36 @@ include('header.php');
                 document.getElementById(field+id_num+appli).innerHTML=xmlhttp.responseText;
             }
         }
-        xmlhttp.open("GET","ajax/cart_edit.php?barcode="+id_num
+        xmlhttp.open("GET","ajax/cart_edit_for_carts_tbp.php?barcode="+id_num
             +"&appli="+appli
             +"&field="+field
             +"&user=<?php echo $user_of_cart;?>",true);
         xmlhttp.send();
+    }
+
+    function delete_single_entity(id_num,appli){
+        let xmlhttp;
+        let behavior = "delete";
+        let r=confirm("Do you really wish to delete this entity?");//zz php的confirm用法、学习
+        if (r==true) {
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    window.location.reload(true);
+                    // document.getElementById(field + id_num + appli).innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "ajax/cart_edit_for_carts_tbp.php?barcode=" + id_num
+                + "&appli=" + appli
+                + "&user=<?php echo $user_of_cart;?>"
+                + "&do=" + behavior, true);
+            xmlhttp.send();
+        }
     }
 
 	function clearcart()
@@ -187,6 +213,8 @@ include('header.php');
         var disp = m === 'hide' ? 'none' : 'block';
         document.getElementById('div_change_qty').style.display = disp;
     }
+
+    //zz enable comment textbox after check "deny" checkbox, disable it after un-check
     function onclick_cb_deny(thisEle){
         if(thisEle.checked){
             thisEle.nextElementSibling.style.display = "block";
@@ -208,10 +236,13 @@ include('header.php');
 <div class="content_box_top"></div>
 <div class="content_box">
 <div id ="mycart" >
-<h2>OTTO'S CART</h2>
-<p>Hint: double click on the target amount would activate edit mode.</p>
+    <h2>CARTS PROCEEDING REQUEST
+        <span style="font-size: large;float: right">Details</span>
+    </h2>
+    <div style="float: right">User: <?php echo $user_of_cart;?></div>
+<p>Hint: double click on the target amount or application would activate edit mode.</p>
 
-<button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
+<button type="button" class="submit_btn" onclick="clearcart()">Clear All</button>
 	<button type="button" class="submit_btn" onclick="proceed_cart()">Proceed</button>
 	<button type="button" class="submit_btn" onclick="pending()">Pend to</button>
 	<input type="text" id="client" class="input_field_w w180" value="" autocomplete="off"/>
@@ -223,29 +254,39 @@ include('header.php');
         <td>Name</td>
         <td>Application</td>
         <td>Amount</td>
-        <td>Deny<br/>(with comments)</td>
+        <td>Operation</td>
+<!--        <td>Deny<br/>(with comments)</td>-->
 
     </tr>
 <?php 
 while ($row_1 = mysql_fetch_assoc($result_cart)) { 
 ?> 
-            <tr>
+            <tr id="<?php echo 'delete'.$row_1['barcode'].$row_1['application']; ?>">
                 <td><?php echo $row_1["barcode"]; ?></td>
                 <td><?php echo get_name($row_1["barcode"]); ?></td>
                 <td id="<?php echo 'appli'.$row_1['barcode'].$row_1['application']; ?>"
                     ondblclick="edit_appli('<?php echo $row_1["barcode"]; ?>','<?php echo $row_1["application"]; ?>')"
-                    onblur="changed()"><?php echo $row_1["application"]; ?></td>
+                    onblur="changed()">
+                    <?php echo $row_1["application"]; ?>
+                </td>
                 <td id="<?php echo 'qty'.$row_1['barcode'].$row_1['application']; ?>"
                     ondblclick="edit_qty('<?php echo $row_1["barcode"]; ?>','<?php echo $row_1["application"]; ?>')"
-                    onblur="changed()"><?php echo $row_1["quantity"]; ?></td>
-                <td>
-                    <input type="checkbox" name="cb_<?php echo $row_1["barcode"]; ?>" value="1" onclick="onclick_cb_deny(this)">
-                    <form name="form_comment_<?php echo $row_1["barcode"]; ?>" id="form_comment_<?php echo $row_1["barcode"]; ?>" style="display: none;">
-                        <label class="w200">Pls leave your comment here:</label>
-                        <input type="text" name="text_comment" class="input_field_w w180" autocomplete="off"/>
-                        <input type="submit" class="submit_btn" name="submit_comment" value="Save"/>
-                    </form>
+                    onblur="changed()">
+                    <?php echo $row_1["quantity"]; ?>
                 </td>
+                <td>
+                    <a onclick="delete_single_entity('<?php echo $row_1["barcode"]; ?>','<?php echo $row_1["application"]; ?>')">
+                        <u style="cursor: pointer">Delete</u>
+                    </a>
+                </td>
+<!--                <td>-->
+<!--                    <input type="checkbox" name="cb_--><?php //echo $row_1["barcode"]; ?><!--" value="1" onclick="onclick_cb_deny(this)">-->
+<!--                    <form name="form_comment_--><?php //echo $row_1["barcode"]; ?><!--" id="form_comment_--><?php //echo $row_1["barcode"]; ?><!--" style="display: none;">-->
+<!--                        <label class="w200">Pls leave your comment here:</label>-->
+<!--                        <input type="text" name="text_comment" class="input_field_w w180" autocomplete="off"/>-->
+<!--                        <input type="submit" class="submit_btn" name="submit_comment" value="Save"/>-->
+<!--                    </form>-->
+<!--                </td>-->
             </tr>
 <?php 
 }; 

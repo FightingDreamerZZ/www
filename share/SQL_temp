@@ -51,3 +51,9 @@ SELECT barcode, name, SUM(quantity*p_price) FROM `transaction_view_w_pprice` GRO
 
 SELECT SUM(quantity) FROM `ew_transaction` WHERE `time` BETWEEN '".$new_time_start[$i]."' AND '".$new_time_end[$i]."' AND `type` = 'part' AND `quantity` < '0';
 
+--zz: auth--basic typing
+ALTER TABLE `ew_user` CHANGE `type` `type` INT(1) NOT NULL COMMENT '0. admin, 1.superuser, 2.warehouse user, 3.acc user, 4.crm user, 5.warehouse admin';
+
+--zz: auth--changed auth for ooc
+UPDATE `ew_user` SET `type` = '5' WHERE `ew_user`.`user` = 'John';
+UPDATE `ew_user` SET `type` = '5' WHERE `ew_user`.`user` = 'otto';

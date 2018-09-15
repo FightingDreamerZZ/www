@@ -115,34 +115,30 @@ include('header.php');
 
 </script>
 
-<div id="main">
-
-    <div class="content_box_top"></div>
-    <div class="content_box">
+    <div id="main">
 
 
+        <div class="content_box_top"></div>
+        <div class="content_box">
 
-        <form name="form2" method="get" action="search.php" >
-            Smart Search:
-            <select name="table" id="db_table" class="select_field">
-                <option value="ew_part" <?php if($table == 'ew_part'){ echo("selected=\"selected\"");} ?>>Part</option>
-                <option value="ew_car" <?php if($table == 'ew_car'){ echo("selected=\"selected\"");} ?>>Car</option>
-            </select>
-            <input type="text" id="keyword" name="keyword" class="input_field" value="<?php echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
-            <input type="submit" class="submit_btn" value="Search"/>
-        </form>
+        <h2>CARTS PROCEEDING REQUEST
+            <span style="font-size: large;float: right">Overview</span>
+        </h2>
 
-        <p id="suggestion"></p>
+            <p>There are <u><?php echo($total_count_all_pending_carts); ?></u> request(s) for cart proceeding.
+            Click on one of the user name to check the details of the request of that user.</p>
+            <br/>
 
-        <div id = "search_result">
+        <div id = "div_list_of_all_carts_tbp">
             <ul>
-                <p><?php echo($total_count_all_pending_carts); ?> result(s) was found in this query.</p>
 
                 <?php
                 foreach ($array_all_pending_carts as $user => $users_cart) {//foreach start
                     ?>
                     <li>
-                        <a href="carts_to_proceed_detail.php?user=<?php echo $user;?>"><?php echo "User: ".$user;?></a>
+                        <a href="carts_to_proceed_detail.php?user=<?php echo $user;?>">
+                            <h6><?php echo "User: ".$user;?></h6>
+                        </a>
                         <table>
                     <tr>
                         <td>Barcode</td>
@@ -180,23 +176,23 @@ include('header.php');
             </ul>
         </div>
         <div class="cleaner"></div>
-        <p>Page:
-            <?php
-            for ($i=1; $i<=$total_pages; $i++) {
-                if($i == $page)
-                    echo "<a href='search.php?".trim_url("&page=")."&page=".$page.$urltag."' style='text-decoration: none;'>".$i."</a> ";
-                else
-                    echo "<a href='search.php?".trim_url("&page=")."&page=".$i.$urltag."'>".$i."</a> "; //zz 将原本的当前URL中“page=xx”及其之后的部分全抹去、挂上新的page
-            };
-            ?>
-        </p>
+<!--        <p>Page:-->
+<!--            --><?php
+//            for ($i=1; $i<=$total_pages; $i++) {
+//                if($i == $page)
+//                    echo "<a href='search.php?".trim_url("&page=")."&page=".$page.$urltag."' style='text-decoration: none;'>".$i."</a> ";
+//                else
+//                    echo "<a href='search.php?".trim_url("&page=")."&page=".$i.$urltag."'>".$i."</a> "; //zz 将原本的当前URL中“page=xx”及其之后的部分全抹去、挂上新的page
+//            };
+//            ?>
+<!--        </p>-->
 
         <div class="cleaner h30"></div>
         <div class="cleaner"></div>
         <div class="cleaner"></div>
     </div> <!-- end of a content box -->
     <div class="content_box_bottom"></div>
-</div> <!-- end of main -->
+</div><!-- end of main -->
 <?PHP
 include('footer.php');
 ?>

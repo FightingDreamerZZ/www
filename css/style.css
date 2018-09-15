@@ -71,6 +71,10 @@ h2 {
 	background: url(../images/hr_divider.png) bottom repeat-x; 
 }
 
+.with_hr {
+	background: url(../images/hr_divider.png) bottom repeat-x;
+}
+
 h3 { font-size: 20px; margin: 0 0 15px; padding: 0; }
 h4 { font-size: 18px; margin: 0 0 15px; padding: 0; }
 h5 { font-size: 16px; margin: 0 0 10px; padding: 0;  }
@@ -295,11 +299,43 @@ h6 { font-size: 14px; margin: 0 0 5px; padding: 0; }
 	position: relative; 
 	float: left; 
 	width: 300px; 
-	height: 106px; 
+	height: 106px;
 	padding: 6px; 
 	background: #fff; 
 	margin: 0 30px 10px 0; 
 	overflow:auto;
+}
+
+#div_list_of_all_carts_tbp {
+	margin: 0;
+	padding: 0;
+}
+
+#div_list_of_all_carts_tbp ul {
+	margin: 0;
+	padding: 0;
+}
+
+#div_list_of_all_carts_tbp ul li {
+	display: block;
+	position: relative;
+	float: left;
+	width: 310px;
+	height: 252px;
+	padding: 6px;
+	background: #fff;
+	margin: 0 20px 15px 0;
+	overflow:auto;
+}
+
+#div_list_of_all_carts_tbp table {
+	border-collapse: collapse;
+	font-size: small;
+	margin-top: 10px;
+}
+
+#div_list_of_all_carts_tbp table, td{
+	border: 1px solid grey;
 }
 
 .edit_warehouse { 

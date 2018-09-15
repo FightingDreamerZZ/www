@@ -249,12 +249,13 @@ include('header.php');
 	xmlhttp.send();
 	}
 	
-	function submit_cart() //zz 购物车结账也是直接来、啥参数都不用传（get、post）、用的是cookie里的参数早都有了（user），具体逻辑在ajax/cart.php
+	function submit_or_proceed_cart() //zz 购物车结账也是直接来、啥参数都不用传（get、post）、用的是cookie里的参数早都有了（user），具体逻辑在ajax/cart.php
     //注意transaction的记录是发生在这步之后的、也就是说只放在购物车里相当于进了缓存还是不会买、只有proceed了这台购物车才算是flush/commit了、也会留下transaction（）
     //详见ajax/cart.php
 	{
 	var xmlhttp;
-	var r=confirm("Are you willing to submit all the cart to get approved for proceeding?");//zz php的confirm用法、学习
+	var r=confirm("Are you willing to <?php echo ($is_warehouse_admin)?"proceed all of the cart to database? Please note: this process is irreversible and has to be taken seriously..":
+        "submit all of the cart to get approved for proceeding?";?>");//zz php的confirm用法、学习
 	if (r==true){
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -271,7 +272,7 @@ include('header.php');
 		document.getElementById("mycart").innerHTML=xmlhttp.responseText;
 		}
 	  }
-	xmlhttp.open("GET","ajax/cart.php?do=submit",true);
+	xmlhttp.open("GET","ajax/cart.php?do=<?php echo ($is_warehouse_admin)?'proceed':'submit';?>",true);
 	xmlhttp.send();
 	}
 	}
@@ -590,9 +591,9 @@ include('header.php');
                 if ($cookie_is_to_omit_cart == "true")
                     echo "display: none";
             ?>">
-        <h4>Otto's Cart</h4>
+        <h4>My Cart</h4>
         <button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
-        <button type="button" class="submit_btn" onclick="submit_cart()">Submit</button>
+        <button type="button" class="submit_btn" onclick="submit_or_proceed_cart()"><?php echo ($is_warehouse_admin)?"Proceed":"Submit";?></button>
         <button type="button" class="submit_btn" onclick="pending()">Pend to</button>
         <input type="text" id="client" class="input_field_w w60" value="" autocomplete="off"/>
         <div id="mycart"></div>

@@ -148,10 +148,11 @@ include('header.php');
 	xmlhttp.send();
 	}
 	
-	function proceed_cart()
+	function submit_or_proceed_cart()
 	{
 	var xmlhttp;
-	var r=confirm("Are you willing to proceed you list?");
+	var r=confirm("Are you willing to <?php echo ($is_warehouse_admin)?"proceed all of the cart to database? Please note: this process is irreversible and has to be taken seriously..":
+        "submit all of the cart to get approved for proceeding?";?>");
 	if (r==true){
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -168,7 +169,7 @@ include('header.php');
 		document.getElementById("mycart").innerHTML=xmlhttp.responseText;
 		}
 	  }
-	xmlhttp.open("GET","ajax/cart.php?do=proceed",true);
+	xmlhttp.open("GET","ajax/cart.php?do=<?php echo ($is_warehouse_admin)?'proceed':'submit';?>",true);
 	xmlhttp.send();
 	}
 	}
@@ -295,9 +296,9 @@ include('header.php');
             if ($cookie_is_to_omit_cart == "true")
                 echo "display: none";
             ?>">
-        <h4>Otto's Cart</h4>
+        <h4>My Cart</h4>
         <button type="button" class="submit_btn" onclick="clearcart()">Clear List</button>
-        <button type="button" class="submit_btn" onclick="proceed_cart()">Proceed List</button>
+        <button type="button" class="submit_btn" onclick="submit_or_proceed_cart()"><?php echo ($is_warehouse_admin)?"Proceed List":"Submit List";?></button>
         <div id="mycart"></div>
     </div>
     <div id="msg_direct_depart">

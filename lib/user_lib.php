@@ -179,6 +179,15 @@ function cart_submit($user_of_cart) {
     echo("<script>window.alert('Submit successful!');</script>");
 }
 
+//zz to delete an entity in cart table..
+function cart_delete_single_entity($user,$barcode,$appli) {
+    $sql_del = "DELETE FROM `ew_cart` WHERE `user` = '".$user."' AND `barcode` = '".$barcode."' AND `application` = '".$appli."';";
+    if (!($result = mysql_query($sql_del))) {
+        echo("<script>window.alert('DB Error!');</script>");
+        die('<meta http-equiv="refresh" content="0;URL=index.php">');
+    }
+}
+
 function cart_just_scanned($user,$barcode,$table) {
     //always insert, no update, quantity can be either -1 or 0, now is experimenting -1, appli is always 'unknown'
     $sql_code = "INSERT INTO `eware`.`ew_cart` (`cid`, `barcode`, `user`, `table`, `quantity`, `application`) VALUES (NULL, '".$barcode."', '".$user."', '".$table."', '-1', 'unknown');";

@@ -10,6 +10,12 @@ include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');
 
 //handle login request
+//zz about user type:
+// 1->super user(non-admin, but can use all 3 systems warehouse, acc and crm)
+// 2->warehouse user (non-admin, can only use warehouse)
+// 3->acc user, 4->crm user
+// 5->warehouse admin (admin, has some privileges esp warehouse-related such as approve to proceed a cart into system DB)
+// Admin->System admin (will use a different system, for user creation and view log etc advanced operation, but no access to normal system)
 if($_GET['do']=='login'){
 	$user = $_POST["user"];
 	$pass = (string)$_POST["pass"];
@@ -22,6 +28,10 @@ if($_GET['do']=='login'){
         if($a_check['type'] == 5){
             setcookie('ew_user_name',$user,time()+7200);//zz in seconds -- 7200=60*60*2=2hrs
             setcookie('ew_user_verified',$ew_verified,time()+7200);
+            setcookie('ea_user_name',$user,time()+7200);
+            setcookie('ea_user_verified',$ew_verified,time()+7200);
+            setcookie('ec_user_name',$user,time()+7200);
+            setcookie('ec_user_verified',$ew_verified,time()+7200);
             setcookie("is_warehouse_admin",'true',time()+60*60*2);
 
             sys_log($user,"login to the system.");

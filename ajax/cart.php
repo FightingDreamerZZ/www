@@ -118,6 +118,7 @@ text-align: center;
     <td>Amount</td>
     <td>Name</td>
     <td>Application</td>
+    <td>Submitted</td>
 
 </tr>
 <?php 
@@ -135,6 +136,7 @@ $i = $i+1;
     <td><?php echo $row_1[quantity]; ?></td>
     <td><?php echo get_name($row_1[barcode]); ?></td>
     <td><?php echo $row_1["application"]; ?></td>
+    <td><?php echo $row_1["pending"]; ?></td>
 </tr>
 <?php 
 }; 

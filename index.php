@@ -26,6 +26,12 @@ if($_GET['do']=='logout'){
 
 $display_plugin = check_user_cookie();
 
+//zz handler for check if is warehouse admin (able to omitOttosCart)
+$is_warehouse_admin = false;
+if($_COOKIE['is_warehouse_admin'] && $_COOKIE['is_warehouse_admin'] == 'true'){
+    $is_warehouse_admin = true;
+}
+
 //load some stats information
 function stats($sql_staus){
 	if($result_info_s = mysql_query($sql_staus)){
@@ -50,7 +56,9 @@ $stats[total_count_of_carts_tbp] = get_count_of_carts_tbp();
 //$has_opened_noti_carts_tbp_before = (isset($_COOKIE['has_opened_noti_carts_tbp']) &&
 //    ($_COOKIE['has_opened_noti_carts_tbp'] == "true"))?true:false;
 //echo $_COOKIE['has_opened_noti_carts_tbp'];
-if(($stats[total_count_of_carts_tbp] > 0) && !isset($_COOKIE['has_opened_noti_carts_tbp'])){
+if(($stats[total_count_of_carts_tbp] > 0)
+    && !isset($_COOKIE['has_opened_noti_carts_tbp'])
+    && $is_warehouse_admin){
     setcookie('has_opened_noti_carts_tbp','true',time()+60*60);
     $enable_noti_carts_tbp = "true";
 }
@@ -85,44 +93,46 @@ include('header.php');
         //     });
         // } );
 
-        (function($) {
-            $.fn.extend({
-                center: function() {
-                    return this.each(function() {
-                        var left = ($(window).width() - $(this).outerWidth()) / 2;
-                        var bottom = ($(window).height() - $(this).outerHeight()) / 4;
-                        $(this).css({
-                            position: 'absolute',
-                            margin: 0,
-                            left: (left > 0 ? left : 0) + 'px',
-                            bottom: (bottom > 0 ? bottom : 0) + 'px'
-                        });
-                    });
-                }
-            });
-        })(jQuery);
-
-        $("#message").center();
-
-        $("#btntest").click(function() {
-            var msg = $("#message");
-            msg.text("Item saved!")
-            msg.hide()
-            msg.stop(true, true).fadeIn(500).delay(1000).animate({
-                "bottom": "4px",
-                "height": "17px",
-                "font-size": "1em",
-                "left": "80px",
-                "line-height": "17px",
-                "width": "100px"
-            }).fadeOut(5000).css({
-                "height": "100px",
-                "width": "200px",
-                "font-size": "1.4em",
-                "line-height": "100px",
-                "bottom": "100px"
-            }).center();
-        });
+        // //zz notification popup animation part 1/4
+        // // "Create a notification popup animated in a specific way?"(http://jsfiddle.net/2qJfF/)
+        // (function($) {
+        //     $.fn.extend({
+        //         center: function() {
+        //             return this.each(function() {
+        //                 var left = ($(window).width() - $(this).outerWidth()) / 2;
+        //                 var bottom = ($(window).height() - $(this).outerHeight()) / 4;
+        //                 $(this).css({
+        //                     position: 'absolute',
+        //                     margin: 0,
+        //                     left: (left > 0 ? left : 0) + 'px',
+        //                     bottom: (bottom > 0 ? bottom : 0) + 'px'
+        //                 });
+        //             });
+        //         }
+        //     });
+        // })(jQuery);
+        //
+        // //zz notification popup animation part 2/4
+        // $("#message").center();
+        // $("#btntest").click(function() {
+        //     var msg = $("#message");
+        //     msg.text("Item saved!")
+        //     msg.hide()
+        //     msg.stop(true, true).fadeIn(500).delay(1000).animate({
+        //         "bottom": "4px",
+        //         "height": "17px",
+        //         "font-size": "1em",
+        //         "left": "80px",
+        //         "line-height": "17px",
+        //         "width": "100px"
+        //     }).fadeOut(5000).css({
+        //         "height": "100px",
+        //         "width": "200px",
+        //         "font-size": "1.4em",
+        //         "line-height": "100px",
+        //         "bottom": "100px"
+        //     }).center();
+        // });
 
     });
 
@@ -133,20 +143,20 @@ include('header.php');
     {
         position:fixed;
     }
-
-    #message {
-        position:absolute;
-        display:none;
-        height:100px;
-        width:200px;
-        border: 1px gray solid;
-        background-color:lime;
-        font-size: 1.4em;
-        line-height:100px;
-        text-align:center;
-        border-radius: 5px;
-        /*bottom: 100px;*/
-    }
+    /*!*zz notification popup animation part 3/4*!*/
+    /*#message {*/
+        /*position:absolute;*/
+        /*display:none;*/
+        /*height:100px;*/
+        /*width:200px;*/
+        /*border: 1px gray solid;*/
+        /*background-color:lime;*/
+        /*font-size: 1.4em;*/
+        /*line-height:100px;*/
+        /*text-align:center;*/
+        /*border-radius: 5px;*/
+        /*!*bottom: 100px;*!*/
+    /*}*/
 </style>
 
 <!--    <div id="dialog_count_of_carts_tbp" title="Download complete">-->
@@ -184,13 +194,20 @@ include('header.php');
 	<a href="pending.php"><li><img src="images/icon/pending.png">Pending Pool</li></a>
 	<a href="tran_list.php"><li><img src="images/icon/trans.png">Transactions</li></a>
 	<a href="msg.php"><li><img src="images/icon/msg.png">Message Center</li></a>
-	<a href="cart.php"><li><img src="images/icon/cart.png">Otto Cart[<?php echo $stats[total_cart]; ?>]</li></a>
+	<a href="cart.php"><li><img src="images/icon/cart.png">My Cart[<?php echo $stats[total_cart]; ?>]</li></a>
 	<a href="serial.php"><li><img src="images/icon/serial.png">Serial Input</li></a>
 	<a href="images/map.gif" target="_blank"><li><img src="images/icon/map.png">Warehouse Map</li></a>
-    <a href="carts_to_proceed.php"><li><img src="images/icon/cart.png">Pending Carts[<?php echo $stats[total_count_of_carts_tbp]; ?>]</li></a>
+    <a href="carts_to_proceed.php" style="
+                <?php
+                    if(!$is_warehouse_admin){
+                        echo "display:none;";
+                    }
+                ?>"><li><img src="images/icon/cart.png">Pending Carts[<?php echo $stats[total_count_of_carts_tbp]; ?>]</li></a>
 
-    <button type="button" id="btntest">haha</button>
-    <div id="message"></div>
+<!--<!--    zz notification popup animation part 4/4-->
+<!--    <button type="button" id="btntest">haha</button>-->
+<!--    <div id="message"></div>-->
+<!--<!--    -->
 
 </ul>
 </div>
