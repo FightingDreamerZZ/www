@@ -5,7 +5,9 @@
 * This file performs depart related functions
 */
 
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
 include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');
 
@@ -424,7 +426,38 @@ include('header.php');
         // if(e.target && e.target.nodeName == "button") {
             alert("haha");
         // }
-    })
+    });
+
+    //zz JS Handler for smartSearch's keyUp event
+    function suggest(key)
+    {
+        document.getElementById("suggestion").style.display = "block";
+        var xmlhttp;
+        //var table = document.getElementById("db_table").value;
+        var table = "ew_part";
+        var postdata = "keyword="+encodeURIComponent(key)+"&table="+table;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+                document.getElementById("suggestion").innerHTML=xmlhttp.responseText;
+            }
+        }
+
+        xmlhttp.open("POST","ajax/search_suggestion.php",true);
+        xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlhttp.setRequestHeader("Content-length", postdata.length);
+        xmlhttp.send(postdata);
+
+    }
 </script>
 
 <div id="main">
@@ -433,6 +466,16 @@ include('header.php');
 <div class="content_box">
 
 <h2>Barcode Quick Depart</h2>
+
+    <form name="form_smart_search" method="get" action="search.php" >
+        <span>Smart Search for Parts:&nbsp;</span>
+        <input type="hidden" name="table" value="ew_part"/>
+        <input type="text" id="keyword" name="keyword" class="input_field" value="<?php //echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
+        <input type="submit" class="submit_btn" value="Search"/>
+    </form>
+
+    <div id="suggestion" style="display: none"></div>
+
 <div class="cleaner"></div>
 <div class="col_w320 float_l">
 

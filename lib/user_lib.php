@@ -244,7 +244,7 @@ function get_name($barcode){
 	$sql_code = "select `name` from `".$table."` where barcode = '".$barcode."';";
 	$result_info = mysql_query($sql_code);
 	$a_check = mysql_fetch_array($result_info);
-	return $a_check[name];
+	return $a_check['name'];
 }
 
 //input barcode and field name, return the value of this field

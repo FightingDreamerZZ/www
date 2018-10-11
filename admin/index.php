@@ -5,7 +5,8 @@
 * This file displays an admin panel for admin users to choose which admin function they wish to perform.
 */
 
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 //echo($_COOKIE['ew_admin_verified']);
 if(!$_COOKIE['ew_admin_name'] || !$_COOKIE['ew_admin_verified']){

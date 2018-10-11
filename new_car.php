@@ -5,7 +5,8 @@
 * This file allows user to create a new car item.
 */
 
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 include('lib\sql.php');
 include('lib\user_lib.php');
 

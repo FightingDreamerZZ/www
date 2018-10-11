@@ -5,7 +5,9 @@
 * This file performs search related functions
 */
 
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
 include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');
 

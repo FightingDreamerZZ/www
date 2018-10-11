@@ -6,7 +6,6 @@
 */
 //error_reporting(E_ALL ^ E_NOTICE);
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
-
 include('lib/sql.php');
 include('lib/user_lib.php');
 
@@ -17,31 +16,34 @@ $urltag="";
 $default_sort=" ORDER BY `barcode` DESC ";
 
 //check inventory
-if ($_GET['check']=='inventory') { 
-	$sqltag="WHERE `quantity` > '0'";
-	$urltag=$urltag."&check=inventory";
-}
+//if ($_GET['check']=='inventory') {
+//	$sqltag="WHERE `quantity` > '0'";
+//	$urltag=$urltag."&check=inventory";
+//}
 
-//check inventory
-if ($_GET['check']=='bin') { 
-	$sqltag="WHERE `w_quantity` = '-1'";
-	$urltag=$urltag."&check=bin";
-}
+//check bin
+//if ($_GET['check']=='bin') {
+//	$sqltag="WHERE `w_quantity` = '-1'";
+//	$urltag=$urltag."&check=bin";
+//}
 
 //check out of stock
-if ($_GET['check']=='out') { 
-	$sqltag="WHERE `quantity` = '0' AND `w_quantity` != '-1'";
-	$urltag=$urltag."&check=out";
-}
+//if ($_GET['check']=='out') {
+//	$sqltag="WHERE `quantity` = '0' AND `w_quantity` != '-1'";
+//	$urltag=$urltag."&check=out";
+//}
 
 //List of parts or cars? default cars
-if (isset($_GET["table"])) { 
-	$table = $_GET["table"];
-	$urltag= $urltag."&table=$table";
-} else { 
-	$table = "ew_car";
-	$urltag= $urltag."&table=ew_car";
-}
+//if (isset($_GET["table"])) {
+//	$table = $_GET["table"];
+//	$urltag= $urltag."&table=$table";
+//} else {
+//	$table = "ew_car";
+//	$urltag= $urltag."&table=ew_car";
+//}
+$table = "ew_part";
+$urltag= $urltag."&table=ew_part";
+
 
 //check short supply
 if ($_GET['check']=='short') { 
@@ -71,6 +73,8 @@ if (isset($_GET["page"])) {
 } else { 
 	$page=1; 
 }
+
+//zz loading data, select from part or car table with where clause, stored in $result_info_1. Also $total_records and $total_pages are counts of data..
 $start_from = ($page-1) * $split_by;
 $sql_code_1 = "SELECT * FROM `".$table."` ".$sqltag.$sort."LIMIT ".$start_from.",".$split_by;
 //$sql_code_1 = "SELECT * FROM `ew_car` WHERE `quantity` > '0' ORDER BY `barcode` ASC LIMIT ".$start_from.",".$split_by;
@@ -84,7 +88,7 @@ $row_2 = mysql_fetch_row($result_info_2);
 $total_records = $row_2[0]; 
 $total_pages = ceil($total_records / $split_by);
 
-$title_by_page = "All Parts";
+$title_by_page = "Part List";
 include('header.php');
 
 ?>

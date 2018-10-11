@@ -4,7 +4,8 @@
 * File: car.php
 * This file offers cart operations such as edit, clear, del etc.
 */
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 include('lib/sql.php');
 include('lib/user_lib.php');
 

@@ -4,7 +4,9 @@
 * File: msg.php
 * This file displays messages, performs message related functions
 */
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
 include('lib/sql.php');
 include('lib/user_lib.php');
 

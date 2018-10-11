@@ -5,7 +5,8 @@
 * This file offers a panel to allow admin users to add new users.
 */
 
-error_reporting(E_ALL ^ E_NOTICE);
+////error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 
 //echo($_COOKIE['ew_admin_verified']);

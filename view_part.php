@@ -5,7 +5,9 @@
 * This file displays part profile based on input barcode.
 */
 
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
 include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');
 
@@ -133,6 +135,10 @@ include('header.php');
 	<li>Stock Warning: <?php echo($a_check['w_quantity']); ?></li>
 	<li>Location: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?>"><?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?></a></li>
 	<li>Latest Update: <?php echo($a_check['date']); ?></li>
+
+    <!--    zz temp for organizing1809-->
+    <label>Flag Organizing1809: <?php echo($a_check['organizing201809']); ?></label>
+
 	<li>Description: <?php echo($a_check['des']); ?></li>
 	
 </ul>

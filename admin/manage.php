@@ -4,8 +4,8 @@
 * File: admin/manage.php
 * This file offers a panel to allow admin users to edit other users(change password/usertype, delete user).
 */
-error_reporting(E_ALL ^ E_NOTICE);
-
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 //echo($_COOKIE['ew_verified']);
 if(!$_COOKIE['ew_admin_name'] || !$_COOKIE['ew_admin_verified']){
 	die('<meta http-equiv="refresh" content="0;URL=login.php">');

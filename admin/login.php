@@ -4,7 +4,8 @@
 * File: admin/login.php
 * This file provides a login portal for administrator.The input username and password will be compared to database(table ew_admin) records.
 */
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 include('../lib/sql.php');//zz path forwardSlash tempForMac
 
 	

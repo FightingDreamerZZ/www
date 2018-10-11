@@ -4,7 +4,9 @@
 * File: edit_part.php
 * This file updates the profile of an existing part item.
 */
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
 include('lib/sql.php');
 include('lib/user_lib.php');
 
@@ -162,6 +164,9 @@ if($_POST['submit']){
 	$location = $l_zone."_".$l_column."_".$l_level;
 	$xsearch = strtolower("barcode:$barcode, name:$name, model:$part_num, category:$category, sub category:$sub_category, color:$color, location:$location");
 	//echo($xsearch);
+
+    $organizing1809 = $_POST["organizing1809"];
+
 	
 	$sql_code = "UPDATE `ew_part` SET 
 				`barcode` ='$barcode',
@@ -180,7 +185,8 @@ if($_POST['submit']){
 				`l_column` ='$l_column',
 				`l_level` ='$l_level',
 				`des` ='$des',
-				`xsearch` ='$xsearch'
+				`xsearch` ='$xsearch',
+				`organizing201809` = '$organizing1809'
 				WHERE `barcode` = '$barcode';";
 	//echo($sql_code);
 	
@@ -271,7 +277,7 @@ include('header.php');
 <label>Purchase Price: </label><input type="text" name="p_price" value="<?php echo($a_check['p_price']); ?>"/><br />
 <label>Wholesale Price: </label><input type="text" name="w_price" value="<?php echo($a_check['w_price']); ?>"/><br />
 <label>Retail Price: </label><input type="text" name="r_price" value="<?php echo($a_check['r_price']); ?>"/><br />
-<label>Quantity: <?php echo($a_check['quantity']); ?></label><input type="text" style="display:none;" name="quantity" value="<?php echo($a_check['quantity']); ?>"/><br />
+<label>Quantity: <?php /*echo($a_check['quantity']); */?></label><input type="text" style="/*display:none;*/" name="quantity" value="<?php echo($a_check['quantity']); ?>"/><br />
 <label>Warning Quantity: </label><input type="text" name="w_quantity" value="<?php echo($a_check['w_quantity']); ?>"/><br />
 <!--    zz-->
 <img src="images/map.gif" height="" width="300" style="margin-top: 10px;margin-bottom: 10px" usemap="#map1">
@@ -292,6 +298,10 @@ include('header.php');
 <label>Location Zone: </label><!--zz --><input id="location_z" type="text" name="l_zone" value="<?php echo($a_check['l_zone']); ?>"/><br />
 <label>Location Column: </label><input type="text" name="l_column" value="<?php echo($a_check['l_column']); ?>"/><br />
 <label>Location Level: </label><input type="text" name="l_level" value="<?php echo($a_check['l_level']); ?>"/><br />
+
+<!--    zz temp for organizing1809-->
+    <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value="<?php echo($a_check['organizing201809']); ?>"/><br />
+
 <label>Description: </label><br/>
 <textarea rows="4" cols="50" name="des"><?php echo($a_check['des']); ?></textarea><br/>
 <input type="submit" name="submit" class="submit_btn float_l" value="Edit"/>

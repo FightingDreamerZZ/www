@@ -4,7 +4,8 @@
 * File: cart_edit_for_carts_tbp.php
 * This file is for ajax edit request, mainly for carts_to_proceed_detail page which for admin to proceed submitted carts into DB. tbp == to be proceeded
 */
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 include('..\lib\sql.php');
 include('..\lib\user_lib.php');
 
