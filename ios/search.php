@@ -5,8 +5,8 @@
 * This file provides a search portal for user.
 */
 header('Content-type: application/json');
-//error_reporting(E_ALL ^ E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 include('../lib/sql.php');
 
 

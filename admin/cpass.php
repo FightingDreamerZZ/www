@@ -5,8 +5,8 @@
 * This file handles change administrator password request.
 */
 
-////error_reporting(E_ALL ^ E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 //echo($_COOKIE['ew_verified']);
 if(!$_COOKIE['ew_admin_name'] || !$_COOKIE['ew_admin_verified']){

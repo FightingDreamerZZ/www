@@ -5,8 +5,8 @@
 * This file displays part profile based on input barcode.
 */
 
-//error_reporting(E_ALL ^ E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');

@@ -4,8 +4,8 @@
 * File: enter.php
 * This file performs enter related functions
 */
-////error_reporting(E_ALL ^ E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');

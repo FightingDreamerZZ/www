@@ -5,8 +5,8 @@
 * This file is for the page "carts to proceed" which lists all the pending cart records by non-admin users, submitted to admin users to proceed (write to DB)
 */
 
-//error_reporting(E_ALL ^ E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');

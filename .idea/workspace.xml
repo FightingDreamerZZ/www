@@ -128,8 +128,8 @@
       <file leaf-file-name="pending.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pending.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="7" column="35" lean-forward="true" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="35" />
+            <state relative-caret-position="68">
+              <caret line="8" lean-forward="true" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -388,12 +388,12 @@
       <workItem from="1538704652688" duration="1241000" />
       <workItem from="1538789666004" duration="1693000" />
       <workItem from="1539089140485" duration="2657000" />
-      <workItem from="1539180848043" duration="6223000" />
+      <workItem from="1539180848043" duration="6682000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="269502000" />
+    <option name="totallyTimeSpent" value="269961000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -785,8 +785,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pending.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="7" column="35" lean-forward="true" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="35" />
+        <state relative-caret-position="68">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="17" />
         </state>
       </provider>
     </entry>

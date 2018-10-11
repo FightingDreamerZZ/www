@@ -4,8 +4,9 @@
 * File: admin/log.php
 * This file displays a list of system logs with page spliter.
 */
-//error_reporting(E_ALL ^ E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
 //echo($_COOKIE['ew_admin_verified']);
 if(!$_COOKIE['ew_admin_name'] || !$_COOKIE['ew_admin_verified']){
 	die('<meta http-equiv="refresh" content="0;URL=login.php">');

@@ -4,8 +4,8 @@
 * File: edit_part.php
 * This file updates the profile of an existing part item.
 */
-//error_reporting(E_ALL ^ E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 include('lib/sql.php');
 include('lib/user_lib.php');

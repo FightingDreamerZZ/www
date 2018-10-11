@@ -4,8 +4,8 @@
 * File: index.php
 * This file display a user panel to access all frequently used functions.
 */
-//error_reporting(E_ALL ^ E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 include('lib/sql.php');
 include('lib/user_lib.php');
 check_user_cookie();

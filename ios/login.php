@@ -5,8 +5,8 @@
 * This file provides a login portal for user.
 */
 
-//error_reporting(E_ALL ^ E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 include('../lib/sql.php');
 header('Content-type: application/json');
 
