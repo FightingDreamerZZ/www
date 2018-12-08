@@ -320,3 +320,57 @@ var_dump($result);
                 "bottom": "100px"
             }).center();
         });
+
+
+        <!--    for newly added row from search bar-->
+            <?php if($row_3){
+                $w_quantity = ($row_3["w_quantity"] =='0')?"n/a":$row_3["w_quantity"];
+                echo "<tr>
+
+                        <td><a href='view_part.php?barcode=".$row_3[barcode]."'>
+                                ".$row_3[barcode]."
+                            </a>
+                        </td>
+                        <td style='min-width: 150px'>".$row_3["name"]."</td>
+                        <td style='max-width: 70px；white-space: normal; word-wrap:break-word'>".$row_3["part_num"]."</td>
+                        <td style='max-width: 70px;'
+                            id='cell_edit_partnumyigao_".$row_1["barcode"]."'
+                            ondblclick='edit_part_num_yigao(".$row_3["barcode"].",".$row_3["part_num_yigao"].")'
+                            onblur='changed()'>
+                            ".$row_3["part_num_yigao"]."</td>
+                        <td>".$row_3["quantity"]."</td>
+                        <td>".$w_quantity."</td>
+
+
+                        <td><input type='checkbox' name='checkbox_".$row_3["barcode"]."' value='checked'/></td>
+                        <td><input type='text' name='txt_order_amount_".$row_3["barcode"]."' value =''
+                               class='input_field_w w50' autocomplete='off'/></td>
+                        <td><input type='text' name='txt_note_".$row_3["barcode"]."' value =''
+                               class='input_field_w w50' autocomplete='off'/></td>
+                      </tr>";}
+            ?>
+        <!--    <td>".$row_3["l_zone"]."_".$row_3["l_column"]."_".$row_3["l_level"]."</td>-->
+
+
+//zz 以下：- search页的smart search功能（乃至所有的smartSearch bar）都有个问题：点击弹出来的ajax链接之后非得先再用这些关键字search一下搜出一条结果然后才能点进去——应能从ajax链接直接进入下个页面
+        （他们原本是仍然链去search页的，需要改成链去view_part页）
+//for $resultset
+//zz <a href="search.php?keyword=xx+yy&table=ew_part">partName partNumber</a>
+//            echo "<a href='search.php?keyword=".$url."&table=".$_POST['table']."'>".$row_1["name"]."&nbsp;".$row_1["part_num"]."</a>";
+
+//for $resultset_pn
+//            echo "<a href='search.php?keyword=" . $url . "&table=" . $_POST['table'] . "'>" . $row_11["name"] . "&nbsp;" . $row_11["part_num"] . "</a>";
+
+//for $resultset_ac
+//zz <a href="search.php?keyword=xx+yy&table=ew_part">partName partNumber</a>
+//            echo "<a href='search.php?keyword=" . $url . "&table=" . $_POST['table'] . "'>" . $row_12["name"] . "&nbsp;" . $row_12["part_num"] . "</a>";
+
+//zz 无“special”switch时：
+最后一个
+<a href="search.php?keyword=<?php echo $url; ?>&table=<?php echo $_POST['table']; ?>">
+        <?php echo $row_12["name"]."&nbsp;".$row_12["part_num"]; ?>
+    </a>&nbsp;
+倒是第二个
+<a href="search.php?keyword=<?php echo $url; ?>&table=<?php echo $_POST['table']; ?>">
+        <?php echo $row_11["name"]."&nbsp;".$row_11["part_num"]; ?>
+    </a>&nbsp;

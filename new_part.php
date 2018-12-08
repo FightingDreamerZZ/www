@@ -137,17 +137,17 @@ if($_POST['submit']){
 			mysql_close($link); 
 			echo("<script>window.alert('DB Error!');</script>");
 			die('<meta http-equiv="refresh" content="0;URL=new_part.php">');
-		}
-		else{
-			tran($_COOKIE['ew_user_name'],$barcode,'part',$quantity);
+	}
+	else{
+			tran($_COOKIE['ew_user_name'],$barcode,'part',$quantity,"N/A");//zz appli set to N/A (appli is only for depart)
 			sys_log($_COOKIE['ew_user_name'],"add new part, barcode=$barcode,name=$name,amount=$quantity");
 			//cart($_COOKIE['ew_user_name'],$barcode,$quantity,'ew_part');
 			mysql_close($link);
 			echo("<script>window.alert('New Part has been created!');</script>");
 			die('<meta http-equiv="refresh" content="0;URL=new_part.php">');
-		}
-
 	}
+
+}
 
 $title_by_page = "New Part";
 include('header.php');

@@ -108,7 +108,7 @@ if($_POST['add_assoc_part']){
 	$sql_code_a = "SELECT * FROM `ew_relation` WHERE `main_part` = '".$barcode."' ORDER BY `rid` ASC;";
 	$result_info_a = mysql_query($sql_code_a);
 	while ($row_a = mysql_fetch_assoc($result_info_a)){
-		if($_POST[$row_a["attach_part"]] == "1"){	//zz 查看post里是否有这个放在"attach_part"列的、associate part的barcode，其是个flag、为1时说明正在做assoc的拿取
+		if($_POST[$row_a["attach_part"]] == "1"){	//zz 查看post里是否有这barcode，其是个flag（其实就是那个table里的checkbox）、为1时说明正在做assoc的拿取
 			if((get_anything($row_a["attach_part"],"quantity") - ($row_a["amount"]*$set) + cart_amount($_COOKIE['ew_user_name'],$row_a["attach_part"])) < 0){//zz 这边没太看懂、为何还要再加个cart_amount()？？原有的数量、减去拿了多少套*每套的数量就得了呗？
 				stop('Not enough stock!');
 			}

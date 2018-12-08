@@ -57,7 +57,7 @@ if($_POST['submit']){
 		$photo_url = $_POST["photo_url"];
 
 	}else{
-		$allowedExts = array("gif", "jpeg", "jpg", "png");
+		$allowedExts = array("gif", "jpeg", "jpg", "png","GIF", "JPEG", "JPG", "PNG");
 		$temp = explode(".", $_FILES["file"]["name"]);
 		$extension = end($temp);
 		if (
@@ -69,25 +69,27 @@ if($_POST['submit']){
 				|| ($_FILES["file"]["type"] == "image/x-png")
 				|| ($_FILES["file"]["type"] == "image/png")
 			)
-//			&& ($_FILES["file"]["size"] < 2000000)
             && ($_FILES["file"]["size"] < 10000000)
             && in_array($extension, $allowedExts)
 		){
-		  if ($_FILES["file"]["error"] > 0){
+            //			&& ($_FILES["file"]["size"] < 2000000)
+            if ($_FILES["file"]["error"] > 0){
 				echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
-			}else{
+			}
+			else{
 				$file_name = $_FILES["file"]["name"];
 				$new_file_name = round(microtime(true) * 1000)."."."$extension";
 			
-			if (file_exists("upload/" . $new_file_name)){
-				echo $new_file_name . " already exists. ";
-			  }else{
-				  move_uploaded_file($_FILES["file"]["tmp_name"],
-				  "upload/" . $new_file_name);
-				  $photo_url = "upload/" . $new_file_name;
-				  $thumb_url = "upload/thumb/" . $new_file_name;
-				  generate_image_thumbnail($photo_url, $thumb_url);
-			  }
+				if (file_exists("upload/" . $new_file_name)){
+                    echo $new_file_name . " already exists. ";
+                }
+                else{
+                      move_uploaded_file($_FILES["file"]["tmp_name"],
+                      "upload/" . $new_file_name);
+                      $photo_url = "upload/" . $new_file_name;
+                      $thumb_url = "upload/thumb/" . $new_file_name;
+                      generate_image_thumbnail($photo_url, $thumb_url);
+                }
 			}
 		  }else{
 			echo "Invalid file type or size exceed 500kb";
@@ -104,6 +106,9 @@ if($_POST['submit']){
 	
 	$part_num = $_POST["part_num"];
 	check($part_num,40,"Part Number");
+
+    $part_num_yigao = $_POST["part_num_yigao"];
+    check($part_num_yigao,40,"Part Number (YiGao)");
 	
 	$category = $_POST["category"];
 	
@@ -173,6 +178,7 @@ if($_POST['submit']){
 				`name` ='$name',
 				`photo_url` ='$photo_url',
 				`part_num` ='$part_num',
+				`part_num_yigao` ='$part_num_yigao',
 				`category` ='$category',
 				`color` ='$color',
 				`sub_category` ='$sub_category',
@@ -256,7 +262,10 @@ include('header.php');
 <label>Photo:</label><input type="file" name="file"><input type="text" style="display:none;" name="photo_url" value="<?php echo($a_check['photo_url']); ?>"/><br>
 <label>Barcode: </label><input type="text" name="barcode" value="<?php echo($a_check['barcode']); ?>"/><br />
 <label>Car Name: </label><input type="text" name="name" value="<?php echo($a_check['name']); ?>"/><br />
-<label>Part Number: </label><input type="text" name="part_num" value="<?php echo($a_check['part_num']); ?>"/><br />
+<label title="This part number is for AGT. They are older, more stable and referred on our product manuals.">
+    Part Number: </label><input type="text" name="part_num" value="<?php echo($a_check['part_num']); ?>"/><br />
+<label title="The newest part number on the domestic, Yigao side. It is useful when ordering parts from them.">
+    Part Number (YiGao): </label><input type="text" name="part_num_yigao" value="<?php echo($a_check['part_num_yigao']); ?>"/><br />
 
 <label>Category: </label>
 <select name="category">
@@ -312,8 +321,13 @@ include('header.php');
 
  <div class="col_w320 float_l">
 <h4>Photo Preview</h4>              
-                
-<a href="<?php echo($a_check['photo_url']); ?>" target="_blank"><img width="300" height="300" class ="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>" class="image_wrapper" /></a>   
+
+<!--<div style="width: 300px;height: 300px;" class="withborder">-->
+    <a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
+        <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>"/>
+<!--        class="image_wrapper"-->
+    </a>
+<!--</div>-->
 <div class="cleaner h10"></div>
 <p><a href="edit_part.php?barcode=<?php echo $a_check["barcode"]; ?>&do=del">[ Delete ]</a> - Warning, delete will set the part quantity to "0" and warning quantity to "-1".</p>
 <h4>Associated Part </h4>

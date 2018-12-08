@@ -60,3 +60,8 @@ UPDATE `ew_user` SET `type` = '5' WHERE `ew_user`.`user` = 'otto';
 
 --zz: add the column 'organizing201809' for part table to flag if this record is changed during the 201809 organizing operation..
 ALTER TABLE `ew_part` ADD `organizing201809` VARCHAR(10) NULL COMMENT 'if is changed during the 201809 organizing operation' AFTER `xsearch`;
+
+--zz: add new column 'part_num_yigao' to part table, this is the newest part number on domestic Yigao side, in contrast our part_num is an older and stable ver and referred on product manuals for local dealers and customers. This data is useful when ordering new parts from China.
+ALTER TABLE `ew_part` ADD `part_num_yigao` VARCHAR(20) NULL DEFAULT 'unknown' COMMENT 'The newest part number at Yigao side (our part_num is older and more stable)' AFTER `part_num`;
+
+--zz:

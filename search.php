@@ -1,4 +1,4 @@
-<?PHP
+﻿<?PHP
 /*
 * Copyright © 2013 Elaine Warehouse
 * File: search.php

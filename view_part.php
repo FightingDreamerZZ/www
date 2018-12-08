@@ -124,7 +124,8 @@ include('header.php');
 <ul class = "list">
 	<li>Name: <?php echo($a_check['name']); ?></li>
 	<li>Barcode: <?php echo($a_check['barcode']); ?></li>
-	<li>Part Number: <?php echo($a_check['part_num']); ?></li>
+	<li title="This part number is for AGT. They are older, more stable and referred on our product manuals.">Part Number: <?php echo($a_check['part_num']); ?></li>
+    <li title="The newest part number on the domestic, Yigao side. It is useful when ordering parts from them.">Part Number (YiGao): <?php echo($a_check['part_num_yigao']); ?></li>
 	<li>Category: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['category']); ?>"><?php echo($a_check['category']); ?></a></li>
 	<li>For: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['sub_category']); ?>"><?php echo($a_check['sub_category']); ?></a></li>
 	<li>Color: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['color']); ?>"><?php echo($a_check['color']); ?></a></li>
@@ -146,7 +147,11 @@ include('header.php');
 
 <div class="col_w320 float_l">
 <h4>Photo Preview</h4>              
-<a href="<?php echo($a_check['photo_url']); ?>" target="_blank"><img width="300" height="300" class ="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>" class="image_wrapper" /></a>
+<a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
+    <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class ="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>" />
+
+    <!--    width="300" height="300" class="image_wrapper" -->
+</a>
 <p>
 <a href="edit_part.php?barcode=<?php echo($a_check['barcode']); ?>">[Edit Profile]</a>
 <a href="enter.php?barcode=<?php echo($a_check['barcode']); ?>">[Quick Enter]</a>
@@ -167,6 +172,58 @@ include('header.php');
 </div> <!-- end of a content box -->
 <div class="content_box_bottom"></div>
 </div> <!-- end of main -->
+
+<!--testing img modal-->
+    <button id="testzz1">haha</button>
+
+    <div class="modal fade" id="imagemodal" style="/*width: 200%*/" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <span><img src="" class="imagepreview1" style="width: 50%;display: inline" ></span>
+                    <span><img src="" class="imagepreview2" style="width: 50%;display: inline" ></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google jQuery v3.2.1 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap v3.3.7 JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--    jqueryUI-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+
+        $(function() {
+            $('#testzz1').on('click', function() {
+                $('.imagepreview1').attr('src', "http://www.agtecars.com/img/agt_logo_white.jpg");
+                $('.imagepreview2').attr('src', "http://www.agtecars.com/img/slide-bus.png");
+                $('#imagemodal').modal('show');
+            });
+        });
+        $(document).ready(function () {
+            // $("#testzz1").click(function(){
+            //     $('#dialog').remove();
+            //     $('<div/>')
+            //         .attr({ title: "title yoyo", id: 'dialog'})
+            //         .html('<img src="http://www.agtecars.com/img/agt_logo_white.jpg">')
+            //         .appendTo('body');
+            //     $("#dialog").dialog({ //jueryUI's dialog
+            //         width: 600,
+            //         modal: true
+            //     });
+            // })
+        });
+
+    </script>
+    <!--testing img modal finish-->
+
 <?PHP
 include('footer.php');
 ?>
