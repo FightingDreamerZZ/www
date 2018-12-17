@@ -261,7 +261,7 @@ include('header.php');
 <form name="form" method="post" enctype="multipart/form-data">
 <label>Photo:</label><input type="file" name="file"><input type="text" style="display:none;" name="photo_url" value="<?php echo($a_check['photo_url']); ?>"/><br>
 <label>Barcode: </label><input type="text" name="barcode" value="<?php echo($a_check['barcode']); ?>"/><br />
-<label>Car Name: </label><input type="text" name="name" value="<?php echo($a_check['name']); ?>"/><br />
+<label>Part Name: </label><input type="text" name="name" value="<?php echo($a_check['name']); ?>"/><br />
 <label title="This part number is for AGT. They are older, more stable and referred on our product manuals.">
     Part Number: </label><input type="text" name="part_num" value="<?php echo($a_check['part_num']); ?>"/><br />
 <label title="The newest part number on the domestic, Yigao side. It is useful when ordering parts from them.">

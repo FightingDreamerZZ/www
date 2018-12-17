@@ -23,8 +23,6 @@ if (isset($_GET['barcode'])) {
 	}else{
 		stop("Barcode not found!");
 	}
-	
-	
 }
 
 $load = " onload=\"load()\"";
@@ -200,6 +198,7 @@ include('header.php');
 
     <script>
 
+        //zz temp
         $(function() {
             $('#testzz1').on('click', function() {
                 $('.imagepreview1').attr('src', "http://www.agtecars.com/img/agt_logo_white.jpg");
@@ -220,6 +219,7 @@ include('header.php');
             //     });
             // })
         });
+        // /zz temp
 
     </script>
     <!--testing img modal finish-->

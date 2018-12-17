@@ -374,3 +374,147 @@ var_dump($result);
 <a href="search.php?keyword=<?php echo $url; ?>&table=<?php echo $_POST['table']; ?>">
         <?php echo $row_11["name"]."&nbsp;".$row_11["part_num"]; ?>
     </a>&nbsp;
+
+//zz smartSearch's ajax's $special
+<?php switch($special){
+        case "create_part_ordering_sheet":
+            echo "<a href='../create_part_ordering_sheet.php?barcode=".$row_1["barcode"]."'>".$row_1["name"]."&nbsp;".$row_1["part_num"]."</a>";
+            break;
+        case "depart":
+            break;
+        case "enter":
+            break;
+        case "stock_counting":
+            //zz <a href="stock_counting.php?barcode=xxxxx">partName <small>partNumber</small></a>
+            $page_url = "stock_counting.php?barcode=".$row_1["barcode"];
+            $inner_html = $row_1["name"]."&nbsp;".$row_1["part_num"];
+            echo "<a href='{$page_url}'>{$inner_html}</a>";
+            break;
+        case null:
+            //zz <a href="view_part.php?barcode=xxxxx">partName partNumber</a>
+            $page_url = get_view($table)."?barcode=".$row_1["barcode"];
+            $inner_html = $row_1["name"]."&nbsp;".$row_1["part_num"];
+            echo "<a href='{$page_url}'>{$inner_html}</a>";
+            break;
+    }
+?>
+<?php switch($special) {
+        case "create_part_ordering_sheet":
+            echo "<a href='../create_part_ordering_sheet.php?barcode=" . $row_11["barcode"] . "'>" . $row_11["name"] . "&nbsp;" . $row_11["part_num"] . "</a>";
+            break;
+        case "depart":
+            break;
+        case "enter":
+            break;
+        case "stock_counting":
+            //zz <a href="stock_counting.php?barcode=xxxxx">partName <small>partNumber</small></a>
+            $page_url = "stock_counting.php?barcode=".$row_1["barcode"];
+            $inner_html = $row_1["name"]."&nbsp;".$row_1["part_num"];
+            echo "<a href='{$page_url}'>{$inner_html}</a>";
+            break;
+        case null:
+            $page_url = "view_part.php?barcode=".$row_11["barcode"];
+            $inner_html = $row_11["name"]."&nbsp;".$row_11["part_num"];
+            echo "<a href='{$page_url}'>{$inner_html}</a>";
+            break;
+}?>
+
+
+//zz original add-new-part handler
+<?php
+        $sql_code = "INSERT INTO `ew_part`
+    	(`barcode`, `name`, `photo_url`, `part_num`, `category`, `color`, `sub_category`, `p_price`, `w_price`, `r_price`, `quantity`, `w_quantity`, `l_zone`, `l_column`, `l_level`, `date`, `des`, `xsearch`)
+    	VALUES ('$barcode', '$name', '$photo_url', '$part_num', '$category', '$color', '$sub_category',
+    	'$p_price', '$w_price', '$r_price', '$quantity', '$w_quantity', '$l_zone', '$l_column', '$l_level', CURRENT_TIMESTAMP, '$des', '$xsearch');";
+        //echo($sql_code);
+
+        if (!($result=mysql_query($sql_code))) {
+
+            mysql_close($link);
+            echo("<script>window.alert('DB Error!');</script>");
+            die('<meta http-equiv="refresh" content="0;URL=new_part.php">');
+        }
+        else{
+            tran($_COOKIE['ew_user_name'],$barcode,'part',$quantity,"N/A");//zz appli set to N/A (appli is only for depart)
+            sys_log($_COOKIE['ew_user_name'],"add new part, barcode=$barcode,name=$name,amount=$quantity");
+            //cart($_COOKIE['ew_user_name'],$barcode,$quantity,'ew_part');
+            mysql_close($link);
+            echo("<script>window.alert('New Part has been created!');</script>");
+            die('<meta http-equiv="refresh" content="0;URL=stock_counting.php?barcode='.$barcode.'">');
+        }
+?>
+//zz /original add-new-part handler
+
+
+//zz experiment
+<div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Action
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </div>
+
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation"><a href="#">Regular link</a>
+            </li>
+            <li role="presentation" class="dropdown">
+                <a id="drop4" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                    Dropdown
+                    <span class="caret"></span>
+                </a>
+                <ul id="menu6" class="dropdown-menu animated fadeInDown" role="menu">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Action</a>
+                    </li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Another action</a>
+                    </li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Something else here</a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role=ulenuitem" tabindex="-1" href="https://twitter.com/fat">Separated link</a>
+                    </li>
+                </ul>
+            </li>
+            <li role="presentation" class="dropdown">
+                <a id="drop5" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                    Dropdown
+                    <span class="caret"></span>
+                </a>
+                <ul id="menu2" class="dropdown-menu animated fadeInDown" role="menu" aria-labelledby="drop5">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Action</a>
+                    </li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Another action</a>
+                    </li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Something else here</a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Separated link</a>
+                    </li>
+                </ul>
+            </li>
+            <li role="presentation" class="dropdown">
+                <a id="drop6" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                    Dropdown
+                    <span class="caret"></span>
+                </a>
+                <ul id="menu3" class="dropdown-menu animated fadeInDown" role="menu" aria-labelledby="drop6">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Action</a>
+                    </li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Another action</a>
+                    </li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Something else here</a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/fat">Separated link</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+

@@ -64,4 +64,16 @@ ALTER TABLE `ew_part` ADD `organizing201809` VARCHAR(10) NULL COMMENT 'if is cha
 --zz: add new column 'part_num_yigao' to part table, this is the newest part number on domestic Yigao side, in contrast our part_num is an older and stable ver and referred on product manuals for local dealers and customers. This data is useful when ordering new parts from China.
 ALTER TABLE `ew_part` ADD `part_num_yigao` VARCHAR(20) NULL DEFAULT 'unknown' COMMENT 'The newest part number at Yigao side (our part_num is older and more stable)' AFTER `part_num`;
 
---zz:
+--zz: add new table 'ew_counting_event'
+CREATE TABLE `eware`.`ew_counting_event` ( `c_event_id` INT(2) NOT NULL AUTO_INCREMENT COMMENT 'Counting event is the event for stock_counting, PK' , `c_event_name` VARCHAR(30) NOT NULL , PRIMARY KEY (`c_event_id`)) ENGINE = InnoDB COMMENT = 'Counting events are the events for mass stock counting op';
+
+--zz: add col "last_counting_event" to ew_part
+ALTER TABLE `ew_part` ADD `last_counting_event` INT(2) NULL COMMENT 'FK to ct_evnt table,last count event that edit this part' AFTER `organizing201809`;
+
+ALTER TABLE `eware`.`ew_part` ADD INDEX `FK_last_ct_evnt` (`last_counting_event`);
+
+CHANGE BOTH TABLE TO 'INNO DB' IN OPERATIONS TAB..
+
+ALTER TABLE `ew_part` ADD CONSTRAINT `FK_last_ct_evnt` FOREIGN KEY (`last_counting_event`) REFERENCES `ew_counting_event`(`c_event_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+INSERT INTO `ew_counting_event` (`c_event_id`, `c_event_name`) VALUES ('01', '201809'), ('02', '201709');

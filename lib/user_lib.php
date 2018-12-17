@@ -248,6 +248,12 @@ function get_name($barcode){
 }
 
 //input barcode and field name, return the value of this field
+/**
+ * input barcode and field name, return the value of this field
+ * @param $barcode
+ * @param $key
+ * @return mixed
+ */
 function get_anything($barcode,$key){
 	$table = get_table($barcode);
 	$sql_code = "select `".$key."` from `".$table."` where barcode = '".$barcode."';";
@@ -649,6 +655,100 @@ function get_carts_to_be_proceeded() {
 function get_count_of_carts_tbp() {
     $a = get_carts_to_be_proceeded();
     return count($a);
+}
+
+
+//col list: barcode, name, photo_url, part_num, part_num_yigao, category, sub_category, color, p_price, w_price, r_price,
+// quantity, w_quantity, l_zone, l_column, l_level, date, des, xsearch, organizing201809, last_counting_event
+/**
+ * zz insert into the ew_part table in DB, with log when success, returns bool according to whether successful
+ *
+ * @param $barcode
+ * @param $name
+ * @param $photo_url
+ * @param $part_num
+ * @param $part_num_yigao
+ * @param $category
+ * @param $sub_category
+ * @param $color
+ * @param $p_price
+ * @param $w_price
+ * @param $r_price
+ * @param $quantity
+ * @param $w_quantity
+ * @param $l_zone
+ * @param $l_column
+ * @param $l_level
+ * @param $des
+ * @param $xsearch
+ * @param $organizing201809
+ * @param $last_counting_event
+ */
+function add_new_part($barcode, $name, $photo_url, $part_num, $part_num_yigao, $category, $sub_category,
+                      $color, $p_price, $w_price, $r_price, $quantity, $w_quantity, $l_zone, $l_column, $l_level,
+                      $des, $xsearch, $organizing201809, $last_counting_event){
+    $sql_code = "INSERT INTO `ew_part` 
+	(`barcode`, `name`, `photo_url`, `part_num`, `category`, `sub_category`, `color`, 
+	`p_price`, `w_price`, `r_price`, `quantity`, `w_quantity`, `l_zone`, `l_column`, `l_level`, 
+	`date`, `des`, `xsearch`, `organizing201809`, `last_counting_event`) 
+	VALUE ('$barcode', '$name', '$photo_url', '$part_num', '$part_num_yigao', '$category', '$sub_category', 
+	'$color', '$p_price', '$w_price', '$r_price', '$quantity', '$w_quantity', '$l_zone', '$l_column', '$l_level', 
+	CURRENT_TIMESTAMP, '$des', '$xsearch', '$organizing201809', '$last_counting_event');";
+
+    if (!($result=mysql_query($sql_code))) {
+        return false;
+    }
+    else{
+//        tran($_COOKIE['ew_user_name'],$barcode,'part',$quantity,"N/A");//zz appli set to N/A (appli is only for depart)
+        sys_log($_COOKIE['ew_user_name'],"add new part, barcode=$barcode,name=$name,amount=$quantity");
+        return true;
+    }
+}
+
+/**
+ * zz SELECT * FROM countingEvnt table
+ * @return array: array of objs as table rows
+ */
+function get_all_c_events(){
+    $sql_c_events = "SELECT * FROM `ew_counting_event`";
+    $result_c_events = mysql_query($sql_c_events);
+    $array_c_events = array();
+    while($row = mysql_fetch_assoc($result_c_events)){
+        $array_c_events[] = $row;
+    }
+    return $array_c_events;
+}
+
+/**
+ * zz from the countingEvent table, get the first matching row where the col with $col_name has same value as $col_value
+ * @param $col_name
+ * @param $col_value
+ * @return mixed: assoc array with keys corresponds to col_names, or false if no matching record
+ */
+function get_c_event_by($col_name, $col_value){
+    $sql_c_event = "SELECT * FROM `ew_counting_event` WHERE `{$col_name}`={$col_value}";
+    $result_c_event = mysql_query($sql_c_event);
+    if(!$result_c_event) {
+        return false;
+    }
+    else{
+        $row_c_event = mysql_fetch_array($result_c_event);
+        return $row_c_event;
+    }
+}
+
+function add_new_c_event($new_c_event_name){
+    $sql_code = "INSERT INTO `ew_counting_event` 
+	(`c_event_name`) 
+	VALUE ('$new_c_event_name');";
+
+    if (!($result=mysql_query($sql_code))) {
+        return false;
+    }
+    else{
+        sys_log($_COOKIE['ew_user_name'],"add_new_c_event, new_c_event_name=$new_c_event_name");
+        return true;
+    }
 }
 ?>
 
