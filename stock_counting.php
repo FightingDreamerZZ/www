@@ -32,7 +32,15 @@ if($_GET['selected_c_c_event_id']){
         get_c_event_by('c_event_id',$_GET['selected_c_c_event_id'])['c_event_name'];
 }
 
-//zz add a new countingEvent
+//handler for edit mode
+$display_edit_section = 'style="display:none"';
+$display_view_section = 'style=""';
+if(isset($_GET['edit_mode'])){
+    $display_edit_section = 'style=""';
+    $display_view_section = 'style="display:none"';
+}
+
+//zz add a new countingEvent (mainly for countingEvent dropdownBtnGroup)
 if(isset($_GET['txt_new_c_event'])){
     if(!add_new_c_event($_GET['txt_new_c_event'])){
         echo("<script>window.alert('DB Error!');</script>");
@@ -43,7 +51,6 @@ if(isset($_GET['txt_new_c_event'])){
         die('<meta http-equiv="refresh" content="0;URL=stock_counting.php">');
     }
 }
-
 
 //handle delete part request
 if ($_GET['do']=='del') {
@@ -81,6 +88,8 @@ if (isset($_GET['barcode'])) {
     }else{
         stop("Barcode not found!");
     }
+    $c_event_name = get_c_event_by("c_event_id", $a_check['last_counting_event'])['c_event_name'];
+    $c_event_name = ($c_event_name == false)?"N/A":$c_event_name;
 }
 
 //handle post form for update profile request
@@ -140,10 +149,9 @@ if($_POST['submit_edit']){
     check($part_num,40,"Part Number");
 
     $part_num_yigao = $_POST["part_num_yigao"];
-    check($part_num_yigao,40,"Part Number (YiGao)");
+//    check($part_num_yigao,40,"Part Number (YiGao)");
 
     $category = $_POST["category"];
-
 
 //	$sub_category = "";
 //	if(isset($_POST['sub1'])){
@@ -204,6 +212,7 @@ if($_POST['submit_edit']){
 
     $organizing1809 = $_POST["organizing1809"];
 
+    $last_counting_event = $_POST["c_event_id"];
 
     $sql_code = "UPDATE `ew_part` SET 
 				`barcode` ='$barcode',
@@ -224,7 +233,8 @@ if($_POST['submit_edit']){
 				`l_level` ='$l_level',
 				`des` ='$des',
 				`xsearch` ='$xsearch',
-				`organizing201809` = '$organizing1809'
+				`organizing201809` = '$organizing1809',
+				`last_counting_event` = $last_counting_event
 				WHERE `barcode` = '$barcode';";
     //echo($sql_code);
 
@@ -297,7 +307,7 @@ if($_POST['submit_new']){
     check($part_num,40,"Part Number");
 
     $part_num_yigao = $_POST["part_num_yigao"];
-    check($part_num_yigao,40,"Part Number (YiGao)");
+//    check($part_num_yigao,40,"Part Number (YiGao)");
 
     $category = $_POST["category"];
 
@@ -358,6 +368,9 @@ if($_POST['submit_new']){
     $xsearch = strtolower("barcode:$barcode, name:$name, model:$part_num, category:$category, sub category:$sub_category, color:$color, location:$location");
     //echo($xsearch);
 
+    $organizing1809 = $_POST["organizing1809"];
+    $last_counting_event = $_POST["c_event_id"];
+
     //col list: barcode, name, photo_url, part_num, part_num_yigao, category, sub_category, color, p_price, w_price, r_price,
     // quantity, w_quantity, l_zone, l_column, l_level, date, des, xsearch, organizing201809, last_counting_event
     $result_anp = add_new_part($barcode,$name,$photo_url,$part_num,$part_num_yigao,$category,$sub_category,$color,
@@ -367,6 +380,7 @@ if($_POST['submit_new']){
     mysql_close($link);
 
     if (!$result_anp){
+
         echo("<script>window.alert('DB Error!');</script>");
         die('<meta http-equiv="refresh" content="0;URL=stock_counting.php">');
     }
@@ -381,7 +395,7 @@ $array_c_events = get_all_c_events();
 
 //zz get countingEvent by countingEventId
 //$row_c_event = get_c_event_by("c_event_id", $c_event_id);
-$row_c_event = get_c_event_by("c_event_id", "1");
+//$row_c_event = get_c_event_by("c_event_id", "1");
 
 
 //zz add a new countingEvent
@@ -496,10 +510,11 @@ include('template_header_css_sidebar_topbar.php');
         <!--        smart search-->
         <form name="form2" method="get" action="search.php" >
             Smart Search:
-            <select name="table" id="db_table" class="select_field">
-                <option value="ew_part" <?php if($table == 'ew_part'){ echo("selected=\"selected\"");} ?>>Part</option>
-                <option value="ew_car" <?php if($table == 'ew_car'){ echo("selected=\"selected\"");} ?>>Car</option>
-            </select>
+<!--            <select name="table" id="db_table" class="select_field">-->
+<!--                <option value="ew_part" --><?php //if($table == 'ew_part'){ echo("selected=\"selected\"");} ?><!--Part</option>-->
+<!--                <option value="ew_car" --><?php //if($table == 'ew_car'){ echo("selected=\"selected\"");} ?><!--Car</option>-->
+<!--            </select>-->
+            <input type="hidden" name="table" value="ew_part" hidden/>
             <input type="text" id="keyword" name="keyword" class="input_field" value="<?php echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
             <input type="submit" class="submit_btn" value="Search"/>
         </form>
@@ -557,6 +572,7 @@ temp;
         </div>
         <!--zz /countingEvent ddl-->
 
+
         <div id="main">
 
         <div class="content_box_top"></div>
@@ -566,7 +582,7 @@ temp;
             <btn class="btn btn-default btn-sm float_r" id="btn_toggle_edit" onclick="btn_show_add_new()">Add New Part</btn>
 
             <!--zz view part-->
-            <div id="div_view_part">
+            <div id="div_view_part" <?php echo $display_view_section;?>>
                 <h2>View Parts</h2>
                 <div class="cleaner"></div>
             <div class="cleaner h30"></div>
@@ -575,7 +591,7 @@ temp;
                     <li>Name: <?php echo($a_check['name']); ?></li>
                     <li>Barcode: <?php echo($a_check['barcode']); ?></li>
                     <li title="This part number is for AGT. They are older, more stable and referred on our product manuals.">Part Number: <?php echo($a_check['part_num']); ?></li>
-                    <li title="The newest part number on the domestic, Yigao side. It is useful when ordering parts from them.">Part Number (YiGao): <?php echo($a_check['part_num_yigao']); ?></li>
+                    <li title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">Part Number (Eagle): <?php echo($a_check['part_num_yigao']); ?></li>
                     <li>Category: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['category']); ?>"><?php echo($a_check['category']); ?></a></li>
                     <li>For: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['sub_category']); ?>"><?php echo($a_check['sub_category']); ?></a></li>
                     <li>Color: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['color']); ?>"><?php echo($a_check['color']); ?></a></li>
@@ -590,6 +606,9 @@ temp;
                     <!--    zz temp for organizing1809-->
                     <label>Flag Organizing1809: <?php echo($a_check['organizing201809']); ?></label>
 
+                    <li title="Last Counting Event that the part has involved and counted..">
+                        Last Counting Event: <?php echo($c_event_name); ?>
+                    </li>
                     <li>Description: <?php echo($a_check['des']); ?></li>
 
                 </ul>
@@ -623,7 +642,7 @@ temp;
             <!--zz /view part-->
 
             <!--zz edit part-->
-            <div id="div_edit_part">
+            <div id="div_edit_part" <?php echo $display_edit_section;?>>
             <h2>Edit Part Profile</h2>
             <div class="cleaner"></div>
             <p>You should no change barcode for an exsiting part for any reason. Each input field should not exceed max allowed size or violate corresponding data type in DB. Details refers to [section 2.2.5 Table: ew_part] in design document.</p>
@@ -637,8 +656,8 @@ temp;
                         <label>Car Name: </label><input type="text" name="name" value="<?php echo($a_check['name']); ?>"/><br />
                         <label title="This part number is for AGT. They are older, more stable and referred on our product manuals.">
                             Part Number: </label><input type="text" name="part_num" value="<?php echo($a_check['part_num']); ?>"/><br />
-                        <label title="The newest part number on the domestic, Yigao side. It is useful when ordering parts from them.">
-                            Part Number (YiGao): </label><input type="text" name="part_num_yigao" value="<?php echo($a_check['part_num_yigao']); ?>"/><br />
+                        <label title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">
+                            Part Number (Eagle): </label><input type="text" name="part_num_yigao" value="<?php echo($a_check['part_num_yigao']); ?>"/><br />
 
                         <label>Category: </label>
                         <select name="category">
@@ -683,6 +702,25 @@ temp;
 
                         <!--    zz temp for organizing1809-->
                         <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value="<?php echo($a_check['organizing201809']); ?>"/><br />
+
+                        <label>Last Counting Event: </label>
+                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
+                            <?php
+                            foreach($array_c_events as $c_event){
+                                $c_event_name_temp=$c_event['c_event_name'];
+                                $c_event_id_temp=$c_event['c_event_id'];
+                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
+                                echo <<<temp
+                                <option value="$c_event_id_temp" {$selected_temp}>
+                                    {$c_event_name_temp}
+                                </option>
+temp;
+                            }
+                            ?>
+                            <option value="NULL" {$selected_temp}>
+                                NULL (not belong to any)
+                            </option>
+                        </select><br />
 
                         <label>Description: </label><br/>
                         <textarea rows="4" cols="50" name="des"><?php echo($a_check['des']); ?></textarea><br/>
@@ -734,8 +772,8 @@ temp;
                         <label>Barcode: </label><input type="text" name="barcode" value ="<?php echo "1".substr(round(microtime(true) * 1000),0, -2); ?>"/><br />
                         <label>Name: </label><input type="text" name="name"/><br />
                         <label>Part Number: </label><input type="text" name="part_num"/><br />
-                        <label title="The newest part number on the domestic, Yigao side. It is useful when ordering parts from them.">
-                            Part Number (YiGao): </label><input type="text" name="part_num_yigao"/><br />
+                        <label title="The newest part number on the domestic, Eaglee side. It is useful when ordering parts from them.">
+                            Part Number (Eagle): </label><input type="text" name="part_num_yigao"/><br />
                         <label>Category: </label>
                         <select name="category">
                             <option value="body">Body</option>
@@ -764,6 +802,25 @@ temp;
                         <!--    zz temp for organizing1809-->
                         <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value=""/><br />
 
+                        <label>Last Counting Event: </label>
+                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
+                            <?php
+                            foreach($array_c_events as $c_event){
+                                $c_event_name_temp=$c_event['c_event_name'];
+                                $c_event_id_temp=$c_event['c_event_id'];
+                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
+                                echo <<<temp
+                                <option value="$c_event_id_temp" {$selected_temp}>
+                                    {$c_event_name_temp}
+                                </option>
+temp;
+                            }
+                            ?>
+                            <option value="NULL" {$selected_temp}>
+                                NULL (not belong to any)
+                            </option>
+                        </select><br />
+
                         <input type="submit" name="submit_new" value="Create"/>
                     </form>
                 </div>
@@ -789,9 +846,9 @@ temp;
         #div_add_new_part {
             display: none;
         }
-        #div_edit_part {
-            display: none;
-        }
+        /*#div_edit_part {*/
+            /*display: none;*/
+        /*}*/
     </style>
 
 <?PHP

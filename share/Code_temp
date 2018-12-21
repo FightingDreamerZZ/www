@@ -517,4 +517,72 @@ var_dump($result);
             </li>
         </ul>
 
+//stock_counting.php testing bootstrap styling
+<div id="main">
 
+        <div class="content_box_top"></div>
+        <div class="content_box">
+
+            <p><?php echo($total_records); ?> result(s) was found in this query. Sort by <a href ="list.php?<?php echo trim_url("&sort="); ?>">[Default]</a> <a href="list.php?<?php echo trim_url("&sort="); ?>&sort=name">[Name]</a> <a href="list.php?<?php echo trim_url("&sort="); ?>&sort=color">[Color]</a>  <a href="list.php?<?php echo trim_url("&sort="); ?>&sort=category">[Category]</a></p>
+
+
+            <p>Page:
+                <?php
+
+                for ($i=1; $i<=$total_pages; $i++) {
+                    echo "<a href='stock_counting_list.php?page=".$i.$urltag."'>".$i."</a> ";
+                };
+                ?>
+            </p>
+
+
+            <table>
+                <tr>
+
+                    <td>Barcode</td>
+                    <td>Name</td>
+                    <td>Category</td>
+                    <?php if($table == "ew_part"){echo "<td>For</td>";} ?>
+                    <?php if($table == "ew_car"){echo "<td>Model</td>";} ?>
+                    <td>Color</td>
+                    <?php if($table == "ew_car"){echo "<td>Condition</td>";} ?>
+                    <td>InStock</td>
+                    <td>Warning</td>
+                    <td>Location</td>
+                    <td>LastCountingEvent</td>
+                    <td>Action</td>
+                </tr>
+                <?php
+                while ($row_1 = mysql_fetch_assoc($result_info_1)) {
+                    $c_event_name_tmp = get_c_event_by('c_event_id', $row_1["last_counting_event"])['c_event_name'];
+                    $c_event_name_tmp = ($c_event_name_tmp==false)?"N/A":$c_event_name_tmp;
+                    ?>
+                    <tr>
+                        <td><a href="stock_counting.php?barcode=<?php echo $row_1["barcode"]; ?>">
+                                <?php echo $row_1["barcode"]; ?>
+                            </a>
+                        </td>
+                        <td><?php echo $row_1["name"]; ?></td>
+                        <td><?php echo $row_1["category"]; ?></td>
+                        <?php if($table == "ew_part"){echo "<td>".$row_1["sub_category"]."</td>";} ?>
+                        <?php if($table == "ew_car"){echo "<td>".$row_1["model"]."</td>";} ?>
+                        <td><?php echo $row_1["color"]; ?></td>
+                        <?php if($table == "ew_car"){echo "<td>".$row_1["condition"]."</td>";} ?>
+                        <td><?php echo $row_1["quantity"]; ?></td>
+                        <td><?php if($row_1["w_quantity"] =='0'){ echo "n/a";}else{ echo $row_1["w_quantity"];}; ?></td>
+                        <td><?php echo $row_1["l_zone"]."_".$row_1["l_column"]."_".$row_1["l_level"]; ?></td>
+                        <td><?php echo $c_event_name_tmp;?></td>
+                        <td><a href="stock_counting.php?edit_mode=1&barcode=<?php echo $row_1["barcode"]; ?>">Edit</a></td>
+                    </tr>
+                    <?php
+                };
+                ?>
+            </table>
+
+
+            <div class="cleaner h30"></div>
+            <div class="cleaner"></div>
+            <div class="cleaner"></div>
+        </div> <!-- end of a content box -->
+        <div class="content_box_bottom"></div>
+    </div> <!-- end of main -->

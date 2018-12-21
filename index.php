@@ -23,6 +23,7 @@ if($_GET['do']=='logout'){
     setcookie('is_to_omit_cart_enter_page',null,time()-3600);
     setcookie('is_warehouse_admin',null,time()-3600);
     setcookie('has_opened_noti_carts_tbp',null,time()-3600);
+    setcookie('selected_c_c_event_id',null,time()-3600);
     die('<meta http-equiv="refresh" content="0;URL=login.php">');
 }
 

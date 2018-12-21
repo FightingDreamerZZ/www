@@ -102,7 +102,7 @@ if(isset($_GET['txt_part_num_yigao'])){
 //    $confirmed = false;
 //    echo "<script>
 //            let r=confirm('Following changes will be made to database: ' +
-//             'The part number (YiGao) of [".$_GET['barcode']."]".get_anything($_GET['barcode'],'name')." will be changed to ".$_GET['txt_part_num_yigao']."');
+//             'The part number (Eagle) of [".$_GET['barcode']."]".get_anything($_GET['barcode'],'name')." will be changed to ".$_GET['txt_part_num_yigao']."');
 //            if (r==true) {
 //                ".."
 //            }
@@ -235,7 +235,7 @@ include('header.php');
     <th>Barcode</th>
     <th style="min-width: 70px">Name</th>
     <th>*Part Number</th>
-    <th>Part Number(YiGao)</th>
+    <th>Part Number(Eagle)</th>
     <!--<td>Category</td>-->
     <?php //if($table == "ew_part"){echo "<td>For</td>";} ?>
     <?php //if($table == "ew_car"){echo "<td>Model</td>";} ?>

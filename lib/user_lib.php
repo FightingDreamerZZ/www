@@ -688,14 +688,15 @@ function add_new_part($barcode, $name, $photo_url, $part_num, $part_num_yigao, $
                       $color, $p_price, $w_price, $r_price, $quantity, $w_quantity, $l_zone, $l_column, $l_level,
                       $des, $xsearch, $organizing201809, $last_counting_event){
     $sql_code = "INSERT INTO `ew_part` 
-	(`barcode`, `name`, `photo_url`, `part_num`, `category`, `sub_category`, `color`, 
+	(`barcode`, `name`, `photo_url`, `part_num`, `part_num_yigao`, `category`, `sub_category`, `color`, 
 	`p_price`, `w_price`, `r_price`, `quantity`, `w_quantity`, `l_zone`, `l_column`, `l_level`, 
 	`date`, `des`, `xsearch`, `organizing201809`, `last_counting_event`) 
 	VALUE ('$barcode', '$name', '$photo_url', '$part_num', '$part_num_yigao', '$category', '$sub_category', 
 	'$color', '$p_price', '$w_price', '$r_price', '$quantity', '$w_quantity', '$l_zone', '$l_column', '$l_level', 
-	CURRENT_TIMESTAMP, '$des', '$xsearch', '$organizing201809', '$last_counting_event');";
+	CURRENT_TIMESTAMP, '$des', '$xsearch', '$organizing201809', $last_counting_event);";
 
     if (!($result=mysql_query($sql_code))) {
+        echo $sql_code;
         return false;
     }
     else{

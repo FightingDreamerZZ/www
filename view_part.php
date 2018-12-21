@@ -123,7 +123,7 @@ include('header.php');
 	<li>Name: <?php echo($a_check['name']); ?></li>
 	<li>Barcode: <?php echo($a_check['barcode']); ?></li>
 	<li title="This part number is for AGT. They are older, more stable and referred on our product manuals.">Part Number: <?php echo($a_check['part_num']); ?></li>
-    <li title="The newest part number on the domestic, Yigao side. It is useful when ordering parts from them.">Part Number (YiGao): <?php echo($a_check['part_num_yigao']); ?></li>
+    <li title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">Part Number (Eagle): <?php echo($a_check['part_num_yigao']); ?></li>
 	<li>Category: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['category']); ?>"><?php echo($a_check['category']); ?></a></li>
 	<li>For: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['sub_category']); ?>"><?php echo($a_check['sub_category']); ?></a></li>
 	<li>Color: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['color']); ?>"><?php echo($a_check['color']); ?></a></li>
