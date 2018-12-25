@@ -573,275 +573,524 @@ temp;
         <!--zz /countingEvent ddl-->
 
 
-        <div id="main">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Default Example <small>Users</small></h2>
+                        <btn class="btn btn-default btn-sm" id="btn_toggle_edit" onclick="btn_toggle_edit()">Toggle edit</btn>
+                        <btn class="btn btn-default btn-sm float_r" id="btn_toggle_edit" onclick="btn_show_add_new()">Add New Part</btn>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <!--                            <li class="dropdown">-->
+                            <!--                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>-->
+                            <!--                                <ul class="dropdown-menu" role="menu">-->
+                            <!--                                    <li><a href="#">Settings 1</a>-->
+                            <!--                                    </li>-->
+                            <!--                                    <li><a href="#">Settings 2</a>-->
+                            <!--                                    </li>-->
+                            <!--                                </ul>-->
+                            <!--                            </li>-->
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
 
-        <div class="content_box_top"></div>
-        <div class="content_box">
+                        <!--zz view part-->
+                        <div id="div_view_part" <?php echo $display_view_section;?>>
+                            <h2>View Parts</h2>
 
-            <btn class="btn btn-default btn-sm" id="btn_toggle_edit" onclick="btn_toggle_edit()">Toggle edit</btn>
-            <btn class="btn btn-default btn-sm float_r" id="btn_toggle_edit" onclick="btn_show_add_new()">Add New Part</btn>
+                            <div class="cleaner"></div>
+                            <div class="cleaner h30"></div>
 
-            <!--zz view part-->
-            <div id="div_view_part" <?php echo $display_view_section;?>>
-                <h2>View Parts</h2>
-                <div class="cleaner"></div>
-            <div class="cleaner h30"></div>
-            <div class="col_w320 float_r">
-                <ul class = "list">
-                    <li>Name: <?php echo($a_check['name']); ?></li>
-                    <li>Barcode: <?php echo($a_check['barcode']); ?></li>
-                    <li title="This part number is for AGT. They are older, more stable and referred on our product manuals.">Part Number: <?php echo($a_check['part_num']); ?></li>
-                    <li title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">Part Number (Eagle): <?php echo($a_check['part_num_yigao']); ?></li>
-                    <li>Category: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['category']); ?>"><?php echo($a_check['category']); ?></a></li>
-                    <li>For: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['sub_category']); ?>"><?php echo($a_check['sub_category']); ?></a></li>
-                    <li>Color: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['color']); ?>"><?php echo($a_check['color']); ?></a></li>
-                    <li>Purchase Price: <?php echo($a_check['p_price']); ?></li>
-                    <li>Wholesale Price: <?php echo($a_check['w_price']); ?></li>
-                    <li>Retail Price: <?php echo($a_check['r_price']); ?></li>
-                    <li>Quantity: <?php echo($a_check['quantity']); ?></li>
-                    <li>Stock Warning: <?php echo($a_check['w_quantity']); ?></li>
-                    <li>Location: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?>"><?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?></a></li>
-                    <li>Latest Update: <?php echo($a_check['date']); ?></li>
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12"><!--left column-->
+                                    <h4>Photo Preview</h4>
+                                    <a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
+                                        <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class ="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>" />
 
-                    <!--    zz temp for organizing1809-->
-                    <label>Flag Organizing1809: <?php echo($a_check['organizing201809']); ?></label>
+                                        <!--    width="300" height="300" class="image_wrapper" -->
+                                    </a>
+<!--                                    <div class="col-md-5 col-sm-3 col-xs-12 text-right">-->
+<!--                                        Photo-->
+<!--                                    </div>-->
+<!--                                    <span class="col-md-7 col-sm-3 col-xs-12 text-right">-->
+<!--                                        --><?php //echo($a_check['photo_url']); ?>
+<!--                                    </span>-->
+                                </div>
+                                <div class="col-md-4 col-xs-12">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Name
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['name']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Barcode
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['barcode']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Part Number
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['part_num']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-5 col-sm-3 col-xs-12 text-right">
+                                                    Part Number (Eagle)
+                                                </th>
+                                                <td class="col-md-7 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['part_num_yigao']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Category
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['category']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Color
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['color']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Purchase Price
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['p_price']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Wholesale Price
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['w_price']); ?>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!--middle column-->
+                                <div class="col-md-4 col-xs-12">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th class="col-md-5 col-sm-3 col-xs-12 text-right">
+                                                    Retail Price
+                                                </th>
+                                                <td class="col-md-7 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['r_price']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-5 col-sm-3 col-xs-12 text-right">
+                                                    Quantity
+                                                </th>
+                                                <td class="col-md-7 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['quantity']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Stock Warning
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['w_quantity']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Location
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <a href="search.php?table=ew_part&keyword=<?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?>"><?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Latest Update
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['date']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Flag Organizing1809
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['organizing201809']); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Last Counting Event
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($c_event_name); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                    Description
+                                                </th>
+                                                <td class="col-md-9 col-sm-9 col-xs-12 text-left">
+                                                    <?php echo($a_check['des']); ?>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!--right column-->
+                            </div>
 
-                    <li title="Last Counting Event that the part has involved and counted..">
-                        Last Counting Event: <?php echo($c_event_name); ?>
-                    </li>
-                    <li>Description: <?php echo($a_check['des']); ?></li>
+<!--                            <div class="col_w320 float_l">-->
+<!--                                <h4>Photo Preview</h4>-->
+<!--                                <a href="--><?php //echo($a_check['photo_url']); ?><!--" target="_blank">-->
+<!--                                    <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class ="withborder" src="--><?php //echo get_thumb($a_check['photo_url']); ?><!--" />-->
+<!---->
+<!--                                    <!--    width="300" height="300" class="image_wrapper" -->
+<!--                                </a>-->
+<!--                                <p>-->
+<!--                                    <a href="edit_part.php?barcode=--><?php //echo($a_check['barcode']); ?><!--">[Edit Profile]</a>-->
+<!--                                    <a href="enter.php?barcode=--><?php //echo($a_check['barcode']); ?><!--">[Quick Enter]</a>-->
+<!--                                    <a href="depart.php?barcode=--><?php //echo($a_check['barcode']); ?><!--">[Quick Depart]</a>-->
+<!--                                </p>-->
+<!---->
+<!--                            </div>-->
 
-                </ul>
-            </div>
+                            <div class="cleaner h20"></div>
 
-            <div class="col_w320 float_l">
-                <h4>Photo Preview</h4>
-                <a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
-                    <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class ="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>" />
-
-                    <!--    width="300" height="300" class="image_wrapper" -->
-                </a>
-                <p>
-                    <a href="edit_part.php?barcode=<?php echo($a_check['barcode']); ?>">[Edit Profile]</a>
-                    <a href="enter.php?barcode=<?php echo($a_check['barcode']); ?>">[Quick Enter]</a>
-                    <a href="depart.php?barcode=<?php echo($a_check['barcode']); ?>">[Quick Depart]</a>
-                </p>
-
-            </div>
-
-            <div class="cleaner h20"></div>
-
-            <h4>Associated Part</h4>
-            <div id="attach_part"></div>
+                            <h4>Associated Part</h4>
+                            <div id="attach_part"></div>
 
 
-            <div class="cleaner h30"></div>
-            <div class="cleaner"></div>
-            <div class="cleaner"></div>
-            </div>
-            <!--zz /view part-->
+                            <div class="cleaner h30"></div>
+                            <div class="cleaner"></div>
+                            <div class="cleaner"></div>
+                        </div>
+                        <!--zz /view part-->
 
-            <!--zz edit part-->
-            <div id="div_edit_part" <?php echo $display_edit_section;?>>
-            <h2>Edit Part Profile</h2>
-            <div class="cleaner"></div>
-            <p>You should no change barcode for an exsiting part for any reason. Each input field should not exceed max allowed size or violate corresponding data type in DB. Details refers to [section 2.2.5 Table: ew_part] in design document.</p>
-            <div class="cleaner h30"></div>
-            <div class="col_w320 float_r">
-                <div id="newcar_form">
+                        <!--zz edit part-->
+                        <div id="div_edit_part" <?php echo $display_edit_section;?>>
+                            <h2>Edit Part</h2>
+<!--                            <div class="cleaner"></div>-->
+                            <p>You should no change barcode for an exsiting part for any reason. Each input field should not exceed max allowed size or violate corresponding data type in DB. Details refers to [section 2.2.5 Table: ew_part] in design document.</p>
+<!--                            <div class="cleaner h30"></div>-->
+<!--                            <div class="col_w320 float_r">-->
+                            <form class="form-horizontal form-label-left"
+                                name="form" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Photo</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <label class="btn btn-default">
+                                                Browse <input type="file" name="file" hidden
+                                                    onchange="$('#upload-file-name').html(this.files[0].name)">
+                                            </label><span class="" id="upload-file-name"></span>
+                                            <input type="text" class="form-control"
+                                                   style="display:none;" name="photo_url" value="<?php echo($a_check['photo_url']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Barcode</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="barcode"
+                                                   value="<?php echo($a_check['barcode']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="name"
+                                                   value="<?php echo($a_check['name']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Part Number</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="part_num"
+                                                   value="<?php echo($a_check['part_num']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Part Number (Eagle)</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="part_num_yigao"
+                                                   value="<?php echo($a_check['part_num_yigao']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Category</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <select name="category" class="form-control">
+                                                <option value="body" <?php if($a_check['category'] == 'body'){ echo("selected=\"selected\"");} ?>>Body</option>
+                                                <option value="accessory" <?php if($a_check['category'] == 'accessory'){ echo("selected=\"selected\"");} ?>>Accessory</option>
+                                                <option value="tire_and_rim" <?php if($a_check['category'] == 'tire_and_rim'){ echo("selected=\"selected\"");} ?>>Tire and Rim</option>
+                                                <option value="mechanical" <?php if($a_check['category'] == 'mechanical'){ echo("selected=\"selected\"");} ?>>Mechanical</option>
+                                                <option value="electrical" <?php if($a_check['category'] == 'electrical'){ echo("selected=\"selected\"");} ?>>Electrical</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Color</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="color"
+                                                   value="<?php echo($a_check['color']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Purchase Price</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="p_price"
+                                                   value="<?php echo($a_check['p_price']); ?>"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="quantity"
+                                                   value="<?php echo($a_check['quantity']); ?>"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
 
-                    <form name="form" method="post" enctype="multipart/form-data">
-                        <label>Photo:</label><input type="file" name="file"><input type="text" style="display:none;" name="photo_url" value="<?php echo($a_check['photo_url']); ?>"/><br>
-                        <label>Barcode: </label><input type="text" name="barcode" value="<?php echo($a_check['barcode']); ?>"/><br />
-                        <label>Car Name: </label><input type="text" name="name" value="<?php echo($a_check['name']); ?>"/><br />
-                        <label title="This part number is for AGT. They are older, more stable and referred on our product manuals.">
-                            Part Number: </label><input type="text" name="part_num" value="<?php echo($a_check['part_num']); ?>"/><br />
-                        <label title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">
-                            Part Number (Eagle): </label><input type="text" name="part_num_yigao" value="<?php echo($a_check['part_num_yigao']); ?>"/><br />
 
-                        <label>Category: </label>
-                        <select name="category">
-                            <option value="body" <?php if($a_check['category'] == 'body'){ echo("selected=\"selected\"");} ?>>Body</option>
-                            <option value="accessory" <?php if($a_check['category'] == 'accessory'){ echo("selected=\"selected\"");} ?>>Accessory</option>
-                            <option value="tire_and_rim" <?php if($a_check['category'] == 'tire_and_rim'){ echo("selected=\"selected\"");} ?>>Tire and Rim</option>
-                            <option value="mechanical" <?php if($a_check['category'] == 'mechanical'){ echo("selected=\"selected\"");} ?>>Mechanical</option>
-                            <option value="electrical" <?php if($a_check['category'] == 'electrical'){ echo("selected=\"selected\"");} ?>>Electrical</option>
-                        </select><br />
+                                <div id="newcar_form">
 
-                        <!--<label>For: </label>-->
-                        <!--<input type="checkbox" name="sub1" value="CLUB" --><?php //if (strpos($a_check['sub_category'], 'CLUB') !== false){echo "checked";} ?><!-- >CLUB-->
-                        <!--<input type="checkbox" name="sub2" value="EZGO" --><?php //if (strpos($a_check['sub_category'], 'EZGO') !== false){echo "checked";} ?><!-- >EZGO-->
-                        <!--<input type="checkbox" name="sub3" value="AGT" --><?php //if (strpos($a_check['sub_category'], 'AGT') !== false){echo "checked";} ?><!-- >AGT-->
-                        <!--<input type="checkbox" name="sub4" value="YAMAHA" --><?php //if (strpos($a_check['sub_category'], 'YAMAHA') !== false){echo "checked";} ?><!-- >YAMAHA-->
-                        <!--<br />-->
-                        <label>Color: </label><input type="text" name="color" value="<?php echo($a_check['color']); ?>"/><br />
-                        <label>Purchase Price: </label><input type="text" name="p_price" value="<?php echo($a_check['p_price']); ?>"/><br />
-                        <label>Wholesale Price: </label><input type="text" name="w_price" value="<?php echo($a_check['w_price']); ?>"/><br />
-                        <label>Retail Price: </label><input type="text" name="r_price" value="<?php echo($a_check['r_price']); ?>"/><br />
-                        <label>Quantity: <?php /*echo($a_check['quantity']); */?></label><input type="text" style="/*display:none;*/" name="quantity" value="<?php echo($a_check['quantity']); ?>"/><br />
-                        <label>Warning Quantity: </label><input type="text" name="w_quantity" value="<?php echo($a_check['w_quantity']); ?>"/><br />
-                        <!--    zz-->
-                        <img src="images/map.gif" height="" width="300" style="margin-top: 10px;margin-bottom: 10px" usemap="#map1">
-                        <map id="map1" name="map2">
-                            <area shape="rect" coords="98,46,240,104" alt="" title="P1" onclick="testzz()" style="cursor: pointer"/>
-                            <script>
-                                function testzz() {
-                                    // alert("haha");
-                                    // history.go(-1);
-                                    window.location = '#location_z';
-                                    document.getElementById("location_z").value="P1";
-                                    document.form.l_column.value = '';
-                                    document.form.l_column.focus();
-                                }
-                            </script>
-                        </map>
-                        <!--    zz-->
-                        <label>Location Zone: </label><!--zz --><input id="location_z" type="text" name="l_zone" value="<?php echo($a_check['l_zone']); ?>"/><br />
-                        <label>Location Column: </label><input type="text" name="l_column" value="<?php echo($a_check['l_column']); ?>"/><br />
-                        <label>Location Level: </label><input type="text" name="l_level" value="<?php echo($a_check['l_level']); ?>"/><br />
+                                    <form name="form" method="post" enctype="multipart/form-data">
+                                        <label>Photo:</label><input type="file" name="file"><input type="text" style="display:none;" name="photo_url" value="<?php echo($a_check['photo_url']); ?>"/><br>
+                                        <label>Barcode: </label><input type="text" name="barcode" value="<?php echo($a_check['barcode']); ?>"/><br />
+                                        <label>Car Name: </label><input type="text" name="name" value="<?php echo($a_check['name']); ?>"/><br />
+                                        <label title="This part number is for AGT. They are older, more stable and referred on our product manuals.">
+                                            Part Number: </label><input type="text" name="part_num" value="<?php echo($a_check['part_num']); ?>"/><br />
+                                        <label title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">
+                                            Part Number (Eagle): </label><input type="text" name="part_num_yigao" value="<?php echo($a_check['part_num_yigao']); ?>"/><br />
 
-                        <!--    zz temp for organizing1809-->
-                        <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value="<?php echo($a_check['organizing201809']); ?>"/><br />
+                                        <label>Category: </label>
+                                        <select name="category">
+                                            <option value="body" <?php if($a_check['category'] == 'body'){ echo("selected=\"selected\"");} ?>>Body</option>
+                                            <option value="accessory" <?php if($a_check['category'] == 'accessory'){ echo("selected=\"selected\"");} ?>>Accessory</option>
+                                            <option value="tire_and_rim" <?php if($a_check['category'] == 'tire_and_rim'){ echo("selected=\"selected\"");} ?>>Tire and Rim</option>
+                                            <option value="mechanical" <?php if($a_check['category'] == 'mechanical'){ echo("selected=\"selected\"");} ?>>Mechanical</option>
+                                            <option value="electrical" <?php if($a_check['category'] == 'electrical'){ echo("selected=\"selected\"");} ?>>Electrical</option>
+                                        </select><br />
 
-                        <label>Last Counting Event: </label>
-                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
-                            <?php
-                            foreach($array_c_events as $c_event){
-                                $c_event_name_temp=$c_event['c_event_name'];
-                                $c_event_id_temp=$c_event['c_event_id'];
-                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
-                                echo <<<temp
+                                        <!--<label>For: </label>-->
+                                        <!--<input type="checkbox" name="sub1" value="CLUB" --><?php //if (strpos($a_check['sub_category'], 'CLUB') !== false){echo "checked";} ?><!-- >CLUB-->
+                                        <!--<input type="checkbox" name="sub2" value="EZGO" --><?php //if (strpos($a_check['sub_category'], 'EZGO') !== false){echo "checked";} ?><!-- >EZGO-->
+                                        <!--<input type="checkbox" name="sub3" value="AGT" --><?php //if (strpos($a_check['sub_category'], 'AGT') !== false){echo "checked";} ?><!-- >AGT-->
+                                        <!--<input type="checkbox" name="sub4" value="YAMAHA" --><?php //if (strpos($a_check['sub_category'], 'YAMAHA') !== false){echo "checked";} ?><!-- >YAMAHA-->
+                                        <!--<br />-->
+                                        <label>Color: </label><input type="text" name="color" value="<?php echo($a_check['color']); ?>"/><br />
+                                        <label>Purchase Price: </label><input type="text" name="p_price" value="<?php echo($a_check['p_price']); ?>"/><br />
+                                        <label>Wholesale Price: </label><input type="text" name="w_price" value="<?php echo($a_check['w_price']); ?>"/><br />
+                                        <label>Retail Price: </label><input type="text" name="r_price" value="<?php echo($a_check['r_price']); ?>"/><br />
+                                        <label>Quantity: <?php /*echo($a_check['quantity']); */?></label><input type="text" style="/*display:none;*/" name="quantity" value="<?php echo($a_check['quantity']); ?>"/><br />
+                                        <label>Warning Quantity: </label><input type="text" name="w_quantity" value="<?php echo($a_check['w_quantity']); ?>"/><br />
+                                        <!--    zz-->
+                                        <img src="images/map.gif" height="" width="300" style="margin-top: 10px;margin-bottom: 10px" usemap="#map1">
+                                        <map id="map1" name="map2">
+                                            <area shape="rect" coords="98,46,240,104" alt="" title="P1" onclick="testzz()" style="cursor: pointer"/>
+                                            <script>
+                                                function testzz() {
+                                                    // alert("haha");
+                                                    // history.go(-1);
+                                                    window.location = '#location_z';
+                                                    document.getElementById("location_z").value="P1";
+                                                    document.form.l_column.value = '';
+                                                    document.form.l_column.focus();
+                                                }
+                                            </script>
+                                        </map>
+                                        <!--    zz-->
+                                        <label>Location Zone: </label><!--zz --><input id="location_z" type="text" name="l_zone" value="<?php echo($a_check['l_zone']); ?>"/><br />
+                                        <label>Location Column: </label><input type="text" name="l_column" value="<?php echo($a_check['l_column']); ?>"/><br />
+                                        <label>Location Level: </label><input type="text" name="l_level" value="<?php echo($a_check['l_level']); ?>"/><br />
+
+                                        <!--    zz temp for organizing1809-->
+                                        <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value="<?php echo($a_check['organizing201809']); ?>"/><br />
+
+                                        <label>Last Counting Event: </label>
+                                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
+                                            <?php
+                                            foreach($array_c_events as $c_event){
+                                                $c_event_name_temp=$c_event['c_event_name'];
+                                                $c_event_id_temp=$c_event['c_event_id'];
+                                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
+                                                echo <<<temp
                                 <option value="$c_event_id_temp" {$selected_temp}>
                                     {$c_event_name_temp}
                                 </option>
 temp;
+                                            }
+                                            ?>
+                                            <option value="NULL" {$selected_temp}>
+                                                NULL (not belong to any)
+                                            </option>
+                                        </select><br />
+
+                                        <label>Description: </label><br/>
+                                        <textarea rows="4" cols="50" name="des"><?php echo($a_check['des']); ?></textarea><br/>
+                                        <input type="submit" name="submit_edit" class="submit_btn float_l" value="Edit"/>
+                                    </form>
+
+                                </div>
+                            </div>
+                        <style>
+                            [hidden] {
+                                display: none !important;
                             }
-                            ?>
-                            <option value="NULL" {$selected_temp}>
-                                NULL (not belong to any)
-                            </option>
-                        </select><br />
+                        </style>
 
-                        <label>Description: </label><br/>
-                        <textarea rows="4" cols="50" name="des"><?php echo($a_check['des']); ?></textarea><br/>
-                        <input type="submit" name="submit_edit" class="submit_btn float_l" value="Edit"/>
-                    </form>
+                            <div class="col_w320 float_l">
+                                <h4>Photo Preview</h4>
 
-                </div>
-            </div>
+                                <!--<div style="width: 300px;height: 300px;" class="withborder">-->
+                                <a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
+                                    <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>"/>
+                                    <!--        class="image_wrapper"-->
+                                </a>
+                                <!--</div>-->
+                                <div class="cleaner h10"></div>
+                                <p><a href="edit_part.php?barcode=<?php echo $a_check["barcode"]; ?>&do=del">[ Delete ]</a> - Warning, delete will set the part quantity to "0" and warning quantity to "-1".</p>
+                                <h4>Associated Part </h4>
+                                <form name="form2" method="get" action="ajax/attach_part.php">
+                                    <input type="text" style="display:none;" name="do" value="add"/><input type="text" style="display:none;" name="main" value="<?php echo $a_check["barcode"]; ?>"/>
+                                    Attach:<input type="text" class="input_field_w w90" name="attach"/>Amount:<input type="text" class="input_field_w w50" name="amount"/> <input type="submit" class="submit_btn" value="Add"/>
+                                </form>
+                                <div class="cleaner h10"></div>
+                                <div id="attach_part"></div>
 
-            <div class="col_w320 float_l">
-                <h4>Photo Preview</h4>
-
-                <!--<div style="width: 300px;height: 300px;" class="withborder">-->
-                <a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
-                    <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>"/>
-                    <!--        class="image_wrapper"-->
-                </a>
-                <!--</div>-->
-                <div class="cleaner h10"></div>
-                <p><a href="edit_part.php?barcode=<?php echo $a_check["barcode"]; ?>&do=del">[ Delete ]</a> - Warning, delete will set the part quantity to "0" and warning quantity to "-1".</p>
-                <h4>Associated Part </h4>
-                <form name="form2" method="get" action="ajax/attach_part.php">
-                    <input type="text" style="display:none;" name="do" value="add"/><input type="text" style="display:none;" name="main" value="<?php echo $a_check["barcode"]; ?>"/>
-                    Attach:<input type="text" class="input_field_w w90" name="attach"/>Amount:<input type="text" class="input_field_w w50" name="amount"/> <input type="submit" class="submit_btn" value="Add"/>
-                </form>
-                <div class="cleaner h10"></div>
-                <div id="attach_part"></div>
-
-            </div>
+                            </div>
 
 
-            <div class="cleaner h30"></div>
-            <div class="cleaner"></div>
-            <div class="cleaner"></div>
-            </div>
-            <!--zz /edit part-->
+                            <div class="cleaner h30"></div>
+                            <div class="cleaner"></div>
+                            <div class="cleaner"></div>
+                        </div>
+                        <!--zz /edit part-->
 
-            <!--zz new part-->
-            <div id="div_add_new_part">
-            <h2>Add a New Part</h2>
-            <div class="cleaner"></div>
-            <p>Barcode has to be a unique 12 digits number. If you are not familiar with unique number generation algorithms, simply leave it unchanged. If you wish to only create a type of part without any inventory, please set quantity to 0, otherwise please specify inventory quantity.</p>
-            <div class="cleaner h30"></div>
+                        <!--zz new part-->
+                        <div id="div_add_new_part">
+                            <h2>Add a New Part</h2>
+                            <div class="cleaner"></div>
+                            <p>Barcode has to be a unique 12 digits number. If you are not familiar with unique number generation algorithms, simply leave it unchanged. If you wish to only create a type of part without any inventory, please set quantity to 0, otherwise please specify inventory quantity.</p>
+                            <div class="cleaner h30"></div>
 
-            <div class="col_w320 float_r">
-                <div id="newcar_form">
-                    <form name="form" method="post" enctype="multipart/form-data">
-                        <label>Photo:</label><input type="file" name="file"><br>
-                        <label>Barcode: </label><input type="text" name="barcode" value ="<?php echo "1".substr(round(microtime(true) * 1000),0, -2); ?>"/><br />
-                        <label>Name: </label><input type="text" name="name"/><br />
-                        <label>Part Number: </label><input type="text" name="part_num"/><br />
-                        <label title="The newest part number on the domestic, Eaglee side. It is useful when ordering parts from them.">
-                            Part Number (Eagle): </label><input type="text" name="part_num_yigao"/><br />
-                        <label>Category: </label>
-                        <select name="category">
-                            <option value="body">Body</option>
-                            <option value="accessory">Accessory</option>
-                            <option value="tire_and_rim">Tire and Rim</option>
-                            <option value="mechanical">Mechanical</option>
-                            <option value="electrical">Electrical</option>
-                        </select><br />
-                        <!--<label>For:</label>-->
-                        <!--<input type="checkbox" name="sub1" value="CLUB">CLUB-->
-                        <!--<input type="checkbox" name="sub2" value="EZGO">EZGO-->
-                        <!--<input type="checkbox" name="sub3" value="AGT">AGT-->
-                        <!--<input type="checkbox" name="sub4" value="YAMAHA">YAMAHA<br />-->
-                        <label>Color: </label><input type="text" name="color" value="default"/><br />
-                        <label>Purchase Price: </label><input type="text" name="p_price" value="0"/><br />
-                        <label>Wholesale Price: </label><input type="text" name="w_price"value="0"/><br />
-                        <label>Retail Price: </label><input type="text" name="r_price" value="0"/><br />
-                        <label>Quantity: </label><input type="text" name="quantity"value="0"/><br />
-                        <label>Warning Quantity: </label><input type="text" name="w_quantity" value="0"/><br />
-                        <label>Location Zone: </label><input type="text" name="l_zone" value=""/><br />
-                        <label>Location Column: </label><input type="text" name="l_column" value=""/><br />
-                        <label>Location Level: </label><input type="text" name="l_level"value=""/><br />
-                        <label>Description: </label><br/>
-                        <textarea rows="4" cols="50" name="des">
+                            <div class="col_w320 float_r">
+                                <div id="newcar_form">
+
+                                    <div class="row">
+                                        <div class="col-md-6 col-xs-12">
+
+                                        </div>
+                                        <div class="col-md-6 col-xs-12">
+
+                                        </div>
+                                    </div>
+
+                                    <form class="form-horizontal form-label-left"
+                                          name="form" method="post" enctype="multipart/form-data">
+                                        <label>Photo:</label><input type="file" name="file"><br>
+                                        <label>Barcode: </label><input type="text" name="barcode" value ="<?php echo "1".substr(round(microtime(true) * 1000),0, -2); ?>"/><br />
+                                        <label>Name: </label><input type="text" name="name"/><br />
+                                        <label>Part Number: </label><input type="text" name="part_num"/><br />
+                                        <label title="The newest part number on the domestic, Eaglee side. It is useful when ordering parts from them.">
+                                            Part Number (Eagle): </label><input type="text" name="part_num_yigao"/><br />
+                                        <label>Category: </label>
+                                        <select name="category">
+                                            <option value="body">Body</option>
+                                            <option value="accessory">Accessory</option>
+                                            <option value="tire_and_rim">Tire and Rim</option>
+                                            <option value="mechanical">Mechanical</option>
+                                            <option value="electrical">Electrical</option>
+                                        </select><br />
+                                        <!--<label>For:</label>-->
+                                        <!--<input type="checkbox" name="sub1" value="CLUB">CLUB-->
+                                        <!--<input type="checkbox" name="sub2" value="EZGO">EZGO-->
+                                        <!--<input type="checkbox" name="sub3" value="AGT">AGT-->
+                                        <!--<input type="checkbox" name="sub4" value="YAMAHA">YAMAHA<br />-->
+                                        <label>Color: </label><input type="text" name="color" value="default"/><br />
+                                        <label>Purchase Price: </label><input type="text" name="p_price" value="0"/><br />
+                                        <label>Wholesale Price: </label><input type="text" name="w_price"value="0"/><br />
+                                        <label>Retail Price: </label><input type="text" name="r_price" value="0"/><br />
+                                        <label>Quantity: </label><input type="text" name="quantity"value="0"/><br />
+                                        <label>Warning Quantity: </label><input type="text" name="w_quantity" value="0"/><br />
+                                        <label>Location Zone: </label><input type="text" name="l_zone" value=""/><br />
+                                        <label>Location Column: </label><input type="text" name="l_column" value=""/><br />
+                                        <label>Location Level: </label><input type="text" name="l_level"value=""/><br />
+                                        <label>Description: </label><br/>
+                                        <textarea rows="4" cols="50" name="des">
                         </textarea><br/>
-                        <!--    zz temp for organizing1809-->
-                        <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value=""/><br />
+                                        <!--    zz temp for organizing1809-->
+                                        <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value=""/><br />
 
-                        <label>Last Counting Event: </label>
-                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
-                            <?php
-                            foreach($array_c_events as $c_event){
-                                $c_event_name_temp=$c_event['c_event_name'];
-                                $c_event_id_temp=$c_event['c_event_id'];
-                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
-                                echo <<<temp
+                                        <label>Last Counting Event: </label>
+                                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
+                                            <?php
+                                            foreach($array_c_events as $c_event){
+                                                $c_event_name_temp=$c_event['c_event_name'];
+                                                $c_event_id_temp=$c_event['c_event_id'];
+                                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
+                                                echo <<<temp
                                 <option value="$c_event_id_temp" {$selected_temp}>
                                     {$c_event_name_temp}
                                 </option>
 temp;
-                            }
-                            ?>
-                            <option value="NULL" {$selected_temp}>
-                                NULL (not belong to any)
-                            </option>
-                        </select><br />
+                                            }
+                                            ?>
+                                            <option value="NULL" {$selected_temp}>
+                                                NULL (not belong to any)
+                                            </option>
+                                        </select><br />
 
-                        <input type="submit" name="submit_new" value="Create"/>
-                    </form>
-                </div>
-            </div>
-            <div class="col_w320 float_l">
-                <h4>Photo Preview</h4>
-                <a href="<?php echo($defaultset[photo]); ?>" target="_blank"><img width="300" height="300" class ="withborder" src="<?php echo($defaultset[photo]); ?>" class="image_wrapper" /></a>
-            </div>
+                                        <input type="submit" name="submit_new" value="Create"/>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col_w320 float_l">
+                                <h4>Photo Preview</h4>
+                                <a href="<?php echo($defaultset[photo]); ?>" target="_blank"><img width="300" height="300" class ="withborder" src="<?php echo($defaultset[photo]); ?>" class="image_wrapper" /></a>
+                            </div>
 
-            <div class="cleaner h30"></div>
-            <div class="cleaner"></div>
-            <div class="cleaner"></div>
+                            <div class="cleaner h30"></div>
+                            <div class="cleaner"></div>
+                            <div class="cleaner"></div>
+                        </div>
+                        <!--zz /new part-->
+                    </div><!--x_content-->
+                </div><!--x_panel-->
             </div>
-            <!--zz /new part-->
-
-        </div> <!-- end of a content box -->
-        <div class="content_box_bottom"></div>
-    </div> <!-- end of main -->
+        </div>
 
     </div>
     <!-- /page content -->
+
     <style>
         #div_add_new_part {
             display: none;

@@ -586,3 +586,174 @@ var_dump($result);
         </div> <!-- end of a content box -->
         <div class="content_box_bottom"></div>
     </div> <!-- end of main -->
+
+//zz layout bootstrap
+<form class="form-horizontal form-label-left">
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-12">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
+                                            <p class="col-md-9 col-sm-9 col-xs-12"><?php echo($a_check['name']); ?></p>
+<!--                                            <div class="col-md-9 col-sm-9 col-xs-12">-->
+<!--                                                <input type="text" class="form-control" disabled-->
+<!--                                                    value="--><?php //echo($a_check['name']); ?><!--"/>-->
+<!--                                            </div>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Barcode</label>
+                                            <p class="col-md-9 col-sm-9 col-xs-12"><?php echo($a_check['name']); ?></p>
+<!--                                            <div class="col-md-9 col-sm-9 col-xs-12">-->
+<!--                                                <input type="text" class="form-control" disabled-->
+<!--                                                       value="--><?php //echo($a_check['barcode']); ?><!--"/>-->
+<!--                                            </div>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Part Number</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['part_num']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Part Number (Eagle)</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['part_num_yigao']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Category</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['category']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Color</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['color']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Purchase Price</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['p_price']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Wholesale Price</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['w_price']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Retail Price</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['r_price']); ?>"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['quantity']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Stock Warning</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['w_quantity']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Location</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <a href="search.php?table=ew_part&keyword=<?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?>">
+                                                    <?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?></a>
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['quantity']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['quantity']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['quantity']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['quantity']); ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" disabled
+                                                       value="<?php echo($a_check['quantity']); ?>"/>
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+                                </div>
+                            </form>
+
+
+
+                            <div class="col_w320 float_r">
+
+
+
+                                <ul class = "list">
+                                    <li>Name: <?php echo($a_check['name']); ?></li>
+                                    <li>Barcode: <?php echo($a_check['barcode']); ?></li>
+                                    <li title="This part number is for AGT. They are older, more stable and referred on our product manuals.">Part Number: <?php echo($a_check['part_num']); ?></li>
+                                    <li title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">Part Number (Eagle): <?php echo($a_check['part_num_yigao']); ?></li>
+                                    <li>Category: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['category']); ?>"><?php echo($a_check['category']); ?></a></li>
+                                    <li>For: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['sub_category']); ?>"><?php echo($a_check['sub_category']); ?></a></li>
+                                    <li>Color: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['color']); ?>"><?php echo($a_check['color']); ?></a></li>
+                                    <li>Purchase Price: <?php echo($a_check['p_price']); ?></li>
+                                    <li>Wholesale Price: <?php echo($a_check['w_price']); ?></li>
+                                    <li>Retail Price: <?php echo($a_check['r_price']); ?></li>
+                                    <li>Quantity: <?php echo($a_check['quantity']); ?></li>
+                                    <li>Stock Warning: <?php echo($a_check['w_quantity']); ?></li>
+                                    <li>Location: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?>"><?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?></a></li>
+                                    <li>Latest Update: <?php echo($a_check['date']); ?></li>
+
+                                    <!--    zz temp for organizing1809-->
+                                    <label>Flag Organizing1809: <?php echo($a_check['organizing201809']); ?></label>
+
+                                    <li title="Last Counting Event that the part has involved and counted..">
+                                        Last Counting Event: <?php echo($c_event_name); ?>
+                                    </li>
+                                    <li>Description: <?php echo($a_check['des']); ?></li>
+
+                                </ul>
+                            </div>

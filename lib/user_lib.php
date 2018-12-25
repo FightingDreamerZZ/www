@@ -751,6 +751,17 @@ function add_new_c_event($new_c_event_name){
         return true;
     }
 }
+
+/**
+ * zz replace the value of a specific param in current URL query string
+ * @param $param_name
+ * @param $new_value
+ */
+function replace_by_param_query_str($param_name, $new_value){
+    parse_str($_SERVER["QUERY_STRING"],$array_of_params);
+    $array_of_params[$param_name] = $new_value;
+    return http_build_query($array_of_params);
+}
 ?>
 
 

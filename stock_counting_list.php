@@ -73,20 +73,76 @@ if($_GET['selected_c_c_event_id']){
     $sqltag = "WHERE `last_counting_event` = ".$_COOKIE['selected_c_c_event_id'];
 }
 
-//sort list based on inputs
-if($_GET['sort']=='name'){
-    $sort = " ORDER BY `name` ASC ";
-    $urltag= $urltag."&sort=".$_GET['sort'];
-}else if($_GET['sort']=='color'){
-    $sort = " ORDER BY `color` ASC ";
-    $urltag= $urltag."&sort=".$_GET['sort'];
-}else if($_GET['sort']=='category'){
-    $sort = " ORDER BY `category` ASC ";
-    $urltag= $urltag."&sort=".$_GET['sort'];
-}else{
-    $sort = $default_sort;
+//zz sorting
+if($_GET['sort_order']){//init sort_order
+    $sort_order = $_GET['sort_order'];
+} else
+    $sort_order = "asc";
+$sort_order_reversed = ($sort_order=="asc")?"desc":"asc";//for d-click reversing
+
+if($_GET['sort_field']){//persist url
+    $urltag= $urltag."&sort_field=".$_GET['sort_field']."&sort_order=".$_GET['sort_order'];
 }
 
+//init
+$icon_class_sort_barcode = "glyphicon glyphicon-sort";
+$icon_class_sort_name = "glyphicon glyphicon-sort";
+$icon_class_sort_part_num = "glyphicon glyphicon-sort";
+$icon_class_sort_location = "glyphicon glyphicon-sort";
+$icon_class_sort_organizing201809 = "glyphicon glyphicon-sort";
+$q_s_sort_barcode = "&sort_field=barcode&sort_order=asc";
+$q_s_sort_name = "&sort_field=name&sort_order=asc";
+$q_s_sort_part_num = "&sort_field=part_num&sort_order=asc";
+$q_s_sort_location = "&sort_field=location&sort_order=asc";
+$q_s_sort_organizing201809 = "&sort_field=organizing201809&sort_order=asc";
+
+switch ($_GET['sort_field']) {//case by case
+    case "barcode":
+        $sort = " ORDER BY `barcode` ".$sort_order." ";
+        $q_s_sort_barcode = str_replace("asc",$sort_order_reversed,$q_s_sort_barcode);
+        $icon_class_sort_barcode = ($sort_order=="asc")?"glyphicon glyphicon-sort-by-attributes":"glyphicon glyphicon-sort-by-attributes-alt";
+        break;
+    case "name":
+        $sort = " ORDER BY `name` ".$sort_order." ";
+        $q_s_sort_name = str_replace("asc",$sort_order_reversed,$q_s_sort_name);
+        $icon_class_sort_name = ($sort_order=="asc")?"glyphicon glyphicon-sort-by-attributes":"glyphicon glyphicon-sort-by-attributes-alt";
+        break;
+    case "part_num":
+        $sort = " ORDER BY `part_num` ".$sort_order." ";
+        $q_s_sort_part_num = str_replace("asc",$sort_order_reversed,$q_s_sort_part_num);
+        $icon_class_sort_part_num = ($sort_order=="asc")?"glyphicon glyphicon-sort-by-attributes":"glyphicon glyphicon-sort-by-attributes-alt";
+        break;
+    case "location":
+        $sort = " ORDER BY `l_zone` ".$sort_order." ";
+        $q_s_sort_location = str_replace("asc",$sort_order_reversed,$q_s_sort_location);
+        $icon_class_sort_location = ($sort_order=="asc")?"glyphicon glyphicon-sort-by-attributes":"glyphicon glyphicon-sort-by-attributes-alt";
+        break;
+    case "organizing201809":
+        $sort = " ORDER BY `organizing201809` ".$sort_order." ";
+        $q_s_sort_organizing201809 = str_replace("asc",$sort_order_reversed,$q_s_sort_organizing201809);
+        $icon_class_sort_organizing201809 = ($sort_order=="asc")?"glyphicon glyphicon-sort-by-attributes":"glyphicon glyphicon-sort-by-attributes-alt";
+        break;
+    default:
+        $sort = " ORDER BY `date` ".$sort_order." ";
+        break;
+}
+//zz /sorting
+
+//sort list based on inputs
+//if($_GET['sort_field']=='name'){
+//    $sort = " ORDER BY `name` ".$sort_order." ";
+//    $urltag= $urltag."&sort=".$_GET['sort'];
+//}else if($_GET['sort_field']=='color'){
+//    $sort = " ORDER BY `color` ASC ";
+//    $urltag= $urltag."&sort=".$_GET['sort'];
+//}else if($_GET['sort_field']=='category'){
+//    $sort = " ORDER BY `category` ASC ";
+//    $urltag= $urltag."&sort=".$_GET['sort'];
+//}else{
+//    $sort = $default_sort;
+//}
+
+//pagination
 //load lists with page spliter
 $split_by = '40';
 
@@ -96,6 +152,8 @@ if (isset($_GET["page"])) {
     $page=1;
 }
 $start_from = ($page-1) * $split_by;
+// /pagination
+
 $sql_code_1 = "SELECT * FROM `ew_part` ".$sqltag.$sort."LIMIT ".$start_from.",".$split_by;
 //$sql_code_1 = "SELECT * FROM `ew_car` WHERE `quantity` > '0' ORDER BY `barcode` ASC LIMIT ".$start_from.",".$split_by;
 //echo $sql_code_1;
@@ -159,7 +217,21 @@ include('template_header_css_sidebar_topbar.php');
                     </div>
                     <div class="x_content">
                         <p class="text-muted font-13 m-b-30">
-                        <p><?php echo($total_records); ?> result(s) was found in this query. Sort by <a href ="list.php?<?php echo trim_url("&sort="); ?>">[Default]</a> <a href="list.php?<?php echo trim_url("&sort="); ?>&sort=name">[Name]</a> <a href="list.php?<?php echo trim_url("&sort="); ?>&sort=color">[Color]</a>  <a href="list.php?<?php echo trim_url("&sort="); ?>&sort=category">[Category]</a></p>
+                        <p><?php echo($total_records); ?> result(s) was found in this query.
+                            Sort by
+                            <a href ="list.php?<?php echo trim_url("&sort="); ?>">
+                                [Default]
+                            </a>
+                            <a href="stock_counting_list.php?<?php echo trim_url("&sort_field="); ?>&sort_field=name&sort_order=<?php echo $sort_order?>">
+                                [Name]
+                            </a>
+                            <a href="list.php?<?php echo trim_url("&sort="); ?>&sort=color">
+                                [Color]
+                            </a>
+                            <a href="list.php?<?php echo trim_url("&sort="); ?>&sort=category">
+                                [Category]
+                            </a>
+                        </p>
 
 
                         <p style="position: relative;float: left">Page:
@@ -211,17 +283,28 @@ temp;
                         </div>
                         <!--zz /countingEvent ddl-->
 
+<!--                        <div class="table-responsive">-->
                         <table id="datatable" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>Barcode</th>
-                                    <th>Name</th>
+                                    <th>Barcode
+                                        <a href="stock_counting_list.php?<?php echo $q_s_sort_barcode;?>" class="<?php echo $icon_class_sort_barcode;?>" style="float: right" aria-hidden="true"></a>
+                                    </th>
+                                    <th>Name
+                                        <a href="stock_counting_list.php?<?php echo $q_s_sort_name;?>" class="<?php echo $icon_class_sort_name;?>" style="float: right" aria-hidden="true">
+                                    </th>
+                                    <th>PartNumber
+                                        <a href="stock_counting_list.php?<?php echo $q_s_sort_part_num;?>" class="<?php echo $icon_class_sort_part_num;?>" style="float: right" aria-hidden="true">
+                                    </th>
                                     <th>Category</th>
-                                    <th>For</th>
-                                    <th>Color</th>
                                     <th>InStock</th>
                                     <th>warning</th>
-                                    <th>Location</th>
+                                    <th>Location
+                                        <a href="stock_counting_list.php?<?php echo $q_s_sort_location;?>" class="<?php echo $icon_class_sort_location;?>" style="float: right" aria-hidden="true">
+                                    </th>
+                                    <th>Organizing201809
+                                        <a href="stock_counting_list.php?<?php echo $q_s_sort_organizing201809;?>" class="<?php echo $icon_class_sort_organizing201809;?>" style="float: right" aria-hidden="true">
+                                    </th>
                                     <th>LastCountingEvent</th>
                                     <th>Action</th>
                                 </tr>
@@ -240,12 +323,12 @@ temp;
                                         </a>
                                     </td>
                                     <td><?php echo $row_1["name"]; ?></td>
+                                    <td><?php echo $row_1["part_num"]; ?></td>
                                     <td><?php echo $row_1["category"]; ?></td>
-                                    <td><?php echo $row_1["sub_category"]; ?></td>
-                                    <td><?php echo $row_1["color"]; ?></td>
                                     <td><?php echo $row_1["quantity"]; ?></td>
                                     <td><?php if($row_1["w_quantity"] =='0'){ echo "n/a";}else{ echo $row_1["w_quantity"];}; ?></td>
                                     <td><?php echo $row_1["l_zone"]."_".$row_1["l_column"]."_".$row_1["l_level"]; ?></td>
+                                    <td><?php echo $row_1["organizing201809"]; ?></td>
                                     <td><?php echo $c_event_name_tmp;?></td>
                                     <td>
                                         <a class="btn btn-primary btn-xs btn-inside-table"
@@ -260,7 +343,12 @@ temp;
                             ?>
                             </tbody>
                         </table>
+<!--                        </div>-->
+
                         <style>
+                            .table thead .sorting-general::after {
+                                content: '\e150';
+                            }
                             .a-underline-zz {
                                 text-decoration: underline;
                             }
