@@ -880,7 +880,7 @@ temp;
                             </form>
 
 
-                                <div id="newcar_form">
+                                <div id="newcar_form"> 
 
                                     <form name="form" method="post" enctype="multipart/form-data">
                                         <label>Photo:</label><input type="file" name="file"><input type="text" style="display:none;" name="photo_url" value="<?php echo($a_check['photo_url']); ?>"/><br>
