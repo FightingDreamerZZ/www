@@ -757,3 +757,228 @@ var_dump($result);
 
                                 </ul>
                             </div>
+
+//zz x_panel's title's right corner toolbox:
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+<!--                            <li class="dropdown">-->
+<!--                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>-->
+<!--                                <ul class="dropdown-menu" role="menu">-->
+<!--                                    <li><a href="#">Settings 1</a>-->
+<!--                                    </li>-->
+<!--                                    <li><a href="#">Settings 2</a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </li>-->
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+
+//zz coutningEventDDL backup:
+<!--zz countingEvent ddl-->
+        <div id="div_c_event_ddl" style="float: right;position: relative">
+<!--            <select name="last_counting_event"-->
+<!--                    id="last_counting_event">-->
+<!--                <option value="" selected disabled>--Please select the current counting event--</option>-->
+<!--                --><?php //?>
+<!--                <option value="N/A"-->
+<!--                        title="">-->
+<!--                    N/A</option>-->
+<!--                <option value="buy_new"-->
+<!--                        title="">-->
+<!--                    Buying new cart</option>-->
+<!--                <option value="trade_in"-->
+<!--                        title="">-->
+<!--                    Trade in old cart</option>-->
+<!--                <option value="" selected disabled><hr></option>-->
+<!--                <option value="" selected disabled>--Please select the current counting event--</option>-->
+<!--            </select>-->
+            <label>Current counting event:&nbsp;</label>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <?php echo $selected_current_c_event;?> &nbsp;
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <?php
+                        foreach($array_c_events as $c_event){
+                            echo <<<temp
+                                <li>
+                                    <a href="stock_counting.php?selected_c_c_event_id={$c_event['c_event_id']}">
+                                        {$c_event['c_event_name']}
+                                    </a>
+                                </li>
+temp;
+                        }
+                    ?>
+                    <li role="separator" class="divider"></li>
+                    <li><button onclick="add_new_c_evnt()">+ Add New</button></li>
+                </ul>
+                <style>
+                    .dropdown-menu-right{
+                        right:0;
+                        left:auto;
+                    }
+                </style>
+            </div>
+        </div>
+        <!--zz /countingEvent ddl-->
+
+//zz view photo
+<h4>Photo Preview</h4>
+
+                                <!--<div style="width: 300px;height: 300px;" class="withborder">-->
+                                <a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
+                                    <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>"/>
+                                    <!--        class="image_wrapper"-->
+                                </a>
+                                <!--</div>-->
+                                <div class="cleaner h10"></div>
+                                <p><a href="edit_part.php?barcode=<?php echo $a_check["barcode"]; ?>&do=del">[ Delete ]</a> - Warning, delete will set the part quantity to "0" and warning quantity to "-1".</p>
+
+//zz editPartOld
+                                <div id="newcar_form">
+
+                                    <form name="form" method="post" enctype="multipart/form-data">
+                                        <label>Photo:</label><input type="file" name="file"><input type="text" style="display:none;" name="photo_url" value="<?php echo($a_check['photo_url']); ?>"/><br>
+                                        <label>Barcode: </label><input type="text" name="barcode" value="<?php echo($a_check['barcode']); ?>"/><br />
+                                        <label>Car Name: </label><input type="text" name="name" value="<?php echo($a_check['name']); ?>"/><br />
+                                        <label title="This part number is for AGT. They are older, more stable and referred on our product manuals.">
+                                            Part Number: </label><input type="text" name="part_num" value="<?php echo($a_check['part_num']); ?>"/><br />
+                                        <label title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">
+                                            Part Number (Eagle): </label><input type="text" name="part_num_yigao" value="<?php echo($a_check['part_num_yigao']); ?>"/><br />
+
+                                        <label>Category: </label>
+                                        <select name="category">
+                                            <option value="body" <?php if($a_check['category'] == 'body'){ echo("selected=\"selected\"");} ?>>Body</option>
+                                            <option value="accessory" <?php if($a_check['category'] == 'accessory'){ echo("selected=\"selected\"");} ?>>Accessory</option>
+                                            <option value="tire_and_rim" <?php if($a_check['category'] == 'tire_and_rim'){ echo("selected=\"selected\"");} ?>>Tire and Rim</option>
+                                            <option value="mechanical" <?php if($a_check['category'] == 'mechanical'){ echo("selected=\"selected\"");} ?>>Mechanical</option>
+                                            <option value="electrical" <?php if($a_check['category'] == 'electrical'){ echo("selected=\"selected\"");} ?>>Electrical</option>
+                                        </select><br />
+
+                                        <!--<label>For: </label>-->
+                                        <!--<input type="checkbox" name="sub1" value="CLUB" --><?php //if (strpos($a_check['sub_category'], 'CLUB') !== false){echo "checked";} ?><!-- >CLUB-->
+                                        <!--<input type="checkbox" name="sub2" value="EZGO" --><?php //if (strpos($a_check['sub_category'], 'EZGO') !== false){echo "checked";} ?><!-- >EZGO-->
+                                        <!--<input type="checkbox" name="sub3" value="AGT" --><?php //if (strpos($a_check['sub_category'], 'AGT') !== false){echo "checked";} ?><!-- >AGT-->
+                                        <!--<input type="checkbox" name="sub4" value="YAMAHA" --><?php //if (strpos($a_check['sub_category'], 'YAMAHA') !== false){echo "checked";} ?><!-- >YAMAHA-->
+                                        <!--<br />-->
+                                        <label>Color: </label><input type="text" name="color" value="<?php echo($a_check['color']); ?>"/><br />
+                                        <label>Purchase Price: </label><input type="text" name="p_price" value="<?php echo($a_check['p_price']); ?>"/><br />
+                                        <label>Wholesale Price: </label><input type="text" name="w_price" value="<?php echo($a_check['w_price']); ?>"/><br />
+                                        <label>Retail Price: </label><input type="text" name="r_price" value="<?php echo($a_check['r_price']); ?>"/><br />
+                                        <label>Quantity: <?php /*echo($a_check['quantity']); */?></label><input type="text" style="/*display:none;*/" name="quantity" value="<?php echo($a_check['quantity']); ?>"/><br />
+                                        <label>Warning Quantity: </label><input type="text" name="w_quantity" value="<?php echo($a_check['w_quantity']); ?>"/><br />
+                                        <!--    zz-->
+                                        <img src="images/map.gif" height="" width="300" style="margin-top: 10px;margin-bottom: 10px" usemap="#map1">
+                                        <map id="map1" name="map2">
+                                            <area shape="rect" coords="98,46,240,104" alt="" title="P1" onclick="testzz()" style="cursor: pointer"/>
+                                            <script>
+                                                function testzz() {
+                                                    // alert("haha");
+                                                    // history.go(-1);
+                                                    window.location = '#location_z';
+                                                    document.getElementById("location_z").value="P1";
+                                                    document.form.l_column.value = '';
+                                                    document.form.l_column.focus();
+                                                }
+                                            </script>
+                                        </map>
+                                        <!--    zz-->
+                                        <label>Location Zone: </label><!--zz --><input id="location_z" type="text" name="l_zone" value="<?php echo($a_check['l_zone']); ?>"/><br />
+                                        <label>Location Column: </label><input type="text" name="l_column" value="<?php echo($a_check['l_column']); ?>"/><br />
+                                        <label>Location Level: </label><input type="text" name="l_level" value="<?php echo($a_check['l_level']); ?>"/><br />
+
+                                        <!--    zz temp for organizing1809-->
+                                        <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value="<?php echo($a_check['organizing201809']); ?>"/><br />
+
+                                        <label>Last Counting Event: </label>
+                                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
+                                            <?php
+                                            foreach($array_c_events as $c_event){
+                                                $c_event_name_temp=$c_event['c_event_name'];
+                                                $c_event_id_temp=$c_event['c_event_id'];
+                                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
+                                                echo <<<temp
+                                <option value="$c_event_id_temp" {$selected_temp}>
+                                    {$c_event_name_temp}
+                                </option>
+temp;
+                                            }
+                                            ?>
+                                            <option value="NULL" {$selected_temp}>
+                                                NULL (not belong to any)
+                                            </option>
+                                        </select><br />
+
+                                        <label>Description: </label><br/>
+                                        <textarea rows="4" cols="50" name="des"><?php echo($a_check['des']); ?></textarea><br/>
+                                        <input type="submit" name="submit_edit" class="submit_btn float_l" value="Edit"/>
+                                    </form>
+
+                                </div>
+//zz temp addNewPart section in stackCountingModule:
+<div class="col_w320 float_r">
+                                <div id="newcar_form">
+                                    <form class="form-horizontal form-label-left"
+                                          name="form" method="post" enctype="multipart/form-data">
+                                        <label>Photo:</label><input type="file" name="file"><br>
+                                        <label>Barcode: </label><input type="text" name="barcode" value ="<?php echo "1".substr(round(microtime(true) * 1000),0, -2); ?>"/><br />
+                                        <label>Name: </label><input type="text" name="name"/><br />
+                                        <label>Part Number: </label><input type="text" name="part_num"/><br />
+                                        <label title="The newest part number on the domestic, Eaglee side. It is useful when ordering parts from them.">
+                                            Part Number (Eagle): </label><input type="text" name="part_num_yigao"/><br />
+                                        <label>Category: </label>
+                                        <select name="category">
+                                            <option value="body">Body</option>
+                                            <option value="accessory">Accessory</option>
+                                            <option value="tire_and_rim">Tire and Rim</option>
+                                            <option value="mechanical">Mechanical</option>
+                                            <option value="electrical">Electrical</option>
+                                        </select><br />
+                                        <!--<label>For:</label>-->
+                                        <!--<input type="checkbox" name="sub1" value="CLUB">CLUB-->
+                                        <!--<input type="checkbox" name="sub2" value="EZGO">EZGO-->
+                                        <!--<input type="checkbox" name="sub3" value="AGT">AGT-->
+                                        <!--<input type="checkbox" name="sub4" value="YAMAHA">YAMAHA<br />-->
+                                        <label>Color: </label><input type="text" name="color" value="default"/><br />
+                                        <label>Purchase Price: </label><input type="text" name="p_price" value="0"/><br />
+                                        <label>Wholesale Price: </label><input type="text" name="w_price"value="0"/><br />
+                                        <label>Retail Price: </label><input type="text" name="r_price" value="0"/><br />
+                                        <label>Quantity: </label><input type="text" name="quantity"value="0"/><br />
+                                        <label>Warning Quantity: </label><input type="text" name="w_quantity" value="0"/><br />
+                                        <label>Location Zone: </label><input type="text" name="l_zone" value=""/><br />
+                                        <label>Location Column: </label><input type="text" name="l_column" value=""/><br />
+                                        <label>Location Level: </label><input type="text" name="l_level"value=""/><br />
+                                        <label>Description: </label><br/>
+                                        <textarea rows="4" cols="50" name="des">
+                        </textarea><br/>
+                                        <!--    zz temp for organizing1809-->
+                                        <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value=""/><br />
+
+                                        <label>Last Counting Event: </label>
+                                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
+                                            <?php
+                                            foreach($array_c_events as $c_event){
+                                                $c_event_name_temp=$c_event['c_event_name'];
+                                                $c_event_id_temp=$c_event['c_event_id'];
+                                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
+                                                echo <<<temp
+                                <option value="$c_event_id_temp" {$selected_temp}>
+                                    {$c_event_name_temp}
+                                </option>
+temp;
+                                            }
+                                            ?>
+                                            <option value="NULL" {$selected_temp}>
+                                                NULL (not belong to any)
+                                            </option>
+                                        </select><br />
+
+                                        <input type="submit" name="submit_new" value="Create"/>
+                                    </form>
+                                </div>
+                            </div>
+

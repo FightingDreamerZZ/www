@@ -43,11 +43,11 @@ if(isset($_GET['edit_mode'])){
 //zz add a new countingEvent (mainly for countingEvent dropdownBtnGroup)
 if(isset($_GET['txt_new_c_event'])){
     if(!add_new_c_event($_GET['txt_new_c_event'])){
-        echo("<script>window.alert('DB Error!');</script>");
+        echo "<script>window.alert('DB Error!');</script>";
         die('<meta http-equiv="refresh" content="0;URL=stock_counting.php">');
     }
     else{
-        echo("<script>window.alert('New Counting Event has been created!');</script>");
+        echo "<script>window.alert('New Counting Event has been created!');</script>";
         die('<meta http-equiv="refresh" content="0;URL=stock_counting.php">');
     }
 }
@@ -70,7 +70,7 @@ if ($_GET['do']=='del') {
         else{
             sys_log($_COOKIE['ew_user_name'],"del part, barcode=$barcode,name=$name");
             mysql_close($link);
-            echo("<script>window.alert('Part has been Disable!');</script>");
+            echo "<script>window.alert('Part has been Disable!');</script>";
             die('<meta http-equiv="refresh" content="0;URL=index.php">');
         }
     }else{
@@ -85,15 +85,17 @@ if (isset($_GET['barcode'])) {
         $sql_code = "select * from ew_part where barcode = '".$barcode."';";
         $result_info = mysql_query($sql_code);
         $a_check = mysql_fetch_array($result_info);
+
     }else{
         stop("Barcode not found!");
     }
-    $c_event_name = get_c_event_by("c_event_id", $a_check['last_counting_event'])['c_event_name'];
-    $c_event_name = ($c_event_name == false)?"N/A":$c_event_name;
+//    $c_event_name = get_c_event_by("c_event_id", $a_check['last_counting_event'])['c_event_name'];
+//    $c_event_name = ($c_event_name == false)?"N/A":$c_event_name;
 }
 
 //handle post form for update profile request
 if($_POST['submit_edit']){
+    echo "1<br/>";
     if($_FILES["file"]["size"] == 0){
         $photo_url = $_POST["photo_url"];
 
@@ -236,19 +238,19 @@ if($_POST['submit_edit']){
 				`organizing201809` = '$organizing1809',
 				`last_counting_event` = $last_counting_event
 				WHERE `barcode` = '$barcode';";
-    //echo($sql_code);
+//    echo($sql_code)."<br/>";
 
     if (!($result=mysql_query($sql_code))) {
 
         mysql_close($link);
         check_pass(0);
-        echo("<script>window.alert('DB Error!');</script>");
+        echo "<script>window.alert('DB Error!');</script>";
         die('<meta http-equiv="refresh" content="0;URL=index.php">');
     }
     else{
         sys_log($_COOKIE['ew_user_name'],"edit part, barcode=$barcode,name=$name");
         mysql_close($link);
-        echo("<script>window.alert('Part profile has been updated!');</script>");
+        echo "<script>window.alert('Part profile has been updated!');</script>";
         die("<meta http-equiv=\"refresh\" content=\"0;URL=stock_counting.php?barcode=$barcode\">");
     }
 }
@@ -258,7 +260,8 @@ if($_POST['submit_new']){
     if($_FILES["file"]["size"] == 0){
         $photo_url = $defaultset[photo];
     }else{
-        $allowedExts = array("gif", "jpeg", "jpg", "png");
+        $allowedExts = array("gif", "jpeg", "jpg", "png",
+            "GIF","JPEG","JPG","PNG");
         $temp = explode(".", $_FILES["file"]["name"]);
         $extension = end($temp);
         if (
@@ -368,24 +371,24 @@ if($_POST['submit_new']){
     $xsearch = strtolower("barcode:$barcode, name:$name, model:$part_num, category:$category, sub category:$sub_category, color:$color, location:$location");
     //echo($xsearch);
 
-    $organizing1809 = $_POST["organizing1809"];
+    $organizing201809 = $_POST["organizing201809"];
     $last_counting_event = $_POST["c_event_id"];
 
     //col list: barcode, name, photo_url, part_num, part_num_yigao, category, sub_category, color, p_price, w_price, r_price,
     // quantity, w_quantity, l_zone, l_column, l_level, date, des, xsearch, organizing201809, last_counting_event
     $result_anp = add_new_part($barcode,$name,$photo_url,$part_num,$part_num_yigao,$category,$sub_category,$color,
         $p_price,$w_price,$r_price,$quantity,$w_quantity,$l_zone,$l_column,$l_level,
-        $des,$xsearch,$organizing1809,$last_counting_event);
+        $des,$xsearch,$organizing201809,$last_counting_event);
 
     mysql_close($link);
 
     if (!$result_anp){
 
-        echo("<script>window.alert('DB Error!');</script>");
+        echo "<script>window.alert('DB Error!');</script>" ;
         die('<meta http-equiv="refresh" content="0;URL=stock_counting.php">');
     }
     else{
-        echo("<script>window.alert('New Part has been created!');</script>");
+        echo "<script>window.alert('New Part has been created!');</script>";
         die('<meta http-equiv="refresh" content="0;URL=stock_counting.php?barcode='.$barcode.'">');
     }
 }
@@ -522,79 +525,65 @@ include('template_header_css_sidebar_topbar.php');
         <p id="suggestion"></p>
         <!--        /smart search-->
 
-        <!--zz countingEvent ddl-->
-        <div id="div_c_event_ddl" style="float: right;position: relative">
-<!--            <select name="last_counting_event"-->
-<!--                    id="last_counting_event">-->
-<!--                <option value="" selected disabled>--Please select the current counting event--</option>-->
-<!--                --><?php //?>
-<!--                <option value="N/A"-->
-<!--                        title="">-->
-<!--                    N/A</option>-->
-<!--                <option value="buy_new"-->
-<!--                        title="">-->
-<!--                    Buying new cart</option>-->
-<!--                <option value="trade_in"-->
-<!--                        title="">-->
-<!--                    Trade in old cart</option>-->
-<!--                <option value="" selected disabled><hr></option>-->
-<!--                <option value="" selected disabled>--Please select the current counting event--</option>-->
-<!--            </select>-->
-            <label>Current counting event:&nbsp;</label>
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <?php echo $selected_current_c_event;?> &nbsp;
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <?php
-                        foreach($array_c_events as $c_event){
-                            echo <<<temp
+        <!--zz x_panel single big-->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Stack Counting<small></small></h2>
+                        <btn class="btn btn-default btn-sm" id="btn_toggle_edit" onclick="btn_toggle_edit()">Toggle edit</btn>
+                        <btn class="btn btn-default btn-sm float_r" id="btn_toggle_edit" onclick="btn_show_add_new()">Add New Part</btn>
+
+                        <!--zz countingEvent ddl-->
+                        <div id="div_c_event_ddl" style="float: right;position: relative">
+                            <!--            <select name="last_counting_event"-->
+                            <!--                    id="last_counting_event">-->
+                            <!--                <option value="" selected disabled>--Please select the current counting event--</option>-->
+                            <!--                --><?php //?>
+                            <!--                <option value="N/A"-->
+                            <!--                        title="">-->
+                            <!--                    N/A</option>-->
+                            <!--                <option value="buy_new"-->
+                            <!--                        title="">-->
+                            <!--                    Buying new cart</option>-->
+                            <!--                <option value="trade_in"-->
+                            <!--                        title="">-->
+                            <!--                    Trade in old cart</option>-->
+                            <!--                <option value="" selected disabled><hr></option>-->
+                            <!--                <option value="" selected disabled>--Please select the current counting event--</option>-->
+                            <!--            </select>-->
+                            <label>Current counting event:&nbsp;</label>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <?php echo $selected_current_c_event;?> &nbsp;
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <?php
+                                    foreach($array_c_events as $c_event){
+                                        echo <<<temp
                                 <li>
                                     <a href="stock_counting.php?selected_c_c_event_id={$c_event['c_event_id']}">
                                         {$c_event['c_event_name']}
                                     </a>
                                 </li>
 temp;
-                        }
-                    ?>
-                    <li role="separator" class="divider"></li>
-                    <li><button onclick="add_new_c_evnt()">+ Add New</button></li>
-                </ul>
-                <style>
-                    .dropdown-menu-right{
-                        right:0;
-                        left:auto;
-                    }
-                </style>
-            </div>
-        </div>
-        <!--zz /countingEvent ddl-->
+                                    }
+                                    ?>
+                                    <li role="separator" class="divider"></li>
+                                    <li><button onclick="add_new_c_evnt()">+ Add New</button></li>
+                                </ul>
+                                <style>
+                                    .dropdown-menu-right{
+                                        right:0;
+                                        left:auto;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+                        <!--zz /countingEvent ddl-->
 
-
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Default Example <small>Users</small></h2>
-                        <btn class="btn btn-default btn-sm" id="btn_toggle_edit" onclick="btn_toggle_edit()">Toggle edit</btn>
-                        <btn class="btn btn-default btn-sm float_r" id="btn_toggle_edit" onclick="btn_show_add_new()">Add New Part</btn>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <!--                            <li class="dropdown">-->
-                            <!--                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>-->
-                            <!--                                <ul class="dropdown-menu" role="menu">-->
-                            <!--                                    <li><a href="#">Settings 1</a>-->
-                            <!--                                    </li>-->
-                            <!--                                    <li><a href="#">Settings 2</a>-->
-                            <!--                                    </li>-->
-                            <!--                                </ul>-->
-                            <!--                            </li>-->
-                            <li><a class="close-link"><i class="fa fa-close"></i></a>
-                            </li>
-                        </ul>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -783,10 +772,6 @@ temp;
                             <h4>Associated Part</h4>
                             <div id="attach_part"></div>
 
-
-                            <div class="cleaner h30"></div>
-                            <div class="cleaner"></div>
-                            <div class="cleaner"></div>
                         </div>
                         <!--zz /view part-->
 
@@ -797,10 +782,23 @@ temp;
                             <p>You should no change barcode for an exsiting part for any reason. Each input field should not exceed max allowed size or violate corresponding data type in DB. Details refers to [section 2.2.5 Table: ew_part] in design document.</p>
 <!--                            <div class="cleaner h30"></div>-->
 <!--                            <div class="col_w320 float_r">-->
-                            <form class="form-horizontal form-label-left"
-                                name="form" method="post" enctype="multipart/form-data">
                             <div class="row">
-                                <div class="col-md-6 col-xs-12">
+                                <div class="col-md-2 col-xs-12"><!--left column-->
+                                    <label>Photo Preview</label>
+                                    <a href="<?php echo($a_check['photo_url']); ?>" target="_blank" style="width: 100%;">
+                                        <img style="width:100%;height:auto;object-fit: cover;overflow: hidden" class ="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>" />
+                                    </a><br/><br/>
+                                    <p>
+                                        <a class="btn btn-warning" href="edit_part.php?barcode=<?php echo $a_check["barcode"]; ?>&do=del"
+                                           data-toggle="tooltip" data-original-title='Warning, delete will set the part quantity to "0" and warning quantity to "-1".'>
+                                            Delete this part <i class="fa fa-warning"></i>
+                                        </a>
+                                    </p>
+                                </div><!--/left column-->
+
+                                <form class="form-horizontal form-label-left"
+                                      name="form-edit" method="post" enctype="multipart/form-data">
+                                <div class="col-md-5 col-xs-12"><!--mid column-->
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Photo</label>
                                         <div class="col-md-9 col-sm-9 col-xs-12">
@@ -815,7 +813,9 @@ temp;
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Barcode</label>
                                         <div class="col-md-9 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control" name="barcode"
+                                            <input type="text" class="form-control" name="barcode" disabled
+                                                   value="<?php echo($a_check['barcode']); ?>"/>
+                                            <input type="text" class="form-control" name="barcode" style="display: none"
                                                    value="<?php echo($a_check['barcode']); ?>"/>
                                         </div>
                                     </div>
@@ -866,8 +866,22 @@ temp;
                                                    value="<?php echo($a_check['p_price']); ?>"/>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Wholesale Price</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="w_price"
+                                                   value="<?php echo($a_check['w_price']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Retail Price</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="r_price"
+                                                   value="<?php echo($a_check['r_price']); ?>"/>
+                                        </div>
+                                    </div>
+                                </div><!--/mid column-->
+                                <div class="col-md-5 col-xs-12"><!--right column-->
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity</label>
                                         <div class="col-md-9 col-sm-9 col-xs-12">
@@ -875,212 +889,277 @@ temp;
                                                    value="<?php echo($a_check['quantity']); ?>"/>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            </form>
-
-
-                                <div id="newcar_form"> 
-
-                                    <form name="form" method="post" enctype="multipart/form-data">
-                                        <label>Photo:</label><input type="file" name="file"><input type="text" style="display:none;" name="photo_url" value="<?php echo($a_check['photo_url']); ?>"/><br>
-                                        <label>Barcode: </label><input type="text" name="barcode" value="<?php echo($a_check['barcode']); ?>"/><br />
-                                        <label>Car Name: </label><input type="text" name="name" value="<?php echo($a_check['name']); ?>"/><br />
-                                        <label title="This part number is for AGT. They are older, more stable and referred on our product manuals.">
-                                            Part Number: </label><input type="text" name="part_num" value="<?php echo($a_check['part_num']); ?>"/><br />
-                                        <label title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">
-                                            Part Number (Eagle): </label><input type="text" name="part_num_yigao" value="<?php echo($a_check['part_num_yigao']); ?>"/><br />
-
-                                        <label>Category: </label>
-                                        <select name="category">
-                                            <option value="body" <?php if($a_check['category'] == 'body'){ echo("selected=\"selected\"");} ?>>Body</option>
-                                            <option value="accessory" <?php if($a_check['category'] == 'accessory'){ echo("selected=\"selected\"");} ?>>Accessory</option>
-                                            <option value="tire_and_rim" <?php if($a_check['category'] == 'tire_and_rim'){ echo("selected=\"selected\"");} ?>>Tire and Rim</option>
-                                            <option value="mechanical" <?php if($a_check['category'] == 'mechanical'){ echo("selected=\"selected\"");} ?>>Mechanical</option>
-                                            <option value="electrical" <?php if($a_check['category'] == 'electrical'){ echo("selected=\"selected\"");} ?>>Electrical</option>
-                                        </select><br />
-
-                                        <!--<label>For: </label>-->
-                                        <!--<input type="checkbox" name="sub1" value="CLUB" --><?php //if (strpos($a_check['sub_category'], 'CLUB') !== false){echo "checked";} ?><!-- >CLUB-->
-                                        <!--<input type="checkbox" name="sub2" value="EZGO" --><?php //if (strpos($a_check['sub_category'], 'EZGO') !== false){echo "checked";} ?><!-- >EZGO-->
-                                        <!--<input type="checkbox" name="sub3" value="AGT" --><?php //if (strpos($a_check['sub_category'], 'AGT') !== false){echo "checked";} ?><!-- >AGT-->
-                                        <!--<input type="checkbox" name="sub4" value="YAMAHA" --><?php //if (strpos($a_check['sub_category'], 'YAMAHA') !== false){echo "checked";} ?><!-- >YAMAHA-->
-                                        <!--<br />-->
-                                        <label>Color: </label><input type="text" name="color" value="<?php echo($a_check['color']); ?>"/><br />
-                                        <label>Purchase Price: </label><input type="text" name="p_price" value="<?php echo($a_check['p_price']); ?>"/><br />
-                                        <label>Wholesale Price: </label><input type="text" name="w_price" value="<?php echo($a_check['w_price']); ?>"/><br />
-                                        <label>Retail Price: </label><input type="text" name="r_price" value="<?php echo($a_check['r_price']); ?>"/><br />
-                                        <label>Quantity: <?php /*echo($a_check['quantity']); */?></label><input type="text" style="/*display:none;*/" name="quantity" value="<?php echo($a_check['quantity']); ?>"/><br />
-                                        <label>Warning Quantity: </label><input type="text" name="w_quantity" value="<?php echo($a_check['w_quantity']); ?>"/><br />
-                                        <!--    zz-->
-                                        <img src="images/map.gif" height="" width="300" style="margin-top: 10px;margin-bottom: 10px" usemap="#map1">
-                                        <map id="map1" name="map2">
-                                            <area shape="rect" coords="98,46,240,104" alt="" title="P1" onclick="testzz()" style="cursor: pointer"/>
-                                            <script>
-                                                function testzz() {
-                                                    // alert("haha");
-                                                    // history.go(-1);
-                                                    window.location = '#location_z';
-                                                    document.getElementById("location_z").value="P1";
-                                                    document.form.l_column.value = '';
-                                                    document.form.l_column.focus();
-                                                }
-                                            </script>
-                                        </map>
-                                        <!--    zz-->
-                                        <label>Location Zone: </label><!--zz --><input id="location_z" type="text" name="l_zone" value="<?php echo($a_check['l_zone']); ?>"/><br />
-                                        <label>Location Column: </label><input type="text" name="l_column" value="<?php echo($a_check['l_column']); ?>"/><br />
-                                        <label>Location Level: </label><input type="text" name="l_level" value="<?php echo($a_check['l_level']); ?>"/><br />
-
-                                        <!--    zz temp for organizing1809-->
-                                        <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value="<?php echo($a_check['organizing201809']); ?>"/><br />
-
-                                        <label>Last Counting Event: </label>
-                                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
-                                            <?php
-                                            foreach($array_c_events as $c_event){
-                                                $c_event_name_temp=$c_event['c_event_name'];
-                                                $c_event_id_temp=$c_event['c_event_id'];
-                                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
-                                                echo <<<temp
-                                <option value="$c_event_id_temp" {$selected_temp}>
-                                    {$c_event_name_temp}
-                                </option>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Warning Quantity</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="w_quantity"
+                                                   value="<?php echo($a_check['w_quantity']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Location Zone</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="l_zone"
+                                                   value="<?php echo($a_check['l_zone']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Location Column</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="l_column"
+                                                   value="<?php echo($a_check['l_column']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Location Level</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="l_level"
+                                                   value="<?php echo($a_check['l_level']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Flag Organizing1809</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" name="organizing201809"
+                                                   value="<?php echo($a_check['organizing201809']); ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Last Counting Event</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <select name="c_event_id" class="form-control" title="Last Counting Event that the part has involved and counted..">
+                                                <?php
+                                                foreach($array_c_events as $c_event){
+                                                    $c_event_name_temp=$c_event['c_event_name'];
+                                                    $c_event_id_temp=$c_event['c_event_id'];
+                                                    $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
+                                                    echo <<<temp
+                                                <option value="$c_event_id_temp" {$selected_temp}>
+                                                    {$c_event_name_temp}
+                                                </option>
 temp;
-                                            }
-                                            ?>
-                                            <option value="NULL" {$selected_temp}>
-                                                NULL (not belong to any)
-                                            </option>
-                                        </select><br />
-
-                                        <label>Description: </label><br/>
-                                        <textarea rows="4" cols="50" name="des"><?php echo($a_check['des']); ?></textarea><br/>
-                                        <input type="submit" name="submit_edit" class="submit_btn float_l" value="Edit"/>
-                                    </form>
-
-                                </div>
+                                                }
+                                                ?>
+                                                <option value="NULL" {$selected_temp}>
+                                                    NULL (not belong to any)
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Description</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <textarea class="form-control" rows="2" cols="50" name="des"><?php echo($a_check['des']); ?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+    <!--                                        <button type="reset" class="btn btn-primary">Reset</button>-->
+                                            <input type="submit" name="submit_edit" class="btn btn-success" value="Edit" />
+                                        </div>
+                                    </div>
+                                </div><!--/right column-->
+                                </form>
                             </div>
-                        <style>
-                            [hidden] {
-                                display: none !important;
-                            }
-                        </style>
 
                             <div class="col_w320 float_l">
-                                <h4>Photo Preview</h4>
-
-                                <!--<div style="width: 300px;height: 300px;" class="withborder">-->
-                                <a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
-                                    <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>"/>
-                                    <!--        class="image_wrapper"-->
-                                </a>
-                                <!--</div>-->
-                                <div class="cleaner h10"></div>
-                                <p><a href="edit_part.php?barcode=<?php echo $a_check["barcode"]; ?>&do=del">[ Delete ]</a> - Warning, delete will set the part quantity to "0" and warning quantity to "-1".</p>
                                 <h4>Associated Part </h4>
                                 <form name="form2" method="get" action="ajax/attach_part.php">
                                     <input type="text" style="display:none;" name="do" value="add"/><input type="text" style="display:none;" name="main" value="<?php echo $a_check["barcode"]; ?>"/>
                                     Attach:<input type="text" class="input_field_w w90" name="attach"/>Amount:<input type="text" class="input_field_w w50" name="amount"/> <input type="submit" class="submit_btn" value="Add"/>
                                 </form>
-                                <div class="cleaner h10"></div>
                                 <div id="attach_part"></div>
 
                             </div>
-
-
-                            <div class="cleaner h30"></div>
-                            <div class="cleaner"></div>
-                            <div class="cleaner"></div>
+                            <!--                            </div>-->
+                        <style>
+                            [hidden] {
+                                display: none !important;
+                            }
+                        </style>
                         </div>
                         <!--zz /edit part-->
 
                         <!--zz new part-->
                         <div id="div_add_new_part">
                             <h2>Add a New Part</h2>
-                            <div class="cleaner"></div>
                             <p>Barcode has to be a unique 12 digits number. If you are not familiar with unique number generation algorithms, simply leave it unchanged. If you wish to only create a type of part without any inventory, please set quantity to 0, otherwise please specify inventory quantity.</p>
-                            <div class="cleaner h30"></div>
 
-                            <div class="col_w320 float_r">
-                                <div id="newcar_form">
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-xs-12">
-
+                            <div class="row">
+                                <form class="form-horizontal form-label-left"
+                                      name="form-add-new" method="post" enctype="multipart/form-data">
+                                    <div class="col-md-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Photo</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <label class="btn btn-default">
+                                                    Browse <input type="file" name="file" hidden
+                                                                  onchange="$('#upload-file-name-addnew').html(this.files[0].name)">
+                                                </label><span class="" id="upload-file-name-addnew"></span>
+                                            </div>
                                         </div>
-                                        <div class="col-md-6 col-xs-12">
-
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Barcode</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <?php $barcode_temp = generate_new_barcode();
+                                                      echo <<<temp
+                                                <input type="text" class="form-control" name="barcode" disabled
+                                                       value="{$barcode_temp}"/>
+                                                <input type="text" class="form-control" name="barcode" style="display: none"
+                                                       value="{$barcode_temp}"/>
+temp;
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="name"
+                                                       value=""/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Part Number</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="part_num"
+                                                       value=""/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Part Number (Eagle)</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="part_num_yigao"
+                                                       value=""/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Category</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <select name="category" class="form-control">
+                                                    <option value="" selected disabled>Please select one...</option>
+                                                    <option value="body">Body</option>
+                                                    <option value="accessory">Accessory</option>
+                                                    <option value="tire_and_rim">Tire and Rim</option>
+                                                    <option value="mechanical">Mechanical</option>
+                                                    <option value="electrical">Electrical</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Color</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="color"
+                                                       value="default"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Purchase Price</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="p_price"
+                                                       value="0.00"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Wholesale Price</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="w_price"
+                                                       value="0.00"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Retail Price</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="r_price"
+                                                       value="0.00"/>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <form class="form-horizontal form-label-left"
-                                          name="form" method="post" enctype="multipart/form-data">
-                                        <label>Photo:</label><input type="file" name="file"><br>
-                                        <label>Barcode: </label><input type="text" name="barcode" value ="<?php echo "1".substr(round(microtime(true) * 1000),0, -2); ?>"/><br />
-                                        <label>Name: </label><input type="text" name="name"/><br />
-                                        <label>Part Number: </label><input type="text" name="part_num"/><br />
-                                        <label title="The newest part number on the domestic, Eaglee side. It is useful when ordering parts from them.">
-                                            Part Number (Eagle): </label><input type="text" name="part_num_yigao"/><br />
-                                        <label>Category: </label>
-                                        <select name="category">
-                                            <option value="body">Body</option>
-                                            <option value="accessory">Accessory</option>
-                                            <option value="tire_and_rim">Tire and Rim</option>
-                                            <option value="mechanical">Mechanical</option>
-                                            <option value="electrical">Electrical</option>
-                                        </select><br />
-                                        <!--<label>For:</label>-->
-                                        <!--<input type="checkbox" name="sub1" value="CLUB">CLUB-->
-                                        <!--<input type="checkbox" name="sub2" value="EZGO">EZGO-->
-                                        <!--<input type="checkbox" name="sub3" value="AGT">AGT-->
-                                        <!--<input type="checkbox" name="sub4" value="YAMAHA">YAMAHA<br />-->
-                                        <label>Color: </label><input type="text" name="color" value="default"/><br />
-                                        <label>Purchase Price: </label><input type="text" name="p_price" value="0"/><br />
-                                        <label>Wholesale Price: </label><input type="text" name="w_price"value="0"/><br />
-                                        <label>Retail Price: </label><input type="text" name="r_price" value="0"/><br />
-                                        <label>Quantity: </label><input type="text" name="quantity"value="0"/><br />
-                                        <label>Warning Quantity: </label><input type="text" name="w_quantity" value="0"/><br />
-                                        <label>Location Zone: </label><input type="text" name="l_zone" value=""/><br />
-                                        <label>Location Column: </label><input type="text" name="l_column" value=""/><br />
-                                        <label>Location Level: </label><input type="text" name="l_level"value=""/><br />
-                                        <label>Description: </label><br/>
-                                        <textarea rows="4" cols="50" name="des">
-                        </textarea><br/>
-                                        <!--    zz temp for organizing1809-->
-                                        <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value=""/><br />
-
-                                        <label>Last Counting Event: </label>
-                                        <select name="c_event_id" title="Last Counting Event that the part has involved and counted..">
-                                            <?php
-                                            foreach($array_c_events as $c_event){
-                                                $c_event_name_temp=$c_event['c_event_name'];
-                                                $c_event_id_temp=$c_event['c_event_id'];
-                                                $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
-                                                echo <<<temp
-                                <option value="$c_event_id_temp" {$selected_temp}>
-                                    {$c_event_name_temp}
-                                </option>
+                                    <div class="col-md-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="quantity"
+                                                       value="0"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Warning Quantity</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="w_quantity"
+                                                       value="0"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Location Zone</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="l_zone"
+                                                       value="A"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Location Column</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="l_column"
+                                                       value="0"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Location Level</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="l_level"
+                                                       value="0"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Flag Organizing1809</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control" name="organizing201809"
+                                                       value=""/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Last Counting Event</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <select name="c_event_id" class="form-control" title="Last Counting Event that the part has involved and counted..">
+                                                    <?php
+                                                    foreach($array_c_events as $c_event){
+                                                        $c_event_name_temp=$c_event['c_event_name'];
+                                                        $c_event_id_temp=$c_event['c_event_id'];
+                                                        $selected_temp = ($c_event_name_temp == $selected_current_c_event)?'selected="selected"':'';
+                                                        echo <<<temp
+                                                <option value="$c_event_id_temp" {$selected_temp}>
+                                                    {$c_event_name_temp}
+                                                </option>
 temp;
-                                            }
-                                            ?>
-                                            <option value="NULL" {$selected_temp}>
-                                                NULL (not belong to any)
-                                            </option>
-                                        </select><br />
-
-                                        <input type="submit" name="submit_new" value="Create"/>
-                                    </form>
-                                </div>
+                                                    }
+                                                    ?>
+                                                    <option value="NULL">
+                                                        NULL (not belong to any)
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Description</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <textarea class="form-control" rows="2" cols="50" name="des"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                <button type="reset" class="btn btn-primary">Reset</button>
+                                                <input type="submit" name="submit_new" class="btn btn-success" value="Add New Part" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
+
+
                             <div class="col_w320 float_l">
                                 <h4>Photo Preview</h4>
                                 <a href="<?php echo($defaultset[photo]); ?>" target="_blank"><img width="300" height="300" class ="withborder" src="<?php echo($defaultset[photo]); ?>" class="image_wrapper" /></a>
                             </div>
-
-                            <div class="cleaner h30"></div>
-                            <div class="cleaner"></div>
-                            <div class="cleaner"></div>
                         </div>
                         <!--zz /new part-->
                     </div><!--x_content-->

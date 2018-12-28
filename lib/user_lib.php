@@ -695,8 +695,9 @@ function add_new_part($barcode, $name, $photo_url, $part_num, $part_num_yigao, $
 	'$color', '$p_price', '$w_price', '$r_price', '$quantity', '$w_quantity', '$l_zone', '$l_column', '$l_level', 
 	CURRENT_TIMESTAMP, '$des', '$xsearch', '$organizing201809', $last_counting_event);";
 
+//    echo ("<script>window.alert($sql_code);</script>");
     if (!($result=mysql_query($sql_code))) {
-        echo $sql_code;
+        echo ("<script>window.alert($sql_code);</script>");
         return false;
     }
     else{
@@ -761,6 +762,14 @@ function replace_by_param_query_str($param_name, $new_value){
     parse_str($_SERVER["QUERY_STRING"],$array_of_params);
     $array_of_params[$param_name] = $new_value;
     return http_build_query($array_of_params);
+}
+
+/**
+ * zz generate a pseudo- unique & random 12 digits ID
+ * @return string
+ */
+function generate_new_barcode() {
+    return "1".substr(round(microtime(true) * 1000),0, -2);
 }
 ?>
 
