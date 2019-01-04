@@ -150,8 +150,9 @@ if($_POST['submit']){
 
 }
 
-$title_by_page = "New Part";
-include('header.php');
+//$title_by_page = "New Part";
+//include('header.php');
+include_template_header_css_sidebar_topbar("","New Part","");
 ?>
 
     <style>
