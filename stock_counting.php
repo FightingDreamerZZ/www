@@ -89,13 +89,12 @@ if (isset($_GET['barcode'])) {
     }else{
         stop("Barcode not found!");
     }
-//    $c_event_name = get_c_event_by("c_event_id", $a_check['last_counting_event'])['c_event_name'];
-//    $c_event_name = ($c_event_name == false)?"N/A":$c_event_name;
+    $c_event_name = get_c_event_by("c_event_id", $a_check['last_counting_event'])['c_event_name'];
+    $c_event_name = ($c_event_name == false)?"N/A":$c_event_name;
 }
 
 //handle post form for update profile request
 if($_POST['submit_edit']){
-    echo "1<br/>";
     if($_FILES["file"]["size"] == 0){
         $photo_url = $_POST["photo_url"];
 
@@ -411,8 +410,10 @@ $array_c_events = get_all_c_events();
 //    die('<meta http-equiv="refresh" content="0;URL=stock_counting.php?barcode='.$barcode.'">');
 //}
 
-$load = " onload=\"load()\"";
-include('template_header_css_sidebar_topbar.php');
+//$load = " onload=\"load()\"";
+//$title_by_page = "Stock-Counting Main";
+//include('template_header_css_sidebar_topbar.php');
+include_template_header_css_sidebar_topbar(" onload=\"load()\"","Stock-Counting Main","stock_counting");
 ?>
 
     <script type="text/javascript">
@@ -460,34 +461,6 @@ include('template_header_css_sidebar_topbar.php');
             loadXMLDoc();
         }
 
-        //smartSearch
-        function suggest(key)
-        {
-            var xmlhttp;
-            var table = "ew_part";
-            var special = "stock_counting";
-            var postdata = "keyword="+encodeURIComponent(key)+"&table="+table+"&special="+special;
-            if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp=new XMLHttpRequest();
-            }
-            else
-            {// code for IE6, IE5
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange=function()
-            {
-                if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                {
-                    document.getElementById("suggestion").innerHTML=xmlhttp.responseText;
-                }
-            };
-
-            xmlhttp.open("POST","ajax/search_suggestion.php",true);
-            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            xmlhttp.setRequestHeader("Content-length", postdata.length);
-            xmlhttp.send(postdata);
-        }
         function btn_toggle_edit(){
             if($('#div_edit_part:visible').length == 0){
                 $('#div_edit_part').show();
@@ -509,21 +482,6 @@ include('template_header_css_sidebar_topbar.php');
 
     <!-- page content -->
     <div class="right_col" role="main">
-
-        <!--        smart search-->
-        <form name="form2" method="get" action="search.php" >
-            Smart Search:
-<!--            <select name="table" id="db_table" class="select_field">-->
-<!--                <option value="ew_part" --><?php //if($table == 'ew_part'){ echo("selected=\"selected\"");} ?><!--Part</option>-->
-<!--                <option value="ew_car" --><?php //if($table == 'ew_car'){ echo("selected=\"selected\"");} ?><!--Car</option>-->
-<!--            </select>-->
-            <input type="hidden" name="table" value="ew_part" hidden/>
-            <input type="text" id="keyword" name="keyword" class="input_field" value="<?php echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
-            <input type="submit" class="submit_btn" value="Search"/>
-        </form>
-
-        <p id="suggestion"></p>
-        <!--        /smart search-->
 
         <!--zz x_panel single big-->
         <div class="row">
@@ -614,7 +572,7 @@ temp;
                                     <table class="table">
                                         <tbody>
                                             <tr>
-                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right">
+                                                <th class="col-md-3 col-sm-3 col-xs-12 text-right" >
                                                     Name
                                                 </th>
                                                 <td class="col-md-9 col-sm-9 col-xs-12 text-left">

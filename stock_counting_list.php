@@ -166,8 +166,9 @@ $row_2 = mysql_fetch_row($result_info_2);
 $total_records = $row_2[0];
 $total_pages = ceil($total_records / $split_by);
 
-$title_by_page = "All Parts";
-include('template_header_css_sidebar_topbar.php');
+//$title_by_page = "Stock-Counting List";
+//include('template_header_css_sidebar_topbar.php');
+include_template_header_css_sidebar_topbar("","Stock-Counting List","");
 
 ?>
 <script>

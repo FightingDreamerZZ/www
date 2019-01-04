@@ -982,3 +982,412 @@ temp;
                                 </div>
                             </div>
 
+//zz original smart search in stock_counting:
+//smartSearch
+        function suggest(key)
+        {
+            var xmlhttp;
+            var table = "ew_part";
+            var special = "stock_counting";
+            var postdata = "keyword="+encodeURIComponent(key)+"&table="+table+"&special="+special;
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    document.getElementById("suggestion").innerHTML=xmlhttp.responseText;
+                }
+            };
+
+            xmlhttp.open("POST","ajax/search_suggestion.php",true);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("Content-length", postdata.length);
+            xmlhttp.send(postdata);
+        }
+
+        <!--        smart search-->
+                <form name="form2" method="get" action="search.php">
+                    Smart Search:
+        <!--            <select name="table" id="db_table" class="select_field">-->
+        <!--                <option value="ew_part" --><?php //if($table == 'ew_part'){ echo("selected=\"selected\"");} ?><!--Part</option>-->
+        <!--                <option value="ew_car" --><?php //if($table == 'ew_car'){ echo("selected=\"selected\"");} ?><!--Car</option>-->
+        <!--            </select>-->
+                    <input type="hidden" name="table" value="ew_part" hidden/>
+                    <input type="text" id="keyword" name="keyword" class="input_field" value="<?php echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
+                    <input type="submit" class="submit_btn" value="Search"/>
+                </form>
+
+                <p id="suggestion"></p>
+                <!--        /smart search-->
+
+//zz original list.php:
+//List of parts or cars? default cars
+if (isset($_GET["table"])) {
+	$table = $_GET["table"];
+	$urltag= $urltag."&table=$table";
+} else {
+	$table = "ew_car";
+	$urltag= $urltag."&table=ew_car";
+}
+
+//sort list based on inputs
+//if($_GET['sort']=='name'){
+//	$sort = " ORDER BY `name` ASC ";
+//	$urltag= $urltag."&sort=".$_GET['sort'];
+//}else if($_GET['sort']=='color'){
+//	$sort = " ORDER BY `color` ASC ";
+//	$urltag= $urltag."&sort=".$_GET['sort'];
+//}else if($_GET['sort']=='category'){
+//	$sort = " ORDER BY `category` ASC ";
+//	$urltag= $urltag."&sort=".$_GET['sort'];
+//}else{
+//	$sort = $default_sort;
+//}
+
+
+<table>
+<tr>
+
+<td>Barcode</td>
+<td>Name</td>
+<td>Category</td>
+<?php if($table == "ew_part"){echo "<td>For</td>";} ?>
+<?php if($table == "ew_car"){echo "<td>Model</td>";} ?>
+<td>Color</td>
+<?php if($table == "ew_car"){echo "<td>Condition</td>";} ?>
+<td>InStock</td>
+<td>Warning</td>
+<td>Location</td>
+<td>Action</td>
+</tr>
+<?php
+while ($row_1 = mysql_fetch_assoc($result_info_1)) {
+?>
+            <tr>
+
+            <td><a href="view_<?php if($table == "ew_car"){echo "car";}else{echo "part";} ?>.php?barcode=<?php echo $row_1["barcode"]; ?>">
+                    <?php echo $row_1["barcode"]; ?>
+                </a>
+            </td>
+            <td><?php echo $row_1["name"]; ?></td>
+			<td><?php echo $row_1["category"]; ?></td>
+			<?php if($table == "ew_part"){echo "<td>".$row_1["sub_category"]."</td>";} ?>
+			<?php if($table == "ew_car"){echo "<td>".$row_1["model"]."</td>";} ?>
+			<td><?php echo $row_1["color"]; ?></td>
+			<?php if($table == "ew_car"){echo "<td>".$row_1["condition"]."</td>";} ?>
+            <td><?php echo $row_1["quantity"]; ?></td>
+            <td><?php if($row_1["w_quantity"] =='0'){ echo "n/a";}else{ echo $row_1["w_quantity"];}; ?></td>
+            <td><?php echo $row_1["l_zone"]."_".$row_1["l_column"]."_".$row_1["l_level"]; ?></td>
+			<td><a href="edit_<?php if($table == "ew_car"){echo "car";}else{echo "part";} ?>.php?barcode=<?php echo $row_1["barcode"]; ?>">Edit</a></td>
+            </tr>
+<?php
+};
+?>
+</table>
+<div class="cleaner h30"></div>
+<div class="cleaner"></div>
+<div class="cleaner"></div>
+</div> <!-- end of a content box -->
+<div class="content_box_bottom"></div>
+</div> <!-- end of main -->
+<?PHP
+include('footer.php');
+?>
+
+//zz view_part.php original:
+<form name="form_smart_search" method="get" action="search.php" >
+        Smart Search for Parts:
+        <input type="hidden" name="table" value="ew_part"/>
+        <input type="text" id="keyword" name="keyword" class="input_field" value="<?php //echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
+        <input type="submit" class="submit_btn" value="Search"/>
+    </form>
+
+        <div id="suggestion" style="display: none"></div>
+<!--    zz original barcode search bar (exactly match, link to same page):-->
+<!--    <p>-->
+<!--        <form name="form1" method="post" action="search.php?do=barcode">-->
+<!--            Barcode Search:-->
+<!--            <input type="text" name="keyword" autocomplete="off"/>-->
+<!--            <input type="submit" name="submit" value="Go"/>-->
+<!--        </form>-->
+<!--    </p>-->
+
+<div class="cleaner h30"></div>
+<div class="col_w320 float_r">
+<ul class = "list">
+	<li>Name: <?php echo($a_check['name']); ?></li>
+	<li>Barcode: <?php echo($a_check['barcode']); ?></li>
+	<li title="This part number is for AGT. They are older, more stable and referred on our product manuals.">Part Number: <?php echo($a_check['part_num']); ?></li>
+    <li title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">Part Number (Eagle): <?php echo($a_check['part_num_yigao']); ?></li>
+	<li>Category: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['category']); ?>"><?php echo($a_check['category']); ?></a></li>
+	<li>For: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['sub_category']); ?>"><?php echo($a_check['sub_category']); ?></a></li>
+	<li>Color: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['color']); ?>"><?php echo($a_check['color']); ?></a></li>
+	<li>Purchase Price: <?php echo($a_check['p_price']); ?></li>
+	<li>Wholesale Price: <?php echo($a_check['w_price']); ?></li>
+	<li>Retail Price: <?php echo($a_check['r_price']); ?></li>
+	<li>Quantity: <?php echo($a_check['quantity']); ?></li>
+	<li>Stock Warning: <?php echo($a_check['w_quantity']); ?></li>
+	<li>Location: <a href="search.php?table=ew_part&keyword=<?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?>"><?php echo($a_check['l_zone']."_".$a_check['l_column']."_".$a_check['l_level']); ?></a></li>
+	<li>Latest Update: <?php echo($a_check['date']); ?></li>
+
+    <!--    zz temp for organizing1809-->
+    <label>Flag Organizing1809: <?php echo($a_check['organizing201809']); ?></label>
+
+	<li>Description: <?php echo($a_check['des']); ?></li>
+
+</ul>
+</div>
+
+<div class="col_w320 float_l">
+<h4>Photo Preview</h4>
+<a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
+    <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class ="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>" />
+
+    <!--    width="300" height="300" class="image_wrapper" -->
+</a>
+<p>
+<a href="edit_part.php?barcode=<?php echo($a_check['barcode']); ?>">[Edit Profile]</a>
+<a href="enter.php?barcode=<?php echo($a_check['barcode']); ?>">[Quick Enter]</a>
+<a href="depart.php?barcode=<?php echo($a_check['barcode']); ?>">[Quick Depart]</a>
+</p>
+
+</div>
+
+<div class="cleaner h20"></div>
+
+<h4>Associated Part</h4>
+<div id="attach_part"></div>
+
+
+<div class="cleaner h30"></div>
+<div class="cleaner"></div>
+<div class="cleaner"></div>
+</div> <!-- end of a content box -->
+<div class="content_box_bottom"></div>
+</div> <!-- end of main -->
+
+<!--testing img modal-->
+    <button id="testzz1">haha</button>
+
+    <div class="modal fade" id="imagemodal" style="/*width: 200%*/" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <span><img src="" class="imagepreview1" style="width: 50%;display: inline" ></span>
+                    <span><img src="" class="imagepreview2" style="width: 50%;display: inline" ></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google jQuery v3.2.1 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap v3.3.7 JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--    jqueryUI-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+
+        //zz temp
+        $(function() {
+            $('#testzz1').on('click', function() {
+                $('.imagepreview1').attr('src', "http://www.agtecars.com/img/agt_logo_white.jpg");
+                $('.imagepreview2').attr('src', "http://www.agtecars.com/img/slide-bus.png");
+                $('#imagemodal').modal('show');
+            });
+        });
+        $(document).ready(function () {
+            // $("#testzz1").click(function(){
+            //     $('#dialog').remove();
+            //     $('<div/>')
+            //         .attr({ title: "title yoyo", id: 'dialog'})
+            //         .html('<img src="http://www.agtecars.com/img/agt_logo_white.jpg">')
+            //         .appendTo('body');
+            //     $("#dialog").dialog({ //jueryUI's dialog
+            //         width: 600,
+            //         modal: true
+            //     });
+            // })
+        });
+        // /zz temp
+
+    </script>
+    <!--testing img modal finish-->
+
+
+<?PHP
+include('footer.php');
+?>
+
+//zz !testing img modal:
+<!--testing img modal-->
+    <button id="testzz1">haha</button>
+
+    <div class="modal fade" id="imagemodal" style="/*width: 200%*/" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <span><img src="" class="imagepreview1" style="width: 50%;display: inline" ></span>
+                    <span><img src="" class="imagepreview2" style="width: 50%;display: inline" ></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google jQuery v3.2.1 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap v3.3.7 JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--    jqueryUI-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+
+        //zz temp
+        $(function() {
+            $('#testzz1').on('click', function() {
+                $('.imagepreview1').attr('src', "http://www.agtecars.com/img/agt_logo_white.jpg");
+                $('.imagepreview2').attr('src', "http://www.agtecars.com/img/slide-bus.png");
+                $('#imagemodal').modal('show');
+            });
+        });
+        $(document).ready(function () {
+            // $("#testzz1").click(function(){
+            //     $('#dialog').remove();
+            //     $('<div/>')
+            //         .attr({ title: "title yoyo", id: 'dialog'})
+            //         .html('<img src="http://www.agtecars.com/img/agt_logo_white.jpg">')
+            //         .appendTo('body');
+            //     $("#dialog").dialog({ //jueryUI's dialog
+            //         width: 600,
+            //         modal: true
+            //     });
+            // })
+        });
+        // /zz temp
+
+    </script>
+    <!--testing img modal finish-->
+
+//zz original edit part page:
+<div id="main">
+
+<div class="content_box_top"></div>
+<div class="content_box">
+
+
+<h2>Edit Part Profile</h2>
+<div class="cleaner"></div>
+<p>You should no change barcode for an exsiting part for any reason. Each input field should not exceed max allowed size or violate corresponding data type in DB. Details refers to [section 2.2.5 Table: ew_part] in design document.</p>
+<div class="cleaner h30"></div>
+<div class="col_w320 float_r">
+<div id="newcar_form">
+
+<form name="form" method="post" enctype="multipart/form-data">
+<label>Photo:</label><input type="file" name="file"><input type="text" style="display:none;" name="photo_url" value="<?php echo($a_check['photo_url']); ?>"/><br>
+<label>Barcode: </label><input type="text" name="barcode" value="<?php echo($a_check['barcode']); ?>"/><br />
+<label>Part Name: </label><input type="text" name="name" value="<?php echo($a_check['name']); ?>"/><br />
+<label title="This part number is for AGT. They are older, more stable and referred on our product manuals.">
+    Part Number: </label><input type="text" name="part_num" value="<?php echo($a_check['part_num']); ?>"/><br />
+<label title="The newest part number on the domestic, Eagle side. It is useful when ordering parts from them.">
+    Part Number (Eagle): </label><input type="text" name="part_num_yigao" value="<?php echo($a_check['part_num_yigao']); ?>"/><br />
+
+<label>Category: </label>
+<select name="category">
+  <option value="body" <?php if($a_check['category'] == 'body'){ echo("selected=\"selected\"");} ?>>Body</option>
+  <option value="accessory" <?php if($a_check['category'] == 'accessory'){ echo("selected=\"selected\"");} ?>>Accessory</option>
+  <option value="tire_and_rim" <?php if($a_check['category'] == 'tire_and_rim'){ echo("selected=\"selected\"");} ?>>Tire and Rim</option>
+  <option value="mechanical" <?php if($a_check['category'] == 'mechanical'){ echo("selected=\"selected\"");} ?>>Mechanical</option>
+  <option value="electrical" <?php if($a_check['category'] == 'electrical'){ echo("selected=\"selected\"");} ?>>Electrical</option>
+</select><br />
+
+<!--<label>For: </label>-->
+<!--<input type="checkbox" name="sub1" value="CLUB" --><?php //if (strpos($a_check['sub_category'], 'CLUB') !== false){echo "checked";} ?><!-- >CLUB-->
+<!--<input type="checkbox" name="sub2" value="EZGO" --><?php //if (strpos($a_check['sub_category'], 'EZGO') !== false){echo "checked";} ?><!-- >EZGO-->
+<!--<input type="checkbox" name="sub3" value="AGT" --><?php //if (strpos($a_check['sub_category'], 'AGT') !== false){echo "checked";} ?><!-- >AGT-->
+<!--<input type="checkbox" name="sub4" value="YAMAHA" --><?php //if (strpos($a_check['sub_category'], 'YAMAHA') !== false){echo "checked";} ?><!-- >YAMAHA-->
+<!--<br />-->
+<label>Color: </label><input type="text" name="color" value="<?php echo($a_check['color']); ?>"/><br />
+<label>Purchase Price: </label><input type="text" name="p_price" value="<?php echo($a_check['p_price']); ?>"/><br />
+<label>Wholesale Price: </label><input type="text" name="w_price" value="<?php echo($a_check['w_price']); ?>"/><br />
+<label>Retail Price: </label><input type="text" name="r_price" value="<?php echo($a_check['r_price']); ?>"/><br />
+<label>Quantity: <?php /*echo($a_check['quantity']); */?></label><input type="text" style="/*display:none;*/" name="quantity" value="<?php echo($a_check['quantity']); ?>"/><br />
+<label>Warning Quantity: </label><input type="text" name="w_quantity" value="<?php echo($a_check['w_quantity']); ?>"/><br />
+<!--    zz-->
+<img src="images/map.gif" height="" width="300" style="margin-top: 10px;margin-bottom: 10px" usemap="#map1">
+<map id="map1" name="map2">
+    <area shape="rect" coords="98,46,240,104" alt="" title="P1" onclick="testzz()" style="cursor: pointer"/>
+    <script>
+        function testzz() {
+            // alert("haha");
+            // history.go(-1);
+            window.location = '#location_z';
+            document.getElementById("location_z").value="P1";
+            document.form.l_column.value = '';
+            document.form.l_column.focus();
+        }
+    </script>
+</map>
+<!--    zz-->
+<label>Location Zone: </label><!--zz --><input id="location_z" type="text" name="l_zone" value="<?php echo($a_check['l_zone']); ?>"/><br />
+<label>Location Column: </label><input type="text" name="l_column" value="<?php echo($a_check['l_column']); ?>"/><br />
+<label>Location Level: </label><input type="text" name="l_level" value="<?php echo($a_check['l_level']); ?>"/><br />
+
+<!--    zz temp for organizing1809-->
+    <label>- Flag Organizing1809: </label><input type="text" name="organizing1809" value="<?php echo($a_check['organizing201809']); ?>"/><br />
+
+<label>Description: </label><br/>
+<textarea rows="4" cols="50" name="des"><?php echo($a_check['des']); ?></textarea><br/>
+<input type="submit" name="submit" class="submit_btn float_l" value="Edit"/>
+</form>
+
+</div>
+</div>
+
+ <div class="col_w320 float_l">
+<h4>Photo Preview</h4>
+
+<!--<div style="width: 300px;height: 300px;" class="withborder">-->
+    <a href="<?php echo($a_check['photo_url']); ?>" target="_blank">
+        <img style="width:auto;height:auto;object-fit: cover;overflow: hidden" class="withborder" src="<?php echo get_thumb($a_check['photo_url']); ?>"/>
+<!--        class="image_wrapper"-->
+    </a>
+<!--</div>-->
+<div class="cleaner h10"></div>
+<p><a href="edit_part.php?barcode=<?php echo $a_check["barcode"]; ?>&do=del">[ Delete ]</a> - Warning, delete will set the part quantity to "0" and warning quantity to "-1".</p>
+<h4>Associated Part </h4>
+<form name="form2" method="get" action="ajax/attach_part.php">
+<input type="text" style="display:none;" name="do" value="add"/><input type="text" style="display:none;" name="main" value="<?php echo $a_check["barcode"]; ?>"/>
+Attach:<input type="text" class="input_field_w w90" name="attach"/>Amount:<input type="text" class="input_field_w w50" name="amount"/> <input type="submit" class="submit_btn" value="Add"/>
+</form>
+<div class="cleaner h10"></div>
+<div id="attach_part"></div>
+
+</div>
+
+
+<div class="cleaner h30"></div>
+<div class="cleaner"></div>
+<div class="cleaner"></div>
+</div> <!-- end of a content box -->
+<div class="content_box_bottom"></div>
+</div> <!-- end of main -->
+<?PHP
+include('footer.php');
+?>

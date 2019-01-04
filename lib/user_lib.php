@@ -771,6 +771,14 @@ function replace_by_param_query_str($param_name, $new_value){
 function generate_new_barcode() {
     return "1".substr(round(microtime(true) * 1000),0, -2);
 }
-?>
+
+
+function include_template_header_css_sidebar_topbar($load, $title_by_page, $smart_search_special) {
+    $load = $load;
+    $title_by_page = $title_by_page;
+    $smart_search_special = $smart_search_special;
+    include('template_header_css_sidebar_topbar.php');
+}
+
 
 

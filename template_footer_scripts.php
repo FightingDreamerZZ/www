@@ -9,7 +9,7 @@
 <!-- footer content -->
 <footer>
     <div class="pull-right">
-        Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+        Copyright © 2018 AGT Warehouse Management System | <a href="http://www.agtecars.com" target="_blank">AGT Electric Cars</a>
     </div>
     <div class="clearfix"></div>
 </footer>
@@ -56,7 +56,8 @@
 <script src="p_g_dash/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 <!-- Custom Theme Scripts -->
-<script src="p_g_dash/build/js/custom.min.js"></script>
+<!--<script src="p_g_dash/build/js/custom.min.js"></script>-->
+<script src="p_g_dash/build/js/custom.js"></script>
 
 </body>
 </html>

@@ -113,10 +113,34 @@ $MENU_TOGGLE.on('click', function() {
 
 	$BODY.toggleClass('nav-md nav-sm');
 
+	//zz
+	$('#site_logo_image_wrapper').toggleClass('site_logo_image_wrapper_md site_logo_image_wrapper_sm');
+
 	setContentHeight();
 
 	$('.dataTable').each ( function () { $(this).dataTable().fnDraw(); });
 });
+
+    //zz
+    var array_url_split_by_fwdslash = window.location.href.split('#')[0].split('?')[0].split('/');
+    var last_seg_url_split_by_fwdslash = array_url_split_by_fwdslash[array_url_split_by_fwdslash.length-1];
+    var first_seg_url_split_by_hash = window.location.href.split('#')[0];
+    // console.log("haha: "+last_seg_url_split_by_fwdslash);
+    if(last_seg_url_split_by_fwdslash == 'list.php'){
+        if (first_seg_url_split_by_hash.includes("check=inventory")) {
+            CURRENT_URL = window.location.href.split('#')[0].split('?')[0] + "?check=inventory";
+            console.log("haha: "+CURRENT_URL);
+        }
+        else if (first_seg_url_split_by_hash.includes("check=short")) {
+            CURRENT_URL = window.location.href.split('#')[0].split('?')[0] + "?check=short";
+        }
+        else if (first_seg_url_split_by_hash.includes("check=out")) {
+            CURRENT_URL = window.location.href.split('#')[0].split('?')[0] + "?check=out";
+        }
+        else if (first_seg_url_split_by_hash.includes("check=bin")) {
+            CURRENT_URL = window.location.href.split('#')[0].split('?')[0] + "?check=bin";
+        }
+    }
 
 	// check active menu
 	$SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
@@ -126,6 +150,21 @@ $MENU_TOGGLE.on('click', function() {
 	}).parent('li').addClass('current-page').parents('ul').slideDown(function() {
 		setContentHeight();
 	}).parent().addClass('active');
+
+	//zz
+    var $found_parent_li = $SIDEBAR_MENU.find('a').filter(function () {
+        return this.href == CURRENT_URL;
+    }).parent('li');
+    console.log($found_parent_li);
+
+    //zz
+	if (!$found_parent_li.parent().is('.child_menu')){
+        $found_parent_li.addClass('active');
+        $found_parent_li.addClass('current-page');
+        $('ul:first', $found_parent_li).slideDown(function() {
+            setContentHeight();
+        });
+	}
 
 	// recompute content when resizing
 	$(window).smartresize(function(){  
