@@ -150,7 +150,7 @@ if(!$_COOKIE['ew_user_name']){
     }
 </script>
 
-<body class="nav-md">
+<body class="nav-md" <?php echo($load); ?>>
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col">

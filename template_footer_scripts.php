@@ -9,7 +9,7 @@
 <!-- footer content -->
 <footer>
     <div class="pull-right">
-        Copyright © 2018 AGT Warehouse Management System | <a href="http://www.agtecars.com" target="_blank">AGT Electric Cars</a>
+        Copyright © 2018 AGT Warehouse Management System | <a href="http://www.agtecars.com" target="_blank" class="a-underline-zz">AGT Electric Cars</a>
     </div>
     <div class="clearfix"></div>
 </footer>

@@ -5,8 +5,8 @@
 * This file performs depart related functions
 */
 
-error_reporting(E_ALL ^ E_NOTICE);
-//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 include('lib/sql.php');//zz path forwardSlash tempForMac
 include('lib/user_lib.php');
@@ -19,13 +19,13 @@ if($_COOKIE['is_warehouse_admin'] && $_COOKIE['is_warehouse_admin'] == 'true'){
     $is_warehouse_admin = true;
 }
 
-//zz handler for get cookie for store checkbox (omit ottos cart) check status
+//zz handler for get cookie for saving checkbox (omit ottos cart) check status
 if($_COOKIE['is_to_omit_cart']){
     //echo "cookie!cookie=".$_COOKIE['is_to_omit_cart'];
     $cookie_is_to_omit_cart = $_COOKIE['is_to_omit_cart'];
 }
 
-//zz handler for set cookie for store checkbox (omit ottos cart) check status
+//zz handler for set cookie for saving checkbox (omit ottos cart) check status
 if($_POST['is_to_omit_cart']){
     $cookie_is_to_omit_cart = $_POST['is_to_omit_cart'];
     setcookie("is_to_omit_cart",$_POST['is_to_omit_cart'],time() + 60*60*2);
@@ -201,12 +201,18 @@ if($_GET['application']){
     $result_info_a = mysql_query($sql_code_a);
 }
 
-$load = " onload=\"load()\"";
-$title_by_page = "Depart";
-include('header.php');
+//$load = " onload=\"load()\"";
+//$title_by_page = "Depart";
+//include('header.php');
+include_template_header_css_sidebar_topbar(" onload=\"load()\"","Shipping","depart");
 
 ?>
 <script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip(
+            {container:'body', trigger: 'hover', placement:"bottom"}
+        );
+    });
 	function loadXMLDoc()//zz 怎么看都像是用来处理购物车cart的、由于没有任何post参数、应该就只是load购物车当前的信息的
 	{
 	var xmlhttp;
@@ -322,7 +328,7 @@ include('header.php');
 
    function load()
    {
-      document.form1.focus_on.focus();//focus on 这个form的这个txtbox
+      // document.form1.focus_on.focus();//focus on 这个form的这个txtbox
 	  loadXMLDoc();//读取ajax返回的cart table
 
 	  //zz if(post里有focus_on等刚submit的痕迹){document.getElementById("redAlertTxtLblForRdBtnAppli").innerHTML = "Pls select where the part goes.."}
@@ -459,205 +465,290 @@ include('header.php');
 
     }
 </script>
+<style>
+    .a-underline-zz {
 
-<div id="main">
-     
-<div class="content_box_top"></div>
-<div class="content_box">
+        text-decoration: underline;
 
-<h2>Barcode Quick Depart</h2>
+    }
+</style>
 
-    <form name="form_smart_search" method="get" action="search.php" >
-        <span>Smart Search for Parts:&nbsp;</span>
-        <input type="hidden" name="table" value="ew_part"/>
-        <input type="text" id="keyword" name="keyword" class="input_field" value="<?php //echo $temp_key; ?>" autocomplete="off" onkeyup="suggest(this.value)"/>
-        <input type="submit" class="submit_btn" value="Search"/>
-    </form>
+    <!-- page content -->
+    <div class="right_col" role="main">
 
-    <div id="suggestion" style="display: none"></div>
+        <!--page-title-->
+        <div class="page-title">
+            <div class="title_left">
+                <h2>Shipping</h2>
+            </div>
+        </div>
+        <div class="clearfix"></div>
 
-<div class="cleaner"></div>
-<div class="col_w320 float_l">
+        <div class="row">
+            <!--zz x_panel left-->
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+<!--                    <div class="x_title">-->
+<!--                        <h4>Parts to be shipped<small></small></h4>-->
+<!--                        <div class="clearfix"></div>-->
+<!--                    </div>-->
+                    <div class="x_content">
+                        <h3>Parts to be shipped<small></small></h3>
+                        <br />
+                        <form class="form-horizontal form-label-left" name="form_barcode_scan" method="post" action="depart.php">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" style="font-size: medium">Scan Barcode:</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input type="text" name="focus_on" class="form-control">
+                                        <span class="input-group-btn">
+                                            <input type="submit" name="submitbarcode" class="btn btn-primary" value="Go!" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <hr/>
 
-<!--zz 这里不太懂、就算点击了sumit按钮可以让界面刷新并进行ajex读取cart等、仍不知道究竟这个input哪里refer了post的“barcode”参数、《--啊原来是有这两个关键字的都是用的nameAttribute还是form不熟啊。。 -->
-<form name="form1" method="post" action="depart.php">
-	<label>Scan Barcode:</label>
-	<input type="text" name="focus_on" class="input_field_w w180" autocomplete="off"/>
-	<input type="submit" class="submit_btn" name="submitbarcode" value="Scan"/>
-</form>
+                        <form name="form_confirm_decrease" method="post" id="form_confirm_decrease" action="depart.php" class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Barcode</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" name="barcode" disabled
+                                           value="<?php echo $barcode; ?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" name="name" disabled
+                                           value="<?php echo($a_check['name']); ?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Original Stock</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" name="name" disabled
+                                           value="<?php echo($a_check['quantity']); ?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Shipping Quantity</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" name="amount"
+                                           value="<?php if($suggested_decrease){echo $suggested_decrease;}else{echo "1";}?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-3 col-xs-12 control-label">Application of the Depart</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <div class="radio">
+                                        <label title="The purpose of this departing is unknown..">
+                                            <input type="radio" class="flat" checked name="radio_application" value="unknown" id="form_application_radio_unknown"/> Unknown
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label title="This part is sold to an individual customer..">
+                                            <input type="radio" class="flat" name="radio_application" value="sold_retail" id="form_application_radio_sold_retail"/> Sold as retail
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label title="This part is sold to a dealer..">
+                                            <input type="radio" class="flat" name="radio_application" value="sold_wholesale" id="form_application_radio_sold_wholesale"/> Sold as wholesale
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label title="Consumed when repairing a vehicle in warranty..">
+                                            <input type="radio" class="flat" name="radio_application" value="consumed_repair" id="form_application_radio_consumed_repair"/> Warranty
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label title="The part was used when assembling cars..">
+                                            <input type="radio" class="flat" name="radio_application" value="consumed_assembly" id="form_application_radio_consumed_assembly"/> Consumed in assembly
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-3 col-xs-12 control-label">Omit Otto's Cart</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" onclick="onclick_cb_ooc()" id="cb_ooc" name="cb_ooc" value=""
+                                                <?php if($cookie_is_to_omit_cart == "true")echo "checked";?>
+                                                   class="flat"> Write to database directly without cart? (Admin Required)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>" autocomplete="off"/>
+                            <input type="text" style="display:none;" name="is_edit_cart" value = "<?php echo ($is_edit_cart)?$is_edit_cart:"";?>" autocomplete="off"/>
+                            <input type="text" style="display:none;" name="appli_old" value = "<?php echo ($appli_old)?$appli_old:"";?>" autocomplete="off"/>
+                            <div class="form-group">
+                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                    <input type="submit" name="submit_confirm_decrease" id="submit_confirm_decrease" class="btn btn-success"
+                                           value="<?php
+                                                       if ($cookie_is_to_omit_cart == "true")
+                                                           echo "Confirm & Directly Write to DB";
+                                                       elseif ($is_edit_cart == "true")
+                                                           echo "Edit Record";
+                                                       else
+                                                           echo "Confirm";
+                                                   ?>"
+                                           onclick="<?php
+                                                        if($cookie_is_to_omit_cart == 'true')
+                                                            echo 'directWriteLastCheck()';
+                                                   ?>"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!--zz x_panel left-->
+            <!--zz x_panel upper right-->
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+<!--                    <div class="x_title">-->
+<!--                        <h4>Add Associate Parts<small></small></h4>-->
+<!--                        <div class="clearfix"></div>-->
+<!--                    </div>-->
+                    <div class="x_content">
+                        <h3>Add Associate Parts<small></small></h3>
+                        <br />
+                        <form class="form-inline" name="assoc_part" id="assoc_part" method="post" onsubmit="return confirm('Do you really want to append selected associate parts?');">
+                            <input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>"/>
+                            <div class="form-group">
+                                <label class="control-label" style="font-size: medium">Check all:</label>
+                                <input type="checkbox" name='checkall' onclick='checkedAll()'/>
+                            </div>
+                            &nbsp;&nbsp;
+                            <div class="form-group">
+                                <label class="control-label" style="font-size: medium">Add: </label>
+                                <input type="text" name="set_amount" value="0" autocomplete="off" class="form-control"/>
+                                <label class="control-label" style="font-size: medium">set(s). </label>
+                            </div>
+                            &nbsp;&nbsp;
+                            <input type="submit" name="add_assoc_part" value="Confirm" class="btn btn-primary"/>
+                            <br />
+                            <br />
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Barcode</th>
+                                        <th>Name</th>
+                                        <th>Amount</th>
+                                        <th>Stock</th>
+                                        <th>MAX SET</th>
+                                    </tr>
+                                </thead>
 
-<ul class = "list">
-    <li>Barcode: <?php echo $barcode;?></li>
-	<li>Name: <?php echo $a_check[name];?></li>
-	<li>Previous Stock: <?php echo $a_check[quantity];?></li>
-	<li>Stock Change: Total&nbsp;<?php echo $cart_amount;?>&nbsp;(Last time&nbsp;<?php echo $decrease_this_time;?>)</li>
-	<li>Expect Stock: <?php echo $a_check[quantity]+$cart_amount;?></li>
-
-    <form name="form2" method="post" id="form_confirm_decrease" action="depart.php">
-    <li>Application of the Depart:<br/>
-<!--        <span id="label_application_selected"></span>-->
-<!--        <form name="form_application" id="form_application" method="post">-->
-            <input type="hidden" value="<?php echo $barcode;?>" id="barcode_main"/> <!--zz toBeCheck: necessity-->
-            <input type="radio" name="radio_application" value="unknown" id="form_application_radio_unknown" checked
-                   title="The purpose of this departing is unknown.."/>
-            <label for="form_application_radio_unknown"
-                   title="The purpose of this departing is unknown..">Unknown</label>
-            <input type="radio" name="radio_application" value="sold_retail" id="form_application_radio_sold_retail" style="margin-left: 49px;"
-                   title="This part is sold to an individual customer.."/>
-            <label for="form_application_radio_sold_retail"
-                   title="This part is sold to an individual customer..">Sold as retail</label><br/>
-            <input type="radio" name="radio_application" value="sold_wholesale" id="form_application_radio_sold_wholesale"
-                   title="This part is sold to a dealer.."/>
-            <label for="form_application_radio_sold_wholesale"
-                   title="This part is sold to a dealer.." >Sold as wholesale</label>
-            <input type="radio" name="radio_application" value="consumed_repair" id="form_application_radio_consumed_repair"
-                   title="Consumed when repairing a vehicle in warranty.."/>
-            <label for="form_application_radio_consumed_repair"
-                   title="Consumed when repairing a vehicle in warranty.." >Warranty</label><br/>
-            <input type="radio" name="radio_application" value="consumed_assembly" id="form_application_radio_consumed_assembly"
-                   title="The part was used when assembling cars.."/>
-            <label for="form_application_radio_consumed_assembly"
-                   title="The part was used when assembling cars..">Consumed in assembly</label>
-<!--        </form>-->
-        <style>
-            #form_confirm_decrease label{
-                width: 240px;
-                display: inline;
-                font-size: 12px;
-                margin-right: 0px;
-            }
-        </style>
-    </li>
-
-<!--        zz 传递已有参数用form时，用displayNone的textBox-->
-	    <input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>" autocomplete="off"/>
-        <input type="text" style="display:none;" name="is_edit_cart" value = "<?php echo ($is_edit_cart)?$is_edit_cart:"";?>" autocomplete="off"/>
-        <input type="text" style="display:none;" name="appli_old" value = "<?php echo ($appli_old)?$appli_old:"";?>" autocomplete="off"/>
-
-
-        <li>Depart Quantity:
-            <input type="text" name="amount" value = "<?php if($suggested_decrease){echo $suggested_decrease;}else{echo "-1";}?>"
-                           class="input_field_w w50" autocomplete="off"/>
-        </li>
-        <li style="
+                                <tbody>
+                                <?php
+                                while ($row_a = mysql_fetch_assoc($result_info_a)) {
+                                    ?>
+                                    <tr>
+                                        <td><input type="checkbox" name="<?php echo $row_a['attach_part']; ?>" value="1"></td>
+                                        <td><?php echo $row_a['attach_part']; ?></td>
+                                        <td><?php echo get_name($row_a['attach_part']); ?></td>
+                                        <td><?php echo $row_a['amount']; ?></td>
+                                        <td><?php echo get_anything($row_a['attach_part'],'quantity') ?></td>
+                                        <td><?php echo floor(get_anything($row_a['attach_part'],'quantity')/$row_a[amount]) ?></td>
+                                    </tr>
+                                    <?php
+                                };
+                                ?>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div><!--zz x_panel upper right-->
+            <div class="col-md-6 col-sm-6 col-xs-12"  style="
                 <?php
-                    if(!$is_warehouse_admin){
-                        echo "display:none;";
-                    }
-                ?>">
-            Omit Otto's Cart (Admin Required):
-            <input type="checkbox" onclick="onclick_cb_ooc()" id="cb_ooc" name="cb_ooc" value=""
-                <?php if($cookie_is_to_omit_cart == "true")echo "checked";?>
-            />
-        </li>
-	    <input type="submit" class="submit_btn" name="submit_confirm_decrease" id="submit_confirm_decrease" style="float: right;margin-right: 20px"
-               value="<?php
-                        if ($cookie_is_to_omit_cart == "true")
-                            echo "Confirm & Directly Write to DB";
-                        elseif ($is_edit_cart == "true")
-                            echo "Edit Record";
-                        else
-                            echo "Confirm";
-                      ?>" onclick="
-                <?php
-                    if($cookie_is_to_omit_cart == 'true')
-                        echo 'directWriteLastCheck()';
-                ?>"/>
-    </form><br/><br/>
-</ul>
-
-
-<p>Detail Information:
-    <a href="
-        <?php
-            if($table == "ew_part"){
-                echo "view_part.php";
-            }
-            else{echo "view_car.php";}
-        ?>?barcode=<?php echo $barcode;?>"
-       target="_blank">
-        <?php echo $barcode;?>
-    </a>
-    <br />
-<!--    //zz xsearch应该是专为searchSuggestion功能弄的一个column，有全部各个域的value串成一长string，也被用于display part details-->
-    <?php echo $a_check[xsearch];?>
-</p>
-<a href="<?php echo($a_check['photo_url']); ?>"
-   target="_blank">
-    <img width="300" height="300" class ="withborder" src="<?php echo($a_check['photo_url']); ?>" class="image_wrapper" />
-</a>
-</div>
-
-
-
-<div class="col_w320 float_r">
-	<h4>Associate Parts</h4>
-	<form id="assoc_part" name="assoc_part" method="post" onsubmit="return confirm('Do you really want to process selected items?');" >
-	<input type="text" style="display:none;" name="barcode" value = "<?php echo $barcode;?>" autocomplete="off"/>
-	Check all: <input type='checkbox' name='checkall' onclick='checkedAll();'>
-	ADD:<input type="text" name="set_amount" class="input_field_w w50" value="0" autocomplete="off"/>SET(s)
-	<input type="submit" name="add_assoc_part" class="submit_btn" value="to Cart"/>
-		<table>
-		<tr>
-
-		<td>CK</td>
-		<td>Barcode</td>
-		<td>Name</td>
-		<td>Amount</td>
-		<td>Stock</td>
-		<td>MAX SET</td>
-		</tr>
-
-		<?php 
-		while ($row_a = mysql_fetch_assoc($result_info_a)) { 
-		?> 
-
-		<tr>
-		<td><input type="checkbox" name="<?php echo $row_a['attach_part']; ?>" value="1"></td>
-		<td><?php echo $row_a['attach_part']; ?></td>
-		<td><?php echo get_name($row_a['attach_part']); ?></td>
-		<td><?php echo $row_a['amount']; ?></td>
-		<td><?php echo get_anything($row_a['attach_part'],'quantity') ?></td>
-		<td><?php echo floor(get_anything($row_a['attach_part'],'quantity')/$row_a[amount]) ?></td> 
-		</tr>
-
-		<?php 
-		}; 
-		?> 
-		</table>
-	</form>
-
-	<div class="cleaner h20"></div>
-
-    <div style="
-            <?php
                 if ($cookie_is_to_omit_cart == "true")
                     echo "display: none";
-            ?>">
-        <h4>My Cart</h4>
-        <button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
-        <button type="button" class="submit_btn" onclick="submit_or_proceed_cart()"><?php echo ($is_warehouse_admin)?"Proceed":"Submit";?></button>
-        <button type="button" class="submit_btn" onclick="pending()">Pend to</button>
-        <input type="text" id="client" class="input_field_w w60" value="" autocomplete="off"/>
-        <div id="mycart"></div>
-    </div>
-    <div id="msg_direct_depart">
+                ?>"><!--zz x_panel lower right-->
+                <div class="x_panel">
+                    <!--                    <div class="x_title">-->
+                    <!--                        <h4>Add Associate Parts<small></small></h4>-->
+                    <!--                        <div class="clearfix"></div>-->
+                    <!--                    </div>-->
+                    <div class="x_content">
+                        <h3>My Cart</h3>
+                        <br />
+                        <button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
+                        <button type="button" class="submit_btn" onclick="submit_or_proceed_cart()"><?php echo ($is_warehouse_admin)?"Proceed":"Submit";?></button>
+                        <button type="button" class="submit_btn" onclick="pending()">Pend to</button>
+                        <input type="text" id="client" class="input_field_w w60" value="" autocomplete="off"/>
+                        <div id="mycart"></div>
+                    </div>
+                </div>
+            </div><!--zz x_panel lower right-->
+
+            <div id="msg_direct_depart">
+                <?php
+                if($msg_direct_depart){
+                    echo $msg_direct_depart;
+                }
+                ?>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <!--                    <div class="x_title">-->
+                    <!--                        <h4>Add Associate Parts<small></small></h4>-->
+                    <!--                        <div class="clearfix"></div>-->
+                    <!--                    </div>-->
+                    <div class="x_content">
+                        <h3>Detail Information<small></small></h3>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-3 col-xs-12">
+                                <a href="<?php echo($a_check['photo_url']); ?>"
+                                   target="_blank">
+                                    <img width="300" height="300" class ="withborder" src="<?php echo($a_check['photo_url']); ?>" class="image_wrapper" />
+                                </a>
+                            </div>
+                            <div class="col-md-1 col-xs-12"></div>
+                            <div class="col-md-8 col-xs-12">
+                                <p>
+                                    <a href="
         <?php
-            if($msg_direct_depart){
-                echo $msg_direct_depart;
-            }
-        ?>
-    </div>
+                                    if($table == "ew_part"){
+                                        echo "view_part.php";
+                                    }
+                                    else{echo "view_car.php";}
+                                    ?>?barcode=<?php echo $barcode;?>"
+                                       target="_blank" class="a-underline-zz">
+                                        Visit part detail page of <?php echo $barcode;?> ->
+                                    </a>
+                                    <br /><br />
+                                    <!--    //zz xsearch应该是专为searchSuggestion功能弄的一个column，有全部各个域的value串成一长string，也被用于display part details-->
+                                    <label class="control-label" style="/*font-size: medium*/">Barcode: </label>
+                                    <?php echo $a_check['barcode'];?><br/>
+                                    <label class="control-label" style="/*font-size: medium*/">Name: </label>
+                                    <?php echo $a_check['name'];?><br/>
+                                    <label class="control-label" style="/*font-size: medium*/">Price: </label>
+                                    <?php echo $a_check['p_price'];?> - <?php echo $a_check['w_price'];?> - <?php echo $a_check['r_price'];?><br/>
+                                    <label class="control-label" style="/*font-size: medium*/">Location: </label>
+                                    <?php echo $a_check["l_zone"]."_".$a_check["l_column"]."_".$a_check["l_level"]; ?><br/>
+                                    <label class="control-label" style="/*font-size: medium*/">In stock: </label>
+                                    <?php echo $a_check['quantity'];?><br/>
+                                    <label class="control-label" style="/*font-size: medium*/">Warning: </label>
+                                    <?php echo $a_check['w_quantity'];?><br/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    </div><!-- page content -->
 
-</div>
-
-<div class="cleaner h30"></div>
-<div class="cleaner"></div>
-<div class="cleaner"></div>
-</div> <!-- end of a content box -->
-<div class="content_box_bottom"></div>
-</div> <!-- end of main -->
 <?PHP
-include('footer.php');
+include('template_footer_scripts.php');
 ?>

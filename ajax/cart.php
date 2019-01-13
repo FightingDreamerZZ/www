@@ -110,39 +110,55 @@ border-width:1px;
 text-align: center;
 }
 </style>
-<table>
-<tr>
+<table class="table table-bordered">
+    <thead>
+        <tr>
 
-    <td></td>
-    <td>No.</td>
-    <td>Barcode</td>
-    <td>Amount</td>
-    <td>Name</td>
-    <td>Application</td>
-    <td>Submitted</td>
+            <th></th>
+            <th>No.</th>
+            <th>Barcode &nbsp;&nbsp;<i class="fa fa-question-circle" title="Click link to depart more"></i></th>
+            <th>Amount</th>
+            <th>Name</th>
+            <th>Application</th>
+            <th>Submitted</th>
 
-</tr>
+        </tr>
+    </thead>
+
 <?php 
 $i = 0;
 while ($row_1 = mysql_fetch_assoc($result_info_1)) { 
 $i = $i+1;
 ?>
-<tr>
-    <!--    zz toBeContinueToResearch..-->
-    <!--<td><button id="btn_edit" onclick="edit_handler(--><?php //echo $row_1[barcode]; ?><!--,--><?php //echo $row_1["application"]; ?><!--)">Edit</button></td>-->
+    <tbody>
+        <tr>
+            <!--    zz toBeContinueToResearch..-->
+            <!--<td><button id="btn_edit" onclick="edit_handler(--><?php //echo $row_1[barcode]; ?><!--,--><?php //echo $row_1["application"]; ?><!--)">Edit</button></td>-->
 
-    <td><a href="?barcode=<?php echo $row_1[barcode]; ?>&appli=<?php echo $row_1["application"]; ?>&is_edit_cart=true">Edit</a></td>
-    <td><?php echo $i."."; ?></td>
-    <td><a href="?barcode=<?php echo $row_1[barcode]; ?>"><?php echo $row_1[barcode]; ?></a></td>
-    <td><?php echo $row_1[quantity]; ?></td>
-    <td><?php echo get_name($row_1[barcode]); ?></td>
-    <td><?php echo $row_1["application"]; ?></td>
-    <td><?php echo $row_1["pending"]; ?></td>
-</tr>
+            <td><a class="btn btn-primary btn-xs btn-inside-table"
+                   data-placement="top" data-toggle="tooltip" data-original-title="Edit" title="Edit"
+                   href="?barcode=<?php echo $row_1['barcode']; ?>&appli=<?php echo $row_1["application"]; ?>&is_edit_cart=true">
+                    <i class="fa fa-pencil"></i>
+                </a>
+            </td>
+            <td><?php echo $i."."; ?></td>
+            <td><a href="?barcode=<?php echo $row_1[barcode]; ?>" title="Click link to depart more" class="a-underline-zz">
+                    <?php echo $row_1[barcode]; ?></a></td>
+            <td><?php echo $row_1[quantity]; ?></td>
+            <td><?php echo get_name($row_1[barcode]); ?></td>
+            <td><?php echo $row_1["application"]; ?></td>
+            <td><?php echo $row_1["pending"]; ?></td>
+        </tr>
+    </tbody>
 <?php 
 }; 
 ?> 
 </table>
+<!-- jQuery -->
+<script src="p_g_dash/vendors/jquery/dist/jquery.min.js"></script>
+<script>
+    // $('[data-toggle=tooltip]').
+</script>
 
 
 

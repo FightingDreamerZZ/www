@@ -911,7 +911,8 @@ a:focus {
     padding: 4px 6px
 }
 footer {
-    background: #fff;
+    /*background: #fff;*/
+    background: rgb(237, 237, 237);/*zz*/
     padding: 15px 20px;
     display: block
 }

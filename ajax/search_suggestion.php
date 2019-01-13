@@ -63,6 +63,8 @@ switch($special){
         $page_url_base = "create_part_ordering_sheet.php";
         break;
     case "depart":
+        //zz <a href="depart.php?barcode=xxxxx">partName partNumber</a>
+        $page_url_base = "depart.php";
         break;
     case "enter":
         break;
