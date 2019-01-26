@@ -1391,3 +1391,17 @@ Attach:<input type="text" class="input_field_w w90" name="attach"/>Amount:<input
 <?PHP
 include('footer.php');
 ?>
+
+//zz experimenting with laravel & eloquent:
+$a = Vehicle::find(1)->vin_num;
+        $b = Vehicle::find(1);
+        $c = $b['vin_num'];
+
+        $vehicleFind_1 = '{"vehicle_id":1,"vin_num":"L4F2552A4H0040038","eg_order_num":"EG180290","original_eg_model_id":1,"manuf_date":"2017-05-01","original_color_id":1,"rdy_to_sell":"YES-NEW","sale_status":"SOLD","sale_dealer_id":1,"price":"6999.00","paid_amt":"6899.00","dlvr_date":"2018-03-28","sold_as_agt_model_id":1,"invoice_date":"2018-03-22","invoice_num":"18031735D","invoice_sent":"true","update_at":null,"note":"Z2+2 sold on May.29th 2018"}';
+
+        foreach ($allVehicles as $vehicle){
+                    $d = $vehicle->originalEgModel;
+                    $e =    $d->model_name;
+                    $f = $e;
+                }
+{{/*($vehicle->originalEgModel)->model_name*/}}

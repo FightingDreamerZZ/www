@@ -1,0 +1,48 @@
+.container-fluid {
+    position:absolute;
+    width:100%;
+    top:0;
+    bottom:0;
+    left:0;
+    padding: 0;
+}
+
+.navbar-header{
+    width:95%;
+}
+
+.navbar-fix-bottom {
+    position: absolute;
+    bottom: 0;
+    left:0;
+    width:100%;
+    border-radius: 0;
+}
+
+#main{
+    width: 80%;
+    margin: 0 auto;
+}
+
+#searchform {
+    width:80%;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+#empsearchtitle {
+    width:80%;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+
+.errMsg {
+    color: red;
+}
+
+.help-block {
+    padding: 0;
+    margin: 0;
+}

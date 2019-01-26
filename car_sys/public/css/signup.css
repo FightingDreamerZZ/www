@@ -1,0 +1,52 @@
+#mainsignup {
+    position: absolute;
+    width: 100%;
+    bottom: 100px;
+    top: 100px;
+    background-color: #d7d6d4;
+    left: 0;
+}
+
+#signupformtitle{
+    font-weight: bold;
+    border-bottom: 2px solid #534141;
+    text-align: center;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+#signupform{
+    margin: auto;
+    position: absolute;
+    top: 0; 
+    left: 15%; 
+    bottom:  0; 
+    right: 10%;
+}
+
+.col-xs-3 {
+    color: #404040;
+} 
+
+.form-control {
+    height: 30px;
+}
+
+.checkbox {
+    margin-left: 50px;
+}
+
+#ddlDepart, #ddloffice {
+    text-align: left;
+}
+
+#btnCancel {
+    margin-left: 75px;
+}
+
+.help-block {
+    font-weight: bold;
+    padding-top: 7px;
+    margin-bottom: 0px;
+    color: red;
+}

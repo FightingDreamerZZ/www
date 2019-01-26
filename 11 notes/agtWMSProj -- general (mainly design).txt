@@ -1,0 +1,424 @@
+general comments：
+- 录入录错了：
+- 改动（需求“smartSearch的autoCorrect功能”）：为了给partNumber也添加上autoComple的功能、改动了原来的代码，把：
+$sql_code = "SELECT DISTINCT NAME FROM `".$_POST['table']."` WHERE `name` LIKE '%".$_POST['keyword']."%' LIMIT 0,10;";
+改成了
+$sql_code = "SELECT * FROM `".$_POST['table']."` WHERE `name` LIKE '%".$_POST['keyword']."%' LIMIT 0,10;";
+
+下面的新代码也是select *形式而非select distinct的、这是由于下面的display的部分需要更大一些的resultSet不能光有一个name或者partNum栏。看起来他这么用也是出现重名时这样不美观而且会让不懂的人以为系统不好。。
+
+问题不大
+-
+UPDATE `ew_transaction` SET `application` = 'N/A' WHERE `quantity` > 0;
+-
+ALTER TABLE `ew_cart` ADD `application` VARCHAR(20) NULL DEFAULT 'unknown' COMMENT 'Only for parts depart - sold_retail, sold_wholesale, consumed_repair, consumed_assembly, unknown, N/A' AFTER `quantity`;
+
+-
+ALTER TABLE `ew_transaction` ADD `application` VARCHAR(20) NULL DEFAULT 'unknown' COMMENT 'Only for parts depart - sold_retail, sold_wholesale, consumed_repair, consumed_assembly, unknown' AFTER `quantity`;
+===
+0716
+architecture：
+
+archi-统计功能：
+-
+===
+0717
+开发日志：
+还是“用途(application或purpose)”系统：
+- 改最基本的逻辑、depart页本身剩下的部分时就发现--现有的business逻辑太差了。。太乱了。。
+- 新逻辑：读取或post barcode之后、并不直接添个-1的cart表的insert或update、而是直接“depart ___ [Confirm] as ___”
+- 下一步：cart_amount这个该改了、用于stock change域的、得到总的cart中的depart数《--所有和他有关的html form field都改成能反映得出cart
+javascript event a form just submitted site:stackoverflow.com 《--focus on depart amount textbox after submission
+- 下一步：为了“用户权限功能”、也是本来就得改的--改enter页 D
+- 下一步：现在才刚改完写入吧、读出还没改吧--改所有select相关--也就是trans页--（更新：almostDone但现在按name排序会出来一个“Barcode not found”。。。）D
+另外send_msg相关的（csv文件写入）都还没动。。
+- 下一步：success msg和尤其是confirm double check msg都还没完善。。《--！！！
+submit之后自动focus 数量那栏。。《---！！！
+
+“统计”：
+- 下一步：还是先加和“用途”相关的吧
+按季占比D、历年比较D、价格参与D
+-  下一步：饼图、条图API
+
+“用户权限”：
+- "To check this option means you also omit the buffer and comparison function provided by the cart. Proceed with caution cause the changes made will be harder to revise so are the mistakes."
+- "The following updates will be made directly to the database:"
+- Confirm & Directly Write to DB
+- 下一步：连最基本的权限都还没加哦，连depart页的都还没wrap D
+
+“其他功能”：
+- 下一步：可以先做把trans的时间查询转移到trans页（查询bar）D 和添加barcode link的，这个比较简单。
+仓库map系统也可以先做了反正迟早的做。。D 《--改一下指针啊啊啊啊啊！！！！D
+- 下一步：改trans的查询bar等，“last 30 days”、升序降序等等util功能:
+可以紧跟dropdown后面、按钮前面写    display: Last 30 days  This year   《--D 
+- 下一步：“收尾工作” --收尾工作又是很难。。
+现在很多页都还没动、没检查呢，连add part或者edit part这样的最基本功能都有问题
+- 下一步：（layout）所有的表单的layout、那些txtbox的对齐。。。《--！！
+杂项，把edit part那页的for 域也去掉《--！！
+
+"未来"：
+- 下一步：cart_amount还没弄呢吧好像？？
+另还有send_msg。。。
+- 下一步：完善stats的view。。尤其是后加这几个统计
+- 下一步：在其他页面例如part depart页中添加search bar，把search页那些auto completion移过来
+- 下一步：还有一个主要的 ，就是必须确保“写入文件、send_msg”等功能没问题、在其他改动做出后。。
+- 下一步：bootstrap化、页面布局改善
+- 下一步：地图制作、以补齐地图功能。。
+- 下一步：submit之后自动focus 数量那栏。。《---！！！
+success msg和尤其是confirm double check msg需要进一步完善。。《--！！！
+- *（learnOthers）看一下function “highlight”（search页有用）到底是什么
+------------------------------------------------------------------
+"0731（二期）新需求--非admin proceed cart需经过admin同意"
+- design：
+     - cart仍可使用、非admin仍可使用cart，只是没办法proceed了而已
+     - 现在想到的办法就是，给cart加个域（字段）flag，每次admin进系统时都会对cart表做个遍历，这个flag打开的话就说明这个user递交了proceed，就给admin notification，并根据同名user的所有开flag的records生成一个表display出来，admin检查完后可直接flush。。
+现有的cart的所有proceed的methods改成只修改cart的那个flag的、而非直接写入DB。
+Refactor方面需要find in path所有的cart表的写入的相关代码、handle好新的这个field（页面布局--相关handler--相关function--相关sql query、相关table、相关codes等等）
+（、）
+     - 名字："submit to admin"、applications、to be approved、submit the current cart to admin to write to DB、list of cart submissions、list of carts to be approved、list of carts to be proceeded、
+     - 下一步：先做好view、把那个notification的动画整上去
+     - 链接在主页、主页有notification、点进去先是个概览、具体operation在detail页、可以deny某条记录并留下comment、也可以proceed剩下的全部记录。
+       proceed--会马上删除cart记录、就像原来那样
+       下一步--cartEdit的ajax、identifier太少了、
+     - 对非admin原来的proceed改成submit并加上hint的alert
+     - 改auth：admin有链接、可以收到notification、自身的cart仍有proceed（维持原来），非admin没有链接、且要cart改成submit而非proceed。。
+     - detail页所有的$_COOKIE['ew_user_name']都需改成是只针对这个user的（而非操作者本人）。。可以
+     - 架构--detail页的双击edit功能：发送一系列data到ajax页、由于ajax页有form为了保持延续性所有需要保持scope的变量例如user或者appli、barcode这些都需要传给他、并通过form的hidden字段传回来。。发送的JShandler在本页这边、form的后续处理（update）的handler也在回来之后在本页这边、所以ajax页其实啥都没有就个form、再就是textbox的预装填。。
+     - detail页每条记录的delete按钮
+       同样是detail页，edit appli时应该出来dropdown list而非textbox
+     - 去掉pagenation。。主要是概览页的。。
+     - non-admin本人的cart页、non-admin的depart和enter页的双表格、或者entity变暗还没有实现。。
+     - "Otto's cart" --> "My cart" (但也有可能需要改回去。。 )
+
+“0731（二期）新需求--恢复未勾选OOCcheckbox前的行为 -- 仍能扫码/查询后自动-1。。勾选后则仍然保持不会自动-1”
+- 下一步，一个问题啊。。appli不一样。。
+- 再一个问题，发现原有的需求就有问题。。需求本身有问题啊啊啊。。what if 本来就有一些appli为unknown的记录在cart里？特意存为unknown的。。那样的话本来用来作为临时记录的这条-1的unknown记录就和那个记录混在一起了、要改的话也一起都改了。。（不过反过来想想这种可能也不是很大了、毕竟还得同一个barcode也就是同一个item、和同一个人）
+新的use case：还是扫码自动-1@unknown，如果和以前的unknown的同user同barcode记录融合、则edit那个记录并。。--要不就自动完成吧、在添加时加个逻辑、扫码自动-1的会call另外一个method、这个只会insert不会update，这样看到一大堆-1的unknown的记录就知道这些是刚批量扫的了。。或者就这样、干脆直接都显示空白在那一栏得了、或者quantity只是0
+《--要不就彻底改扫码这部分的逻辑、新加个field、扫码就只添加个新的“待处理”的记录
+《--最新修改0910，现在还是扫码自动-1，并且不再单独列为一行了而是会和以前的unknown的记录融合就像标准add一样，这样无论如何都会融合，就不会出现3相等（user、barcode、application）还能多条记录的情况了。。Edit就是直接作用，对3相等的更新其quantity（直接改成新的）和appli，用途就是更改扫码自动-1的记录的quantity、或者对appli也有要求不想用unknown的也可用edit改其appli。
+下一步--做个depart.php页的js的handler、在有edit的GET请求时可以根据get的信息选好那个appli的radio按钮，同时也要fill其他input fields。。
+
+“0731二期）新需求--更高效更合理的批量录入for depart&enter”
+
+“0731（二期）新需求--给depart页和enter页提供search bar” D
+
+“0731（二期）新需求--上传图片大小限制” D
+
+- 下一步：更多的提醒、针对非admin，尤其注意高效率内尽量decoupling普通用户fromDB，严防各种问题
+- 下一步：很多的提醒都可以用新的方法，mouseover时修改下面一个div内的红字等等
+- 下一步：给添加上那个用于本次大规模录入的flag字段
+- 下一步：自动focus、检查cart_amount、上线并测试等
+- 下一步（未来）：内部msg系统
+- 下一步（未来）：这history、那history、各种history
+这settings、那settings、各种settings
+- 下一步（未来）：利用好标题栏、添加smartSearch bar、cart with entity count、settings
+- 下一步（未来）：回收站、例如admin proceeding carts时的detail页的delete entity功能、就可加上回收站、不是直接删除而是可以resume的、甚至可以加上动画
+- 下一步（未来）：缺少validator。。
+提升代码利用率--depart和enter甚至cart页都用了几乎相同的JS handlerfor proceed等等operation
+===
+0721
+需求分析会 Meeting with client相关：
+下一次会议的要点：
+- 增加了“去掉cart”的功能后、新的逻辑导致“扫码自动-1”被费
+
+下一次会议的时间：JINKUAI
+
+最近这次会议的要点：
+- 在depart页中添加search页那些好东西、smart search啥的
+===
+0725
+按季占比：
+//zz return percentage of 4 seasons of the year selected, on sum amount of ALL parts consumed..
+function get_pctg_of_4seasons_of_the_y($year)
+//zz return the amount of ALL parts consumed each year of the past 5 years -- at the same time period being searched..
+function get_amt_same_period($time_start, $time_end)
+
+Q1 01-01  03-31
+Q2 04-01 06-30
+Q3 07-01 09-30
+Q4 10-01 12-31
+===
+//zz return last 30 days
+===
+设计（0914三期）新需求——订单系统：
+- 首先一个select页、从index的“（手动）生成订单”按钮点进去之后、list所有的已过阈值的零件、显示的信息包括barcode、零件name、零件partNumber、现有数量、阈值、
+- 这个select页也是form页、能够修改（或设定--还没想好）订购的数量，
+也能删除某条记录、或添加这里没有的item——用户另外提交的“进件儿申请”也可在此添加，可单独列在下面、点击一个就上去一个
+新添加的item统统加在列表的一开始。。
+JS或jquery特效for新添加的item——先闪一下浅绿色背景色、再回复正常。
+还需要个handler、在通过点击“进件儿申请”添加新item之后、原有的下面的“进件儿申请”列表就去掉这个item。。而如果再点击delete从主表删除这个item、则又重新回到“进件儿申请”列表。。
+- 下一页是确认&预览页，点击确认之后：
+订单的字段：
+barcode、（partNumber）、益高partNumber、零件名称、（阈值和实际剩余数量）、（单价）、订购数量、备注、add to list
+订单的总的信息：
+订单号、订单生成时间、总金额、
+再下页是外面了——直接export生成一个excel文档，用于直接发送给supplier
+同时系统里存下这个订单、可通过订单系统查看或利用、件儿到了之后的清点也用得上
+- 以上最后一条应是另一页“订单历史”，这里是另一个select，有过去全部订单的list，主要是订单生成时间、预览、
+点击之后和订单编辑页面是一样的、可以edit之后再做生成
+- *可以包含一个功能、可让用户提交“短缺零件申请”或者“进件儿申请”
+- （下一步）checkbox的js handler，另外submit这里可以给个hidden的input含有barcode的，可以handler放在下一页，如果这个barcode的checkbox是checked则添加进list，这需要想如何给这一大堆name里含barcode的hidden input做遍历。。
+
+设计（0914三期）新需求——益高partNumber：
+- 新的partNumber的display在part详情页、也就是查询part之后点进去的页面
+- 新的partNumber的edit就还是在edit part页面
+- 下订单的部分应该也是用得上这个益高number的、可以也加进去
+在订单系统的“查看历史订单”、和一上来的“Edit订单”这步、都可以随时修改益高partNumber、会有JS的提示确认
+(下一步：给建个新的ajax file，来帮助“Edit订单”页面双击edit 益高number D)
+（下一步：设计并作出生成订单的下一页预览页、及未来的export功能、及“查看历史订单”页）
+- *在display的页面、双击益高partNumber也能进行edit
+- *有双向查询的功能、既能通过旧partNumber查到新的partNumber、也能通过新的查到，也就是给smartSearch添加新的这个partNumber啦
+
+设计（0914三期）新需求——清点系统：
+- 在现有depart、enter的基础之上给个清点的页面——不同于前两者、清点功能可直接修改库存数量
+trans的list页、新加“type”列（是depart、enter还是清点（还是新建part！《--这部分可能需要改》））
+- 可edit qty、location、以及最重要的photo、特殊的flag用以例如“虽已清点但仍有xxx需要再确认”
+其实有时候partNum、name等也需要清点。。这也是为什么光依赖现有的depart/enter页面也不行。。放在editPart页又
+- 还得想想要是没有这条记录需要新建part的话怎么样在trans里留下同样的“清点”记录
+- *没有api，至少要给个快速copy的按钮之类的
+- 要不就不再单独弄个基于enter/depart的清点页了。。还是利用现有的edit page，只不过添加有auth的清点功能，清点功能可以直接修改剩余数量、也可以添加tag，新的tag系统能记住已有的tag便于添加、能清除tag、并能在part list页按tag查询，来达到和trans功能一样的track的能力。
+对于清点时实在找不到而新建的newPart，仍能在partList页按时间查询时清楚地看到，甚至可以添加个“new” column来说明其是刚添加的。。
+- 或新增“清点”checkBox，并将tags下放到每个域，不用自定义了可以直接在域旁打勾说明这个域不确定还，同时也保留自定义tag
+新增链往addNewPart的链接、也有链回editPart的链接
+- 最后决定还是一个独立的页面和系统，“清点页”还是有几个必须的功能：
+Search 首先能search出来要修改的part
+Edit 找得到的话就直接edit并保存
+AddNew 找不到的话可以点addNew添加新的part、新part自动默认partNumber为0（方便后面更新partNumber）各种price为0，保存之后可继续search下一个（而非现在这样一个是功能不全得再edit一个是没有search栏）。
+ListAll 列出所有刚刚清点过的parts、默认按时间排序，
+ListAll's Sort
+De-tag 可从ListAll表中“删除”某个part——去掉其属于清点表的标记、不再是“刚点过的”
+Mass Delete 这个不单是轻点系统的功能、但轻点系统确实可以批量删除所有“不是本次清点过的”parts，而list所有part的页面应该也能批量删除、且有“最后更新时间”一栏、也可以sort。。
+* 清点批次选择 清点批次为一类似tag的东东（但不能一个part对多个清点批次）、可以addNew批次、可以有ddl选择批次、且能够自动记忆并默认之前选择的批次。。可以删除批次。。
+“清点批次”为一对多parts、所以parts表有FK，批次表只需批次名、id即可
+Tag系统和col开关
+
+设计（0914三期）新需求——精进现有逻辑：
+- depart和enter页的smartSEARCH，点击智能搜索出来的part链接，应能和直接原本输入barcode查询的效果一样，直接把数据铺陈好了
+- 解决cart_amount、明确其逻辑
+- 确保所有的auto-focus的逻辑的合理性
+- search页的smart search功能（乃至所有的smartSearch bar）都有个问题：点击弹出来的ajax链接之后非得先再用这些关键字search一下搜出一条结果然后才能点进去——应能从ajax链接直接进入下个页面
+
+设计（0914三期）新需求——写入文件、sendMsg：
+
+设计（0914三期）新需求——（自己添加的）smartSearch结果逐结果换行：
+现有的smartSearch的结果是只用空格相隔的、没有每个链接就换个行、有时候会不太好找
+
+设计（0914三期）新需求—— 修改一下地址 update the address
+设计（0914三期）新需求——（自己添加的）laravel化
+
+设计（0914三期）新需求——（自己添加的）bootstrap化
+同时标题栏整合进martSearch bar、cart with entity count、settings
+
+设计（0914三期）新需求——（自己添加的）car系统
+进车、出车、search、listAll、缓冲池cart、历史记录trans、清点、地图、缺货预警、orderSheet、invoiceSheet
+===
+1214
+任务：
+- 新的c_event表的getAll、getBy、addNew等function
+- 继续c_event ddl的逻辑、确定c_event的位置应该是外面角上、需要有sessionPerssist、添加ajax handler for addNew、用来init时的handler、将ddl链到下面的各种getting/setting模块中
+- 添加list的部分，包括基本按c-event分类listAll、点击barcode至viewDetail页面、edit按钮用来跳回至edit页面、delete是通过edit C_event来实现的、*mass delete某个c_evnt类（包括为null的c_event）
+做sorting的部分（反正要不也得做。。）
+- *tag系统（暂时可以先用普通的varchar column）
+- bootstrap重构
+     search bar for eventCountingModule
+     mainMenu
+     mainTopbar
+     partList page
+     viewPart page
+     editPart page
+     addNewPart page
+     login page
+     index page
+     search page
+     depart page
+     enter page
+     myCart page
+     * pendingCart page
+- 精进现有逻辑--depart和enter页的smartSEARCH、直接把数据铺陈好了
+- 精进现有逻辑--确保所有的所有的smartSearch bar都能生成正确的、符合该处逻辑的tag links
+- laravel重构（OO重构、sqli重构直接跳过）
+- 订单系统。。
+- 然后才是车。。。
+
+先完成john的小任务：
+- edit part页、字段name的label错了、弄成car的了 D
+- change all YiGao -> Eagle D
+editPart(267), create_part_ordering_sheet(105,238), stockCounting(578,640,737),viewPart(126)
+- 上传改地图改地图：F1、F2、H1、H2 D
+- (John新提的要求)location字段，在view时不仅是个string、也应能点击并弹出地图、至少能弹出无标记的大地图、还应有小地图同时、最好能在地图上标记出来
+- 上传“smart search关键字可以不连续的那个update”
+
+继续设计：
+- index page：
+depart, enter, stockCounting, stockCountingList, transHistory, pending, serial,
+searchPart, newPart, partList, Short, empty, diabled
+myCart, map, stats, msg, log
+adminList, adminCreate, adminUpdate, delete,
+purchasing, selling, service
+
+
+留待后面再写：
+- add new cEvent的ajax返回应该带上新加的记录的id、并设好ddl为新加的那个。。
+- 清点页的页面逻辑（view/edit/addNew模块切换）仍然不好、css和js和php混杂
+- 现在countingEvent module的所有assocPart都运行的不太好（都无法正常load已有的assocPart）需将其恢复正常
+- add all kinds of "QuestionMarkIcons"(with tooltip) as comment&hint for all needed fields, btn, etc...
+- page title (title bar)
+- learn other: jquery: $('ul:first', $li) 为何有两个参数？学习selector。另外ul:first这个到底啥意思？？
+- topBar那个带剩余数量的邮件符号：暂时先屏蔽了。。将来可以利用上
+- list.php: persist $check during sorting..
+- 必须尽快修复assoc part功能、现在连最基础的viewPart页都无法正常使用这功能了。。
+- Map facility in edit part page etc..
+- tooltip for edit btn not working on ajax generated content -- myCart part in depart page
+- side menu's 三条线按钮: unable to persist state of side menu shrinking...
+  also when shrinked, menu item with sub menu not working well..
+- depart page -- OmitOttosCart checkbox not working..
+
+未来页面/功能：
+msg系统
+pending
+serial input
+log系统
+===
+- add "counting_event" table 《--D》
+This is one-to-many relation with "part" table (part is many -- part is child and c_e is parent). So FK will be added to part table. Its value is PK in c_e table.
+
+- 问题：系统设计：感觉现有的history系统（trans系统）一团糟。。addNewPart好像也写进去了，但问题是这么写对吗？trans table就这么几个col，感觉这个部分整个都得重新design。。
+- 系统设计——关注重点——可改进方向（总）：
+    - session变量列表的快速查找与设置
+    - ajax的话laravel是怎么发的、也是用jquery吗？
+    - file name
+    - html ctrl element's name/id (for form submit etc)...
+    不论是刚刚写好的session、还是html ctrl、都缺乏快速reference或者auto-complete
+    - 搜索栏恰好在模板里了，不知道像这种情况，搜索栏的js handler还用不用特意分离出来，写在具体page里？
+    - 另外最主要的就是，不知道该怎么wrap（OO）、哪些功能需要wrap、具体怎么wrap
+===
+- Inventory Management vs Warehouse Management (系统未来设计相关)：
+看起来似乎是，Inventory Management更侧重stock count方面、而Warehouse Management更侧重location(shelf) management方面(storageManagement?)，单纯IMS是不包括location信息的。也有说IMS是包括在WMS里面的、是其一各组成部分而已。
+===
+from masterList original：
+
+- fields：
+    - EG order#    str                "EG170782-1"or"N/A"    
+    - Type        str    DDL(typeList)        "EG202AKR"
+    - VIN/ serial#    str    PK!
+    - Manuf. Date    date                (ym only)    
+    - Color        str    DDL(colorLsit)
+    - Rdy to sell    str    Radio()            YES-NEW,YES-USED,NO,ETR
+    - Sale Status    str    DDL(ssList)        SOLD,RESERVED,DEMO...
+    - Dealer    str    DDL(dealerList)
+    - Price        decimal                decimal(10,2) ?difference w paid amt?
+    - Dlvr/pick D    date                ymd
+    - ModelSoldAs    str                "ZEP 2", "HOB 6-2"...
+    - Inv. Date    date
+    - Inv. No.    str                "18021723F"
+    - Note        str                longest is 123 chars...
+    - Paid Amount    decimal                decimal(10,2)
+    - Inv Sent    bool                Y/N    
+- fields (sheet2):
+    - EG order#
+    - Type
+- fields (sheet3): 《--folded for same type, for count of type stats》
+    - Type
+    - Count (w Grand Total in the end)
+
+- db design:
+    - tables: colors, types, history, *finalProductSheets, *invoices,
+    - vehicles
+        vehicle_id        int5        PK    auto-increment
+        vin_num            varchar25        unique
+        eg_order_num        varchar20
+        original_eg_model_id    int5        FK
+        manuf_date        date
+        original_color_id    int5        FK
+        rdy_to_sell        varchar10
+        sale_status        varchar20
+        sale_dealer_id        int5        FK
+        price            decimal(10,2)
+        paid_amt        decimal(10,2)
+        dlvr_date        datetime
+        sold_as_agt_model_id    int5        FK
+        invoice_date        datetime
+        invoice_num        varchar15
+        invoice_sent        varchar5
+        tag_id            int5        FK
+        update_at        datetime
+        note            varchar200
+    - eg_models
+        img_url
+    - agt_models
+    - vehicle_colors
+    - dealers
+    - tags    
+    - operation history
+    - sales history        
+        
+    - vehicle固有信息 & 销售信息是否分成两个表，暂时先一个表吧这次。。
+        
+- views & ctrlrs:
+    - view all
+
+- features:
+    - ddl for cell data entering (child table)
+    - sort asc desc
+    - sort by cell color, sort by font color (tag by cell/font color)
+    - list all values(good for fields w duplicate values)
+    - filter system:
+        txtFilter (==, !=, beginWith, endsWith, contains)
+        filter by color
+        clear all filter
+        search and filter
+        multi-cbox of listAllValues for filter
+    - find (search)
+    - replace
+
+- main functions (modules)
+业务类/biggerModule:
+    - Receiving
+        createNew,
+        支持批量输入
+    - Selling
+        edit,
+        直观listAll, search by type, by color, 产品资料库查询(用于电话咨询), *invoicing组件, *
+    - Shipping
+        edit,
+Utility类:
+    - finalProductSheets产品资料库
+    - History
+    - Search
+    - ViewAll （w createNew UR btn, edit & del in-line btn, pagination&sorting, *filter sys）
+    - Map
+    - Grouping(直观listAll) & Stats 《--按进货批次order#查看》
+    - *setting
+    - *msg
+基础组件类brick:
+    - Grouping & Stats
+    - Edit, CreateNew, Delete
+    - "converting table" -- what models can a basic type of vehicle convert to (to generate DDL)
+    - pagination & sorting
+    - *filter sys: (mainly used in listing pages to narrow down result)
+
+- persuade:
+    no history
+    lack of standards
+    由于note等、单元格参差不齐影响使用
+    easy link to dealer list, spec sheets etc
+
+- questions:
+    - color (cell, font) strategy?
+    
+- future:
+    - invoicing (in another table) is still manual   
+
+===
+deploy a laravel project (which has its own "public" folder and other should-be-hidden folders) onto live server by ftp:
+
+1.contents of public folder should be put into public_html folder
+2. other should-be-hidden folders should be put outside of public_html
+3. they can be put into a new single folder in root
+4. modify index.php in public folder (now in public_html):
+require __DIR__.’/../bootstrap/autoload.php’; 《--should be /../laravelProj/bootstrap...》
+$app = require_once __DIR__.’/../bootstrap/app.php’; 《--should be /../laravelProj/bootstrap...》
+
+here "__DIR__" get the absolute path of current file, first "/" still put us in the folder of current file, "../" one level up
+
+===

@@ -77,3 +77,15 @@ CHANGE BOTH TABLE TO 'INNO DB' IN OPERATIONS TAB..
 ALTER TABLE `ew_part` ADD CONSTRAINT `FK_last_ct_evnt` FOREIGN KEY (`last_counting_event`) REFERENCES `ew_counting_event`(`c_event_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 INSERT INTO `ew_counting_event` (`c_event_id`, `c_event_name`) VALUES ('01', '201809'), ('02', '201709');
+
+--zz: major update for car_sys developing:  5 new tables have been created, has to be exported one-by-one, and imple FK..see next
+ew_vehicles,
+ew_eg_vehicle_models,
+ew_vehicle_colors,
+ew_dealers,
+ew_agt_vehicle_models
+
+--zz: adding FK... first create all tables w all cols, without setting any constraints.. table has to be InnoDB for FK..
+then set the FK cols (in child tables) to add index to each (index choice=index, size=(empty))..
+remember there shouldnt be any 'NOT NULL' for FKs..
+then go to 'relation view' & set FK: "ON DELETE" set null & "ON UPDATE" cascade so that delete a primary record will cause the foreign id to be null, update a PK will change the FK id as well

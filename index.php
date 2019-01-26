@@ -69,8 +69,10 @@ else {
     $enable_noti_carts_tbp = "false";
 }
 
-$title_by_page = "Index";
-include('header.php');
+//$title_by_page = "Index";
+//include('header.php');
+include_template_header_css_sidebar_topbar("","Index","")
+
 //print_r($_COOKIE);
 //echo date("Ymd") . sprintf("%04s", 1);
 ?>
@@ -160,6 +162,24 @@ include('header.php');
         /*border-radius: 5px;*/
         /*!*bottom: 100px;*!*/
     /*}*/
+    .btn.btn-app {
+        margin: 0 0 20px 20px;
+        width: 120px;
+        height: 120px;
+        box-shadow: black;
+        border-radius: 10px;
+        padding-top: 0;
+    }
+    .btn.btn-app:hover {
+        background-color: #1ABB9C;
+        color: white;
+    }
+    .btn.btn-app img{
+        /*vertical-align: inherit;*/
+    }
+    .btn.btn-app div.function-caption {
+        margin-top: 6px;
+    }
 </style>
 
 <!--    <div id="dialog_count_of_carts_tbp" title="Download complete">-->
@@ -171,6 +191,72 @@ include('header.php');
 <!--            Currently using <b>36% of your storage space</b>.-->
 <!--        </p>-->
 <!--    </div>-->
+
+    <!-- page content -->
+    <div class="right_col" role="main">
+
+        <!--page-title-->
+        <div class="page-title">
+            <div class="title_left">
+                <h2>Index</h2>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <!--zz x_panel left-->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <!--<div class="x_title">
+                        <h3>Parts to be shipped<small></small></h3>
+                        <div class="clearfix"></div>
+                    </div>-->
+                    <div class="x_content">
+                        <h3>Inventory Management<small></small></h3>
+                        <br />
+                        <a class="btn btn-app">
+                            <img src="images/icon/barcode.png">
+                            <div class="function-caption">Search Part</div>
+                        </a>
+                        <a class="btn btn-app">
+                            <img src="images/icon/part.png" style=""/>
+                            <div class="function-caption">Add New Part</div>
+                        </a>
+                        <a class="btn btn-app">
+                            <img src="images/icon/partinven.png">
+                            <div class="function-caption">List All Parts</div>
+                        </a>
+                        <a class="btn btn-app">
+                            <img src="images/icon/short.png">
+                            <div class="function-caption">Parts in Shortage</div>
+                        </a>
+                        <a class="btn btn-app">
+                            <img src="images/icon/out.png">
+                            <div class="function-caption">Out of Stock</div>
+                        </a>
+                        <a class="btn btn-app">
+                            <img src="images/icon/bin.png">
+                            <div class="function-caption">Disabled Parts</div>
+                        </a>
+                        <a class="btn btn-app">
+                            <i class="fa fa-pause"></i> Pause
+                        </a>
+                        <a class="btn btn-app">
+                            <i class="fa fa-save"></i> Save
+                        </a>
+                        <a class="btn btn-app">
+                            <span class="badge bg-red">6</span>
+                            <i class="fa fa-bullhorn"></i> Notifications
+                        </a>
+
+                        <h3>Warehouse Operations<small></small></h3>
+                        <br />
+                        <h3>Utility Functions<small></small></h3>
+                        <br />
+                    </div><!--x_content-->
+                </div><!--x_panel-->
+            </div><!--col-->
+        </div><!--row-->
 
 <div id="main">
      
@@ -283,6 +369,7 @@ include('header.php');
 <div class="content_box_bottom" <?php echo $display_plugin; ?>></div>
 
 </div> <!-- end of main -->
+
 <?PHP
-include('footer.php');
+include('template_footer_scripts.php');
 ?>
