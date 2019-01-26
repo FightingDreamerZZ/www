@@ -1,0 +1,722 @@
+relative path:
+- "dot-slash"(./)和什么都不加一样，都是当前目录
+- “double-dot-slash”(../)向上一级
+- "slash"(/) 根目录
+- ""(啥都不写) 和(./)一样，都是当前目录
+===
+0702
+
+hcj:
+- 通过JS添加外部styleSheet等、于文件中间（已经错过<head>）
+<script type="text/javascript">
+var link = document.createElement("link");
+link.setAttribute("rel","stylesheet");
+link.setAttribute("href","http://wherever.com/yourstylesheet.css");
+var head = document.getElementsByTagName("head")[0];
+head.appendChild(link);
+</script>
+
+作为对比，php可用
+<?php if(isset($loader1)){ echo($loader1);} ?>  加在有<head>的模板文件里，当具体文件include这个模板文件时，可以在之前加上一句先给￥loader赋值再include
+
+===
+0705
+  这种dom cascade的方法没错、onchange event也没错、整个的这种用法（add listener)也没错，恰恰错了该取[0]、正是radioBtn和例子里的dropdownList的区别
+===
+$a=array();
+for($i=1; $i<11; $i++){
+array_push($a,$i);
+}
+foreach ($a as $key=>$item) {
+echo $key."=>".$item."<br/>";
+}
+===
+0716
+
+-事件：
+
+foreach ($array_result_set_after_sort as $row_number => $row_exist) {
+    if($row_exist['barcode'] == $row_before_sort['barcode']){
+        $array_result_set_after_sort[$row_number]['quantity'] = (int)$row_exist['quantity'] + (int)$row_before_sort['quantity'];
+        break;
+    }
+    elseif($row_number == (count($array_result_set_after_sort) - 1)){
+        $row_temp['barcode'] = $row_before_sort['barcode'];
+        $row_temp['name'] = $row_before_sort['name'];
+        $row_temp['quantity'] = $row_before_sort['quantity'];
+        array_push($array_result_set_after_sort,$row_temp);
+    }
+}
+===
+0718
+- JS: catch event of radio btn grp click..
+===
+0721
+===
+0723
+
+-php: debug: error catcher里面加上一个echo <script>的alert怎一个爽字了得啊，用来debug再好不过了，可以在前面加上一句echo就可以在alert的suspend期间从背景读到这个echo了。。
+
+- php: compare two strings or one string with one with unknown type (int maybe) esp. in if statement:
+$a = "000"; 《--or unknown type (int maybe)
+$b = "0000";
+if($a == $b) 《--will be true
+
+if(strcmp($a,$b)===0) 《--solution
+
+- JS: checkbox用法相关：（depart.php的cb_ooc）
+     - html tag里：onclick=""这个是event，id=""，还有checked，这个是个单独的attri没有值
+     - function onclick_cb_ooc(){
+if(document.getElementById("cb_ooc").checked){
+var c = confirm("To check this option means you also omit the buffer and comparison function provided by the cart. Proceed with caution cause the changes made will be harder to reverse so will be the mistakes.");
+if(c == true)
+sendHttpRequest("depart.php",{"is_to_omit_cart":true},"post");
+else
+document.getElementById("cb_ooc").checked = false;
+}
+else{
+sendHttpRequest("depart.php",{"is_to_omit_cart":false},"post");
+
+}
+}
+     - 判定checked状态，getById后直接call “checked”应该是个ppty之类的，就行
+- JS：get ele‘s value：
+document.getElementById('textbox_id').value
+- HTML：mouse hover hint （mouse over tooltip）：用“title”attri，或再加个style="cursor:pointer"。。
+- PHP：怎样终止本次循环和怎样完全跳出循环？
+或：break vs continue？
+     while ($foo) { <--------------------┐
+    continue; --- goes back here --┘
+    break; ----- jumps here ----┐
+     } |
+     <--------------------┘
+break完全终止loop、continue只终止本次iteration。。
+- PHP：怎样loop through一个array？
+
+Using foreach loop without key：
+
+foreach($array as $item) {
+echo $item['filename'];
+echo $item['filepath'];
+
+// to know what's in $item
+echo '<pre>'; var_dump($item);
+}
+
+Using foreach loop with key：
+
+foreach($array as $i => $item) {
+echo $array[$i]['filename'];
+echo $array[$i]['filepath'];
+
+// $array[$i] is same as $item
+}
+
+Using for loop：
+
+for ($i = 0; $i < count($array); $i++) {
+echo $array[$i]['filename'];
+echo $array[$i]['filepath'];
+}
+
+var_dump is a really useful function to get a snapshot of an array or object.
+
+- PHP：怎样用PHP来直接access html的ele的value？（access DOM obj）？
+一般来说都是只能靠form submitting （或用模拟的，详见depart.php的sendHttpRequest(...)）通过$_POST['namexxx']或$_GET的。
+Ajax或许也行、待实验。。
+但以下代码也可以实验看看：
+for general tags:
+$divs = $dom->getElementsByTagName('div');
+foreach ($divs as $div) {
+foreach ($div->attributes as $attr) {
+$name = $attr->nodeName;
+$value = $attr->nodeValue;
+echo "Attribute '$name' :: '$value'<br />";
+}
+}
+
+for tag with ID：
+$div = $dom->getElementById('divID');
+Then to get your attribute:
+$attr = $div->getAttribute('customAttr');
+
+注意前面要加上：
+$dom = new DOMDocument();
+$dom->loadHTML(file_get_contents('http://localhost/index.php'))《-- $dom->loadHTML("index.php")just read the content of the file, it doesnt execute it, so PHP part wont be effective..
+
+- PHP专题 “Ctrl Flow 上篇”：
+     - 怎样将data从view的html控件（textbox、checkbox等）传递到php代码？
+一般来说都是靠form的submission，将需要send的data放在一个form里来按按钮submit（所以php的handler多是一些if($_POST[xx])开头的，而非一个function、或者一个method啥的），代码：
+if($_POST['submit按钮的nameAttri']){
+            $barcode = $_POST['某txtBox的nameAttri'];
+......
+所有的form内的控件都可通过其设定好的name attri，按照formTag的method里设定好的post或get，储存其value attri于本次（页面刷新的瞬间--或者说页面刷新后读取页面这一次）的$_POST['xx']或$_GET['xx']中。。
+不想用form时怎么办？
+可以用JS来“模拟”一次form submit、也能post或get，代码：
+
+function sendHttpRequest(path, params, method) {
+       let formForPosting = document.createElement("form");
+       formForPosting.setAttribute("method", method);
+       formForPosting.setAttribute("action", path);
+
+       for (var key in params) {
+           if (params.hasOwnProperty(key)){
+               var hiddenInputTag = document.createElement("input");
+               hiddenInputTag.setAttribute("type","hidden");
+               hiddenInputTag.setAttribute("name", key);
+               hiddenInputTag.setAttribute("value",params[key]);
+
+               formForPosting.appendChild(hiddenInputTag);
+           }
+       }
+
+       document.body.appendChild(formForPosting);
+       formForPosting.submit();
+   }
+
+
+关键就是这个submit()方法，另外注意的是就是这个document.body有些时候不写这个body就不行。。
+既不想用form又不想用模拟form怎么办？
+或许可以用ajax，ajax通过js灌装listener，trigger后js将发送一些信息（post或get）到另一个页面例如一些PHP代码，甚至可以得到response来更新当前页面的html（通过document.getElementById("xx").innerHTML=XMLHTTPobj.responseText）。唯一的问题，ajax不会更新当前界面，发送的信息也是给别的页面的本页的php handler们是绝对享受不到的。。只能把handler全部放在对方页面里。。
+     - 怎样通过php代码实时更改view、更改html的代码甚至js的？
+php有个好处就是可以和html结合的很紧密，可以随时随处更改html代码（尽管反过来却不是那么容易。。）
+利用echo即可，需要更改的地方加上
+<?php if(xxxx){ echo "html代码...";}?>
+常见的可以加个style的display:none来隐藏一部分、可以改按钮的文字、加在onclick里可以让listner有选择的触发、最常见的传递本次的某个变量到下次刷新：用个displaynone的控件并echo这个变量进去value等等。
+需要注意的就是要改什么直接放在html代码中就行，在php handler的部分或者js的部分反而麻烦
+     - 怎样铺陈list data的table
+     - 怎样相对长久的保持数据尤其是用来传递的新鲜数据？（而非像form submit的$_POST等变量一样只能存在于本次刷新页面读取的瞬间）
+用cookies：
+
+//zz handler for get cookie for store checkbox (omit ottos cart) check status
+if($_COOKIE['is_to_omit_cart']){
+    //echo "cookie!cookie=".$_COOKIE['is_to_omit_cart'];
+    $cookie_is_to_omit_cart = $_COOKIE['is_to_omit_cart'];
+}
+
+//zz handler for set cookie for store checkbox (omit ottos cart) check status
+if($_POST['is_to_omit_cart']){
+    $cookie_is_to_omit_cart = $_POST['is_to_omit_cart'];
+    setcookie("is_to_omit_cart",$_POST['is_to_omit_cart'],time() + 60*60*2);《--expire 2hr
+    //echo "cookie!post=".$_POST['is_to_omit_cart'];
+}
+
+
+用
+
+
+- PHP: 重要》（使用函数等时、尤其sort这种无return、作用于原变量时的）本体 vs 本体的ref vs 本体的copy
+- PHP：associate array相对应于js的obj了。
+$array = [
+"foo" => "bar",
+"bar" => "foo",
+];
+
+{xx:yy, xx1:yy1...}
+===
+0726
+- JS 怎样用JS跳转至anchor位置（跳至同一页另一个位置）？--跳转至anchor的action：
+window.location = '#idOfTheAnchorEle';
+- Anchor link的标准用法，在<a>的href（或area、img之类的）中用#接anchor ele的Id即可：
+... href="#idOfTheAnchorEle"  ...
+- DOM法选ele（而非getEleById）？
+例子：
+document.form.l_column.value = ''; 《--其中这个ele的identifier是name而非id、他parent的也是
+document.form.l_column.focus();
+- JS，focus on（“光标放在”）的标准做法：
+document.getElementById('xx').focus();
+===
+1011
+IDE / phpStorm: 好用的快捷键：
+- ctrl+shift+I （Quick definition）: 快速的一瞥、变量的取值、函数的定义等等
+(另有个叫“quick doc”是hover mouse也有的，也可ctrlQ，见下)
+- ctrl+w （Extend selection）: 向上选择、光标所在的这一小段、再按一下则选取包含这一小段的中段、再按一下更大的段
+- shift+mouseScroll: scroll horizontally
+===
+0802
+IDE / phpStorm:
+- quick documentation: ctrl+Q
+- Settings: ctrl+alt+s
+- extend slection: ctrl+w
+===
+0822
+问题？
+- 不知为何，ajax返回的responseTxt里的代码、可以生成静态的<a href="">、却无法实现普通的button的onclick JS handler？
+还是说代码有什么问题？（看样子不是、就是无法实现js。。）
+===
+
+document.getElementById("suggestion").style.display = "block";
+===
+0911
+Snippet for判断jQuery是否已经加载：
+
+window.onload = function() {
+    if (window.jQuery) {
+        // jQuery is loaded
+        alert("Yeah, jQuery is loaded!");
+    } else {
+        // jQuery is not loaded
+        alert("Negative, jQuery is not loaded!");
+    }
+}
+===
+0913
+- bool true became 1 in JS -- always better to use "true" instead of true when crossing between other language & JS (eg. php & JS)
+- standard cookie setter & voider in php:
+setcookie('xxx','true',time()+60*60);
+setcookie('xxx',null,time()-3600); 《--this is instant delete and release this cookie, no worry a remaining "null" cookie..
+===
+0914
+突然想到，除了直接建JS的handler，再在中间用“<?php echo?>”去让php参与其中外
+更可以直接在php这边的代码里直接例如echo "<script>alert('Logging in as warehouse admin.');</script>";
+这些要具体情况具体分析。
+
+
+
+===
+1015
+待查js、html、css这些
+document.getElementById('form_parts_list').elements[i].checked 《--光用最外面的form的id竟然能access到里面的table的某行的某个cell的checkbox》
+document.getElementById('form_parts_list').elements.length《--也能access到table的行数。。》
+
+- checkbox的用法（js、html、css）
+<input type="checkbox" name="<?php echo $row_a['attach_part']; ?>" value="1"/>
+在form中用这个type为checkbox的input，js的dom下他有个attri叫checked、表明了其是否checked了，可以用来get/set，
+form submit时只有checked了的checkbox的name-value对儿能被sent，如果没设value则会send个“on”（所以一般都设一个），
+对于dynamic generated的checkbox其name的设置应能帮助server端找到这个checkbox。。
+===
+php、web基础：
+session和cookies相关——“clubcar的网站是如何做到那个只开一次的popup的？”
+- 果然是通过session来达到的、开了一次之后就存了个变量在session中、下次就自动屏蔽掉了
+- session中的变量存在哪儿（例如php的$_session）?
+通常PHP的话是由session.save_path来设定的。Usually this is /tmp on a Linux/Unix system. Use the phpinfo() to check!
+- 怎样locally地控制存在于server端的session变量？正如上面所说session是存在server端的，但尽管如此，server端仍需要local的“sessionID”这么个东西来keeping track of这个用户的session，而sessionID恰好就存在于local的cookies中，这就是为何cookies如此重要、且和登录等有重要联系的原因。。所以虽然local端无法改写位于server的session变量（也就是无法hack登录）、但仍可中断这次session
+- 怎样查看和删除某个特定网站的cookies？firefox的alt-t-o的data&cookies的部分有manageData&Cookies可以删掉某个特定网站的cookie，firefox的devTool的storage tab甚至可以一个个的查看和试验cookies（一般有特定value或者名字的都很有可能）——需要devTool的右上角设定中打开storage
+
+===
+php——怎样安装laravel于windows：google。。
+“Setting a Local Development Environment for Laravel on Windows | Install Laravel on Windows ”（https://www.webhostface.com/kb/knowledgebase/install-laravel-windows/）
+管理员权限打开某文件——ctrl+alt+enter
+===
+办公室他们前面提到的这个问题--应该是叫timestamp、unix timestamp
+- 何时用timestamp？何时用datetime？
+timestamp的优势主要是针对time zone，他记录的时间是绝对时间，是包括了time zone信息的，适合于需要跨时区、或者需要在不同时区间转移数据的应用
+datetime则就只有关于date和time的信息没有时区的信息。。不过timestamp有个问题是mysql有1970到2038的limit，datetime则没有。
+===
+备份、转移mysql database的数据，在Windows xampp中：
+- 位置就还是“<physical_drive>/xampp/mysql”下的data文件夹
+- 但需要注意不能只转移一个数据库的文件，例如eware的文件，
+而是必须整体替换掉data文件夹（清空新xampp的data文件夹，把旧的整个拷贝过来）
+- 注意关掉mysql、apache服务
+===
+1123
+- postion relative vs position absolute、absolute的截获者
+- 半透明的背景色
+- 圆角
+- banner图片、horizontally centered水平居中
+- 悬浮float to right的图片
+- "before" selector
+- inspector的妙用、直接在这上面改确实是快多了
+- “@media (min-width:1300px){...}”根据图片宽度、自动转换成水平居中布局
+===
+- php array push to the end:
+$arr[] = 3;          or         array_push($arr, 3)
+
+- php: require vs include vs use
+use -- usually for class loading -- for include namespace
+require and include --
+require is identical to include except upon failure it will also produce a fatal E_COMPILE_ERROR level error. In other words, it will halt the script whereas include only emits a warning (E_WARNING) which allows the script to continue.
+
+- view方面的，给加上hover cursor时的阴影和高亮链接。。
+===
+1128
+all kinds of problems during programming:
+- "Fatal error</b>: Cannot pass parameter 5 by reference in xxxx" (means in the "$stmt -> bind_param()" in mysqli):
+you cannot pass a string exactly in the statement of method call.. you have to pass a readily made string variable..
+- current time function (date()) not returning correct time:
+was stucked for long time just because mixed up "i" with "m" ("m" is already used by month, "i" is the second letter)...
+(also remember to set timezone (date_default_timezone_set())...)
+- 经典的“无法发送email”战役：想不到也能前进。。本以为这个战役“真的可以算难的了、如果这个能解决那就没什么不能解决的了”。。虽然想了要“也要看看有没有低级错误”，但其实以为“再怎么滴也不太可能有低级错误了”。。想不到竟然以这么奇葩的角度犯得低级错误——忘了检查SPAM（SPAM还恰好遮住了）。。当然没检查cc也是不应该。。
+- （minor problem）发到gmail的goes to spam怎么办？
+- 这个“processing”的跑圈动画（于waiting ajax res期间）怎么实现？jquery的ajaxStart（和ajaxStop）能catch所有ajax firing的总开头和总结尾，在handler function里show和hide读取的gif和文字就行，jquery甚至有直接show、hide的function。。学习jquery的selector
+- php的ctrlFlow（ajax、formSubmit及js的使用）相关：在实现同一email的handler时发现了php乃至ajax的一点缺点（成也ajax不成也ajax..），ajax中途的控制力太弱了、也不好直接update view上的信息（给feedback）也不好回传信息给ajax。。
+本来想能不能一个ajax搞定但发现还是的用单独的另一个前置handler。。也想过就用普通php的function把用function.php做分离结果发现自己根本就错了、这些php连reach都reach不到。。基础概念的错误。。怎么把数据传递给此处的php代码？（也就是form的jquery给加工的serial后的数据，见下）答案当然是不可能，不在这儿写php代码不是没有道理的。。传数据给php就只能通过formSubmit（会刷新页面或去至新页面）或者ajax（不会刷新页面）这两种方法，在对应的PHP文件脚本ini时才行。。这从根本上是由于ctrlFlow分属本地和服务器两地所导致的。。
+- jquery的form模组的使用。。可方便的得到form的数据（serialize()）
+及更重要的jquery的ajax的使用。。（常见的例如contactUsPage和PromotionPage里都有）
+serialize()得到的数据的形式，是标准url
+- （minor problem）get current local time in php
+- how to set a placeholder for select (ddl)
+- how to use class and obj in php (php oo)
+- ".ajaxStart"不工作？以为好像是由于那个ajaxStart is not a function。。但其实是连最根本的都搞错了——ajaxStart作为一个register handeler的怎么能直接放在form submit的handler里面呢？等于是都submit了才现把这个handle ajax firing的func注册上去，当然是搞混了运行顺序。。当然是应该放在$(document).ready(...)里了（在网页ini时就注册上）。。（还犯了最简单的打错了错误）。。。
+
+
+
+===
+1126
+- configure xampp to be able to send email programly from localhost:
+
+sending attachmt
+- send email with attachment using vanilla mail() function
+- install and use phpmailer (without composer)
+- phpmailer error when sending from localhost (error as faulty ajax return, not at error excption handling inside ajax... and how to debug at these situation)
+
+dynamically modifying img (add #) & attach to email
+- how to dynamically modifying img & output to browser using js (这步用不上，就只是记录了我们走过的路)
+- how to dynamically modifying img & output to browser using php by GD library
+- how to create img & output to file using php by GD library
+- how to create img & output to raw data (data string、streaming) using php by GD library
+- how to attach raw data (data string、streaming) to email using phpmailer
+- how to create img & output to raw data (data string、streaming) using GD library and attach it to email using phpmailer
+- how to dynamically modifying img & output to raw data (data string、streaming) using GD library and attach it to email using phpmailer
+
+inline attachment
+-
+===
+1201
+
+learn Laravel：
+- "@yield()" in view..
+  "@extends()"
+  "@section()"
+- url()、single word
+- routes、Route::get()
+Route::get("xx", function(){
+     return view("xxx.yyy");
+})
+- Model::All()、view()、view()->with()
+- in view: url(xxx, xx)
+in routes: Route::get("/xxx/{id}","xxxctrler@yy")
+in ctrler: ...function yy($xx_id){...}
+- ...function deleteXX($xx_id){
+     $singleRw = ModelName::find($xx_id);
+     $singleRw->delete();
+     return Redirect("singleWordViewname");
+}
+- ...function createXX(Request req){
+     $this->validate(req, [
+         a=>x,
+         b=>y,
+         ...
+     ])
+}
+===
+Eloquent
+use Eloguent\Model
+extends Model
+override $primaryKey, $timeStamps, $fillable, $table, CONST UPDATED_AT
+
+Ctrlr
+$xx = XX::all();
+return view("path.fileName")->with('key', $value);
+
+View
+@extend(xx)
+@section(xx)
+@foreach(xxs as xx)
+@endforeach
+
+Router
+===
+1214
+
+"symbol table":
+- a table with all identifiers and their associated info, not only value, related to declaration / code ctx.
+Somewhat like all those info appears when debugging, detailed info.
+Mainly used by compiler / interpreter for debugging errorLogging...
+- Info includes address, relocating(?) and dataType dataBoundary (for highLevelLanguage)
+- general meaning: all variables
+广义上讲就指全部变量列表、全部变量组
+
+0104
+
+"callback and first-class function":
+- a callback is any executable code that is passed as an argument to other code that is expected to call back (execute) the argument at a given time. The intention is to specify a function or subroutine as an entity that is similar to a variable.
+- a programming language is said to have first-class functions if it treats functions as first-class citizens -- This means the language supports passing functions as arguments to other functions, returning them as the values from other functions, and assigning them to variables or storing them in data structures.
+===
+xampp double php versions
+===
+- bs3 bs4 ddl事件
+- <button> form submit事件。。
+<button type="submit" ...> 搞了半个多小时。。
+- disable的form input虽然不能编辑了但也不会被submit。。还是得在填个隐藏的field专门pass数据
+- css selector 还是得好好学学啊。。
+css selector 中间不能有空格
+- 经典的点击两次事件。。同样是那个min.js的引用那里。。
+- html a target='_blank' open in new tab...
+
+- laravel blade template not working after PC transfer: 试了很多办法例如"php artisan view:clear"、不拷贝vendor（新建个proj只留vendor然后把本proj里除了vendor之外的内容全部考过去）等等，都不好用。最后还是新建个同一版本（5.1.xx）的proj，然后手动一点点把最重要的文件考过去、挑直接相关的拷、终于OK了
+- composer create-project laravel/laravel projName "5.1.*"
+
+- PHP's   &$xx: passing by ref..(passing the addr rather than value.. making a pointer)
+===
+Laravel pagination:
+
+- $data = DB::table('table1')->pagination(entitiesPerPage);
+return view(xxx,[xx=>$data]);
+
+- $data = APP\User : : pagination(entitiesPerPage);
+return view(xx,[xxx=>$data]);
+
+- APP\User : : Where('xx','<', 'xxx')->pagination...
+
+- {!! $user->render() !!}
+- setPath()
+- ->appends()
+->fragment()
+
+===
+deploy a laravel project (which has its own "public" folder and other should-be-hidden folders) onto live server by ftp:
+
+1.contents of public folder should be put into public_html folder
+2. other should-be-hidden folders should be put outside of public_html
+3. they can be put into a new single folder in root
+4. modify index.php in public folder (now in public_html):
+require __DIR__.’/../bootstrap/autoload.php’; 《--should be /../laravelProj/bootstrap...》
+$app = require_once __DIR__.’/../bootstrap/app.php’; 《--should be /../laravelProj/bootstrap...》
+
+here "__DIR__" get the absolute path of current file, first "/" still put us in the folder of current file, "../" one level up
+===
+learn laravel
+
+- namespace has to follow folder structrue -- as long as you use autoload
+- laravel mvc used autoload -- the 'use' in that ctrlr file doesnt include anythoing just defineing classes, so autoload is surely used here
+
+- naming conventions for models & db tables, snake_case and CamelCase
+
+Eloquent Basics：
+
+- create a model
+php artisan make:model User
+- *migration
+php artisan make:model User --migration
+- table name convention & override (explicit) -- "xxs"
+protected $table = 'my_flights';
+- PK -- "id"
+$primaryKey
+- timestamp:
+默认 created_at 、updated_at
+If you do not wish to have these columns automatically managed by Eloquent：public $timestamps = false;
+customize the format of your timestamps：protected $dateFormat = 'U';
+- access table column as ppty:
+foreach ($flights as $flight) {
+    echo $flight->name;
+}
+- "query builder" (same as chapter query builder in DB section)
+$flights = App\Flight::where('active', 1)
+               ->orderBy('name', 'desc')
+               ->take(10) 《--like 'limit', to take only this numbner (also skip(xx) as OFFSET)》
+               ->get();
+- return type
+'Illuminate\Database\Eloquent\Collection'
+
+
+Eloquent DB relations: （one-to-many）
+- parent: 专门表、小表、id不会重复
+  child：大表、fk_id会重复
+- 在parent model中定义方法：
+ public function childrenxxx()
+    {
+        return $this->hasMany('App\Childrenxxx');
+    }
+- 在child model中定义方法：（Inverse of relation）：
+ public function parentxx()
+    {
+        return $this->belongsTo('App\Parentxx');
+    }
+- table name, table name在Eloquent后台的自动代码中是按convention写的、也就是table_name_id这种形式，也可在代码中指定phisical talbe's name：
+（override the foreign and local keys by passing additional arguments to the hasMany method）:
+对parent model：
+return $this->hasMany('App\Comment', 'foreign_key');
+或
+return $this->hasMany('App\Comment', 'foreign_key', 'local_key');
+对child model：
+return $this->belongsTo('App\Post', 'foreign_key');
+或
+return $this->belongsTo('App\Post', 'foreign_key', 'other_key'); 《--other_key即是parent 表中的pk那个key 、local key》
+- "dynamic properties":
+定义了这个方法、也就（自动）有了个同名的ppty：（但要注意如果是用于query chaining的用途则只能用method不能用ppty、后面有讲）《--注意：新发现如果不是queryChaining，那就只能用ppty形式，不能method形式》
+$comments = App\Post::find(1)->comments; 《--自动ppty》
+$comments = App\Post::find(1)->comments()->where('title', 'foo')->first(); 《--query chaining》
+
+Eloquent DB relations: （many-to-many）
+- users has many roles, roles belongs to many users:
+public function roles()
+    {
+        return $this->belongsToMany('App\Role');
+    }
+$user = App\User::find(1);
+
+foreach ($user->roles as $role) {
+    //
+}
+
+$roles = App\User::find(1)->roles()->orderBy('name')->get();
+
+return $this->belongsToMany('App\Role', 'user_roles', 'user_id', 'role_id');
+
+- table name, table name注意中间表的默认convention是两个表名按字母顺序相连例如roles_users，但也是可以自定义overrride：
+return $this->belongsToMany('App\Role', 'whatever_middle_table_name');
+
+- laravel(maybe all PHP) method/ppty chaining: no brackets allowed when chaining... such as "(..)->" will not be recognized
+
+- current path of blade: 《--更新：just found that current path of blades is not just '/public', it is actually determined by the calling route (browser url) in the routes.php -- 所以这个path不是随便设的、就算有这种router，他会决定blade们的currentPath，这个对不因具体view而改变的layout.main影响很大。。现在我们都只是约定好了都用双层的url route（例如vehicle/list），但其实应该是查"blade current path laravel set"等等》
+
+- routing of Laravel:
+- append a param when routing (&make that param optional), multiple params
+- http 'action' (& multiple matching)
+- *name a route, *regex & pattern the param
+- param a model obj instead of simple str
+
+- instead of routing param, append info by query string
+    - access the query str in router 甚至 ctrlr
+    - write a url w query str (using url class -- has to modify a 自己的ver)
+===
+- 无法update（无法change）事件：comment的格式有问题、IDE的快捷键comment功能会按新的形式comment、这个好像至少对普通html代码是不好用的（得手打原来的comment形式）
+- path事件：blade的“当前所在文件夹”是那个public文件夹--this applies to all blades
+- 又一次无法xdebug在browser debug--9005事件，看来上一次是歪打正着啊。。
+
+- （这个是opencart的）“Permission denied”事件、“invalid user”事件--对restful的实验，apiService端代码已经非常完整的情况下还是屡次实验不成功，
+后来发现对于“invalid user”事件--主要是postman和我们的browser是俩系统，一个能登的网站另一个不一定能登，主要就是区别在cookie这个代码里没有、request body里也没有的东东（但header里其实是有的、但我们看不到browser的header、就算他能成功我们也不知道是因为他header的区别成功的。。），解决办法只需要在postman也登录一遍、用新的uToken就好（好在首页里就有含token的链接省了不少麻烦）。。
+“Permission denied”事件--一开始解决是把method搬迁到已有ctrlr解决的，但代码上看我们自定义的ctrlr也不差啥啊，按理来说一样的东西在auto-load、等等等等framework方面应该待遇相同。。这个排查了好久、xdebug立大功、看取值、设断点、运行到光标等等。。最后发现opencart还真hardcode了ctrlr的folder结构不能有第三层目录除非你是已经注册的extension、或你有额外的permission在admin panel user group里setting，偏偏这个permission setting的ccb list是前面根据while/popup选出来的、对这种三层目录他没生成两层目录部分的permission只有三层的，果断DB中找到储存的permissionSetting、加上这个“三层目录的两层部分”、结果各种好用（等于绕开了最初hardcode的“目录只能有两层”）--其实用extension ctrlr来自定义的方法才是真正更好。。
+===
+继续学习opencart
+
+- 怎样进行php的debug：怎样打开phpstorm的debug功能
+active debugging in phpstorm
+install xdebug into xampp
+active xdebug in phpstorm
+set php (php interpreter) in phpstorm
+how to 'editConfiguration' of debugging of phpstorm
+also how to active phpstorm's debugging browser side bookmarklets
+difference between 'step in', 'step out', 'step over'...
+
+- instanceof / is_a()
+- reflectionClass etc
+- call_user_func_array
+===
+opencart
+- twig保护：unable to update twig template:
+sys - library - template - Twig - Environment.php - xx['debug'] - hard code to true
+
+- composer就是安不上phpmailer事件--在学习composer和restful microframework时
+教训：小心教程过时。。尽信书不如无书
+- phpstorm xdebug怎样在browser里debug、怎样debug browser的flow （how to debug on browser
+
+- $this->customer在比方说frontend的ctrlr里都可以随便call的、就是当前登录的用户，这个东西是压在registry里的（$this->registry），是在最开始boot frontend时，进行到startup/startup这步时压进去的，其中的new Cart\Customer在library里、Cart指的是namespace、这里会在construc时pullFromSession。startup/startup这步是framework里就定义的、由sysCfg定义好的pre-action里的其中一员。
+
+- 先直接hardcode add一个新纪录
+研究怎么restful
+hardcode restful
+oo restful
+admin restful
+*extension restful
+
+续01242019：
+
+- 看来他这个ctrlr结构还真限制不能有第三层目录。。。除非你是个已注册的extension。。否则会在startup/permission这边（也就是pre_action的第6个元素index5）出error/permission的action
+===
+PHP
+
+- difference "==" vs "===":
+     $a == $b         Equal          TRUE if $a is equal to $b after type juggling. 《--converting will happen if     not same type... result may unexpected》
+     $a === $b      Identical      TRUE if $a is equal to $b, and they are of the same type. 《--好用！Type safe！》
+
+同样道理还有 != vs !==
+
+- string compare: "==" vs "===" vs "strcmp":
+     ==     不推荐，会converting (if not same type)，结果可能会出错
+     ===     推荐，type-safe
+     strcmp     只有在需要 比大小 时才有用，返回一个正数、0、或者负数
+
+- 比较两个array： (必须是assoc array)
+     ==          元素相同，但不保证order相同
+     ===          推荐！ 保证元素和order都相同
+
+- 比较 index-array：（只能single dimension才能比较）
+     <?php
+     function array_equal($a, $b) {
+    return (
+    is_array($a)
+    && is_array($b)
+    && count($a) == count($b)
+    && array_diff($a, $b) === array_diff($b, $a)
+    );
+     }
+     ?>
+
+- 比较obj：
+     ==     ppty name相同、ppty value相同、same class
+     ===    same class、same instance
+
+
+===
+PHP
+
+- "__DIR__" vs "./"
+If you do
+require(__DIR__ . '/file.php')
+then you are requiring the file with the full pathname. If the file doing this require is required by another file in another directory, this require will always work. On the other hand, if you
+require('file.php')
+then if the file where this require statement is is required by another file in another directory, this statement will fail.
+
+That is why it is generally good practice to include the __DIR__.
+
+
+- sprintf()
+===
+learn server:
+
+- deny access folder justhost: "Options -Indexes" @.htaccess, *"AllowOverride Options -Indexes"
+===
+learn mySQL:
+
+- FK's "ON DELETE" & "ON UPDATE" clause (CASCADE)
+
+
+    ON UPDATE RESTRICT : the default : if you try to update a company_id in table COMPANY the engine will reject the operation if one USER at least links on this company.
+    ON UPDATE NO ACTION : same as RESTRICT.
+    ON UPDATE CASCADE : the best one usually : if you update a company_id in a row of table COMPANY the engine will update it accordingly on all USER rows referencing this COMPANY (but no triggers activated on USER table, warning). The engine will track the changes for you, it's good.
+    ON UPDATE SET NULL : if you update a company_id in a row of table COMPANY the engine will set related USERs company_id to NULL (should be available in USER company_id field). I cannot see any interesting thing to do with that on an update, but I may be wrong.
+
+
+
+    ON DELETE RESTRICT : the default : if you try to delete a company_id Id in table COMPANY the engine will reject the operation if one USER at least links on this company, can save your life.
+    ON DELETE NO ACTION : same as RESTRICT
+    ON DELETE CASCADE : dangerous : if you delete a company row in table COMPANY the engine will delete as well the related USERs. This is dangerous but can be used to make automatic cleanups on secondary tables (so it can be something you want, but quite certainly not for a COMPANY<->USER example)
+    ON DELETE SET NULL : handful : if you delete a COMPANY row the related USERs will automatically have the relationship to NULL. If Null is your value for users with no company this can be a good behavior, for example maybe you need to keep the users in your application, as authors of some content, but removing the company is not a problem for you.
+
+
+比较常用的就是，update的cascade（反正我们也不用trigger）、更新parent表时同时更新child表的FKcol。。restrict太限制了、除非该id清空（无child）否则都无法更新。
+delete方面null不错，虽然restrict对一些强关联保护更好、可保证child永远有parent，但会block操作（要额外写逻辑），一般的情况就用null也勉强还行的
+===
+PHP
+
+- 发现我的PHP基础太薄弱了。。今天出现好多基础的问题都不会的。。
+- 怎样添加一个ele至array尾，array_push()和xx['newKey']=newValue
+- obj method calling & ppty calling
+ppty only callable inside a method not class
+- 'protect' (public, private)
+- PHP explode()
+- PHP list()
+- list() nesting
+- function() use() {...
+
+- php混合html js脚本，执行顺序、client side、server side、脚本中断和等待、ctrl flow、php基本原理、数据回传（html -> php）
+
+- XSS attack
+- PHP htmlentities()
+- escape: keep special chars as plain str instead of code
+un-escaped: allowing code mix str & keep codes functioning
+
+===
+“Framework”、组件：
+
+- 知乎的topbar真不错，向上翻的动画
+===
+designPattern:
+
+- business logic 放在哪、尤其考虑MVC、ORM
+- ORM需不需要singleTon、staticMethods、laravel是则么管理的
+- logics做成obj好还是functions好？
+
+

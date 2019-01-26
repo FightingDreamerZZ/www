@@ -1,0 +1,479 @@
+nil in obj_c, just for classes
+
+OC 学习笔记：
+（https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html）
+
+Intro
+
+- category：定义：when need minor additional capacity to a existing class.
+主要用于添加新method to已有的class、这个尤其有用对库里的class们、例如NSString（即使没有“original imple src code”也能做个category给他添加method）
+
+- class extension：定义：和上面的category类似、class extension用在“已有某个class的src code”的情况下，他更强大能添加新的ppty、或修改已有的ppty。。*class extension可用于hide private behavior for use either within a single source code file, or within the private implementation of a custom framework。
+
+- protocol：定义：有点儿类似interface、来定义一大堆methods to imple。*在当某个class使用delegate时就可以call这一大堆methods。
+另：OC的作用机理用到了一个叫message的东西、message在methods中定义、obj之间会彼此发送这些msg。。那么这样的msg既可定义在class的methods里、也可以出现在protocol这种aren’t tied directly to a specific class的methods里。。
+
+- Types：概念“Cocoa”（对应于MacOS、iOS对应CocoaTouch）——好像是lib或者framework 。有很多新的Class用作type，例如用于String的NSString，用于int或float的NSNumber。。这是由于C本身已自带了primitiveType，例如int float char这些（其实也都是class）
+
+collection方面则是NSArray、NSSet和NSDictionary
+
+- Block：定义，就是一段代码、但多了所谓“当前取值”或者contxt —— “captured state”。。Block在enumeration（枚举法）、sorting和testing时很好用。在多线程（concurrency、异步）的场合也有用处。
+
+- Exception：OC里的Exception主要用于“programming error”（compileTime Error或者syntax error）例如数列的角标超出范围，而对于runtime error（例如磁盘空间不够啊、某个webSvc不相应啊等等）这主要用的“NSError”
+
+- 最后是lifeTime（垃圾回收）、是用的complier的ARC（automatic reference counting）来自动处理的，此外、OC还有个“runtimeSystem”能专门处理runtime的各种事情。编程者不需知道这些细节
+
+===
+1109
+
+- immutable
+- declare过程中的星号 —— pointer(C pointer)和“simple value”的区别、以及primary type。。
+- syntax：
+@interface InterfaceName : parentClassName
+@property (readonly) NSString *firstName
+@end
+
+===
+18 18 18 20 40
+您好，这是我们需要发的样品清单，麻烦您明天帮看一下呗谢谢：
+
+1. 镭雕开关 X 1：三档，蓝光，图案可以是现成的三档图案，例如“LJ56”这种
+
+链接：https://detail.1688.com/offer/525778572695.html?spm=a2615.7691456.newlist.63.2f4b7da3t0K8Jl
+图：
+
+2. 镭雕开关 X 1：两档，绿光，图案可以是现成的两档图案，例如“LE12”这种
+
+链接：https://detail.1688.com/offer/525778572695.html?spm=a2615.7691456.newlist.63.2f4b7da3t0K8Jl
+图：
+
+3. 双LED光带 开关 X 1：最好是这种双LED窄杠的、三档的、已经印了图案的
+
+链接：https://detail.1688.com/offer/547684671264.html?spm=a2615.7691456.newlist.100.2f4b7da3t0K8Jl
+图：
+
+
+4. USB充电插座 X 1：圆形，两个usb口带蓝灯的
+
+链接：https://detail.1688.com/offer/552907727550.html?spm=a2615.7691456.newlist.107.2d2e7da3NQBwxZ
+图：
+
+5. USB充电插座 X 1：方形，两个usb口带蓝灯的
+
+链接：https://detail.1688.com/offer/580909823132.html?spm=a2615.7691456.newlist.92.715c7da3pVEdmZ
+图：
+
+
+===
+php.ini settings for magento (other opensource platform also benefit)
+
+has to be php7, below all in php.ini in php7
+extension_dir = C:/xampp/php7/ext
+extension=php_gd2.dll
+extension=php_intl.dll
+extension=php_xsl.dll
+extension=php_openssl.dll
+extension=php_curl.dll
+extension=php_mbstring.dll
+extension=php_pdo_mysql.dll
+extension=php_soap.dll
+
+http://localhost:8056/magento_local/
+admin_1wcorj
+
+all the "advanced options" in the step 3 web config..
+
+agtecars
+admin1
+jasonzhang5195@gmail.com
+
+; max_execution_time = 30  zz
+max_execution_time = 360000
+
+; max_input_time = 60 zz
+max_input_time = 18000
+
+; memory_limit = 128M zz
+memory_limit = 1024M
+
+agtEcars123
+===
+1.平台比较Platform comparision
+2.平台售价
+3.大致需要的参数
+4.需要确定的参数、也包括需要出售的商品
+5.需要做的工作与分工
+6.时间线的估计
+
+1.平台比较：
+- Shopify
+- Magento
+太臃肿、功能过多用不上、运行速度慢、安装配置繁琐、bug多、成功率太低
+- Opencart
+- Sylius
+- GoDaddy
+和shopify一样是闭源的、但功能要少很多、有点儿太简单
+
+开源的好处都有啥？
+- 可以和仓库系统整合、大大减轻工作量、提高效率（否则不仅每次添加新商品需要一个一个手动录入、就是商品的库存产生变化也要一个一个手动录入和核对）
+- 页面想改就改、自由度更高
+- 成本更低、虽然仍需hosting、但在我们的这个情形其实可以用原有的hosting等于没有月费
+
+2.
+shopify 39-105-400 CAD
+others free
+
+3.大致需要的参数：
+- Name
+- Desc
+- Tags 《--
+- Model (also named "productCode" in productPage, is the model name with letters and digits)
+- SKU/ISBN/...
+- Price 《--
+- Quantity (remaining qty) 《--
+- Dimension 《--
+- Weight 《--
+- Category 《--
+- Manufacturer 《--
+- Related product (asso part) 《--
+- Option (sub-items with seperate price and qty) 《--
+- Images 《--
+- *Spec (called "attribute" in system) 《--
+- *Tax policy
+
+4.需要确定的参数、也包括需要出售的商品
+参数：
+
+
+5.需要做的工作与分工
+- hosting
+	*实验怎样隐藏文件夹
+- theme、首页美化、其他非商品页面（contactUs、aboutUs等等）
+txt和img
+- 录入商品
+- 采集图像（照相）
+- 开会 确定很多参数怎么设 与更多讨论
+- 开会 培训员工使用
+
+*6.shopify的商品参数：
+- Title
+- Desc
+- Price(final)
+- Price(compare at) (cross out price)
+- Price(cost)
+- SKU
+- Barcode etc.
+- Qty
+- Weight
+- Variant系统（和option系统类似）
+- Collection, type和tags （和category有点儿像）
+===
+*自用only：更多的工作：
+
+===
+wms
+
+- add "counting_event" table
+This is one-to-many relation with "part" table (part is many -- part is child and c_e is parent). So FK will be added to part table. Its value is PK in c_e table.
+
+- 问题：系统设计：感觉现有的history系统（trans系统）一团糟。。addNewPart好像也写进去了，但问题是这么写对吗？trans table就这么几个col，感觉这个部分整个都得重新design。。
+- 系统设计——关注重点——可改进方向（总）：
+	- session变量列表的快速查找与设置
+	- ajax的话laravel是怎么发的、也是用jquery吗？
+	- file name
+	- html ctrl element's name/id (for form submit etc)...
+	不论是刚刚写好的session、还是html ctrl、都缺乏快速reference或者auto-complete
+
+
+1214
+任务：
+- 新的c_event表的getAll、getBy、addNew等function
+- 继续c_event ddl的逻辑、确定c_event的位置应该是外面角上、需要有sessionPerssist、添加ajax handler for addNew、用来init时的handler、将ddl链到下面的各种getting/setting模块中
+- 添加list的部分，包括基本按c-event分类listAll、点击barcode至viewDetail页面、edit按钮用来跳回至edit页面、delete是通过edit C_event来实现的、*mass delete某个c_evnt类（包括为null的c_event）
+做sorting的部分（反正要不也得做。。）
+- *tag系统（暂时可以先用普通的varchar column）
+- bootstrap重构
+- 精进现有逻辑--depart和enter页的smartSEARCH、直接把数据铺陈好了
+- 精进现有逻辑--确保所有的所有的smartSearch bar都能生成正确的、符合该处逻辑的tag links
+- laravel重构（OO重构、sqli重构直接跳过）
+- 订单系统。。
+- 然后才是车。。。
+
+先完成john的小任务：
+- edit part页、字段name的label错了、弄成car的了 D
+- change all YiGao -> Eagle D
+editPart(267), create_part_ordering_sheet(105,238), stockCounting(578,640,737),viewPart(126)
+- 上传改地图改地图：F1、F2、H1、H2 D
+- (John新提的要求)location字段，在view时不仅是个string、也应能点击并弹出地图、至少能弹出无标记的大地图、还应有小地图同时、最好能在地图上标记出来
+- 上传“smart search关键字可以不连续的那个update”
+
+留待后面再写：
+- add new cEvent的ajax返回应该带上新加的记录的id、并设好ddl为新加的那个。。
+- 清点页的页面逻辑（view/edit/addNew模块切换）仍然不好、css和js和php混杂
+===
+ctrl flow front-end:
+index.php
+	include config.php (all the CONST)
+	include startup.php (base on front-end or back-end)
+		error_report, checkPHPVer, check SSL, timezone etc.
+		define modification function(see note1) <<--1
+		include auto-load file(see note2) <<--2
+		define library function for autoload(see note3) <<--3
+		call PHP spl_autoload_xx() to do the php autoload for library <<--4
+		include engine files(using modi func to get cache ver file if possible)
+		include helper files(no modi masking any more just direct include)
+		define start() (which just include framework.php)
+	run the start() function(including framework.php), pass which module to run (backend or frontend)
+		instansiate Registry obj (just an assoc array and its get/set)
+		instansiate Config obj (same as registry, just add a load func) <<--5
+		inject 'default' sysConfig settings
+		inject 具体模组's（admin或者catalog等等） SYSConfig settings <<--6
+		register the config obj (store it into registry)
+		instansiate and register a log obj <<--7
+		call PHP set_error_handler(), set its handler and reaction
+		instansiate a new event obj and register it. what is event & action class?<<--8
+
+
+
+- 1: modification function: 给定一个原始文件的绝对path（一般按分类会在front-end back-end install各自的总文件夹里），会去找storage文件夹的同样子路径的位置是否有这个文件（应该是个copy或者cache）、有的话return这个文件的path、否则return给定的原path（原始文件的path）
+- 2: auto-load file: too heavy this file -- not to read at the moment
+- 3: 基本上也是个includer、会把输入的叫做$class的变量、里面的'\\'换成'/'，接到library的path中，看library中是否真的有此文件，有的话就用modification func modi一下（也就是用storage中的cache替换一下如果可以的话）、再include这个library文件，是在找不到的话就return false。。
+- 4: PHP的autoload功能：基本就是帮忙include Class的，可以通过只class名就自动include定义class的源文件（从而载入这个class），用法是首先定义个针对某类class的search path、上面note3的这个library正是干这个的、再用spl_autoload相关工具链到自动加载功能里（？）从而下次就不用include了（？）
+- 5: load func: 将这个SYSConfig文件里的诸fields(诸arrayElement) append至本config obj的'data' array ppty中。。如果出现fieldName重名则将原本的覆盖。。 inEnglish load this sysConfig file (auto-complete the input nature file name and include it.. path=system/config/, extension=php)into config obj, so that inject the file's data into n assoc array which append to  config obj's data
+- 6: here $application_config as a nature fileName is prepared in the beginning, very early when index.php is calling function start()
+- 7: log file's location is according to 'error_filename' entry of the 'default' sysConfig as its natureName and DIR_LOG of configFile as its path-- usually always storage/logs
+- 8:
+
+Learning - opencartGithubWiki - Basics, Events, Events 2.0&2.1
+- MVC: seems the author made models only for database related and put the logics in ctrlers (好像model只负责data和database、而logics在ctrler中)
+- Loading: 2ways to access ctrler, path matching, "code loading"
+- event: seems the authors logic is to use events as a way to add some code when events such as method calls and data flows happening, hooks to call before/after events happen, manipulate input/output
+- event registering:
+	"$code": string id for the extension,usually "authorName_extName", 据说在用户删除插件时用得上、来删除event
+
+
+note(总):
+- nature name = name without path and fileExtension etc.. short name
+- sysConfig file= system/config/xx.php
+config file= admin/config.php或者/config.php
+===
+
+- 总结：
+	- 一个就是文件path系统、对绝对path的manipulate
+	- 一个是怎样load（include）和管理这些class和文件
+
+===
+- bs3 bs4 ddl事件
+===
+- minor changes -- replace all 'YiGao' in views to Eagle (backupNoChange)
+- continue on stackCounting module: add 'countingEvent' tag (sissionPersisted) and its logics..
+add stackCountingList page
+===
+Major upload: Overall Bootstrapping in Progress
+
+- many existing modules has been bootstrapped: nav menu (side bar top bar), search bar, partListing, viewPart, editPart
+===
+learnOther:
+
+- css selector 还是得好好学学啊。。
+css selector 中间不能有空格
+- 经典的点击两次事件。。同样是那个min.js的引用那里。。
+- html a target='_blank' open in new tab...
+- laravel blade template not working after PC transfer: 试了很多办法例如"php artisan view:clear"、不拷贝vendor（新建个proj只留vendor然后把本proj里除了vendor之外的内容全部考过去）等等，都不好用。最后还是新建个同一版本（5.1.xx）的proj，然后手动一点点把最重要的文件考过去、挑直接相关的拷、终于OK了
+
+- PHP &$xx: passing by ref..(passing the addr rather than value.. making a pointer)
+===
+www TODO:
+
+- Map facility in edit part page etc..
+===
+learnOther：
+
+function() use() {...
+===
+upgradePackage
+
+- Invoice
+	- Final price
+	- Lead time
+	- Formal, company name, address
+- Delivery method
+- Shipping cost
+- minimum quantity
+- Payment method
+- Technical data
+- Pre-production kit (esp. what to buy..)
+
+Components
+- Speaker
+- Speaker Support Structure (metal box, metal bracket, shrunk tube...)
+- USB Plug <-
+- Switches <-
+- Volt Meter <-
+- Panel
+- Others: WireTrunking(~20 per2cart), Paint(~7 per1cart), Wires, Screws,
+- *Mirror Middle 22
+- *Mirror Side 29
+- *Steering Wheel & Adaptor 11 & 5
+- *Black Seats
+- *Enclosure
+- *Armrest
+
+- confirm: dimesionWeight, usb, shippingCost, invoice, volt meter
+
+问otto：paypal的手续费、跟箱、speaker数量运费
+===
+from masterList original：
+
+- fields：
+	- EG order#	str				"EG170782-1"or"N/A"
+	- Type		str	DDL(typeList)		"EG202AKR"
+	- VIN/ serial#	str	PK!
+	- Manuf. Date	date				(ym only)
+	- Color		str	DDL(colorLsit)
+	- Rdy to sell	str	Radio()			YES-NEW,YES-USED,NO,ETR
+	- Sale Status	str	DDL(ssList)		SOLD,RESERVED,DEMO...
+	- Dealer	str	DDL(dealerList)
+	- Price		decimal				decimal(10,2) ?difference w paid amt?
+	- Dlvr/pick D	date				ymd
+	- ModelSoldAs	str				"ZEP 2", "HOB 6-2"...
+	- Inv. Date	date
+	- Inv. No.	str				"18021723F"
+	- Note		str				longest is 123 chars...
+	- Paid Amount	decimal				decimal(10,2)
+	- Inv Sent	bool				Y/N
+- fields (sheet2):
+	- EG order#
+	- Type
+- fields (sheet3): 《--folded for same type, for count of type stats》
+	- Type
+	- Count (w Grand Total in the end)
+
+- db design:
+	- tables: colors, types, history, *finalProductSheets, *invoices,
+	- vehicles
+		vehicle_id		int5		PK	auto-increment
+		vin_num			varchar25		unique
+		eg_order_num		varchar20
+		original_eg_model_id	int5		FK
+		manuf_date		date
+		original_color_id	int5		FK
+		rdy_to_sell		varchar10
+		sale_status		varchar20
+		sale_dealer_id		int5		FK
+		price			decimal(10,2)
+		paid_amt		decimal(10,2)
+		dlvr_date		datetime
+		sold_as_agt_model_id	int5		FK
+		invoice_date		datetime
+		invoice_num		varchar15
+		invoice_sent		varchar5
+		tag_id			int5		FK
+		update_at		datetime
+		note			varchar200
+	- eg_models
+		img_url
+	- agt_models
+	- vehicle_colors
+	- dealers
+	- tags
+	- operation history
+	- sales history
+
+	- vehicle固有信息 & 销售信息是否分成两个表，暂时先一个表吧这次。。
+
+- views & ctrlrs:
+	- view all
+
+- features:
+	- ddl for cell data entering (child table)
+	- sort asc desc
+	- sort by cell color, sort by font color (tag by cell/font color)
+	- list all values(good for fields w duplicate values)
+	- filter system:
+		txtFilter (==, !=, beginWith, endsWith, contains)
+		filter by color
+		clear all filter
+		search and filter
+		multi-cbox of listAllValues for filter
+	- find (search)
+	- replace
+
+- main functions (modules)
+业务类/biggerModule:
+	- Receiving
+		createNew,
+		支持批量输入
+	- Selling
+		edit,
+		直观listAll, search by type, by color, 产品资料库查询(用于电话咨询), *invoicing组件, *
+	- Shipping
+		edit,
+Utility类:
+	- finalProductSheets产品资料库
+	- History
+	- Search
+	- ViewAll （w createNew UR btn, edit & del in-line btn, pagination&sorting, *filter sys）
+	- Map
+	- Grouping(直观listAll) & Stats 《--按进货批次order#查看》
+	- *setting
+	- *msg
+基础组件类brick:
+	- Grouping & Stats
+	- Edit, CreateNew, Delete
+	- "converting table" -- what models can a basic type of vehicle convert to (to generate DDL)
+	- pagination & sorting
+	- *filter sys: (mainly used in listing pages to narrow down result)
+
+- persuade:
+	no history
+	lack of standards
+	由于note等、单元格参差不齐影响使用
+	easy link to dealer list, spec sheets etc
+
+- questions:
+	- color (cell, font) strategy?
+
+- future:
+	- invoicing (in another table) is still manual
+===
+===
+opencart:
+
+===
+php：
+
+===
+learn laravel
+
+===
+事件：
+
+===
+“Framework”、组件：
+
+- 知乎的topbar真不错，向上翻的动画
+===
+designPattern:
+
+- business logic 放在哪、尤其考虑MVC、ORM
+- ORM需不需要singleTon、staticMethods、laravel是则么管理的
+- logics做成obj好还是functions好？
+
+===
+Experiment Writing Rest API
+
+- Experiment Writing Rest API in plain PHP
+now is only service side for creating..
+
+
+Major Update - car_sys Laravel
+
+- first time to re-factor car_sys with Laravel struct. First time installed Laravel
+- car_sys: design & made DB, created Eloquent ORM models, DB & ORM with FK relations
+- car_sys: "vehicle/list" page with "vehicle/list" ctrlr, imple list with FKs, imple pagination
+- car_sys: layout.main blade view template..
+- car_sys: experiment accessing query string in Req
+- calculate price: "p-w-r prices" logic, small script for calculate p-w-r prices
+- continuing bootstrapping: index page (half way)
+- notes backup..
