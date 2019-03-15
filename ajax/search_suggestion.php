@@ -67,6 +67,8 @@ switch($special){
         $page_url_base = "depart.php";
         break;
     case "enter":
+        //zz <a href="enter.php?barcode=xxxxx">partName partNumber</a>
+        $page_url_base = "enter.php";
         break;
     case "stock_counting":
         //zz <a href="stock_counting.php?barcode=xxxxx">partName partNumber</a>

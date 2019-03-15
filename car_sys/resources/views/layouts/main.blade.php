@@ -11,6 +11,10 @@
 //    $logout ="Hi, ".$_COOKIE['ew_user_name']."~ Getting Tired? >> <a href=\"index.php?do=logout\">Logout</a>";
 //}
 ?>
+{{--Init:--}}
+{{--$pathOfRoot - overallProjRoot--}}
+@yield('php_script')
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,30 +25,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/p_g_dash/production/images/favicon.ico" type="image/ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="../../../images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../../images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href=" {{ $pathOfRoot }}images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href=" {{ $pathOfRoot }}images/favicon-16x16.png">
 
     @yield('head_title')
 
     <!-- Bootstrap -->
-    <link href="../../../p_g_dash/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href=" {{ $pathOfRoot }}p_g_dash/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../../../p_g_dash/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href=" {{ $pathOfRoot }}p_g_dash/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="../../../p_g_dash/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href=" {{ $pathOfRoot }}p_g_dash/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
-    <link href="../../../p_g_dash/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href=" {{ $pathOfRoot }}p_g_dash/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 
     <!-- bootstrap-progressbar -->
-    <link href="../../../p_g_dash/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href=" {{ $pathOfRoot }}p_g_dash/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
-    <link href="../../../p_g_dash/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+    <link href=" {{ $pathOfRoot }}p_g_dash/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
     <!-- bootstrap-daterangepicker -->
-    <link href="../../../p_g_dash/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href=" {{ $pathOfRoot }}p_g_dash/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="../../../p_g_dash/build/css/custom.min.css" rel="stylesheet">
-    <link href="../../../p_g_dash/build/css/custom.css" rel="stylesheet">
+    <link href=" {{ $pathOfRoot }}p_g_dash/build/css/custom.min.css" rel="stylesheet">
+    <link href=" {{ $pathOfRoot }}p_g_dash/build/css/custom.css" rel="stylesheet">
 </head>
 
 <style>
@@ -56,7 +60,7 @@
     /*margin-top: 5%;*/
     /*}*/
     .site_logo_image_wrapper_md {
-        background: url("../../../images/logo_white.png") no-repeat;
+        background: url(" {{ $pathOfRoot }}images/logo_white.png") no-repeat;
         display: block;
         /*margin: auto;*/
         margin-left: 9%;
@@ -64,7 +68,7 @@
         height:53px;
     }
     .site_logo_image_wrapper_sm {
-        background: url("../../../images/favicon-32x32.png") no-repeat center;
+        background: url(" {{ $pathOfRoot }}images/favicon-32x32.png") no-repeat center;
         height:32px;
     }
     /*.nav.side-menu>li.current-page:not(ul) {*/
@@ -158,7 +162,7 @@
                     <div class="menu_section">
                         <h5>Warehouse Management System</h5>
                         <ul class="nav side-menu">
-                            <li><a href="search.php"><i class="fa fa-search"></i> Search </a></li>
+                            <li><a href="{{ $pathOfRoot }}search.php"><i class="fa fa-search"></i> Search </a></li>
                             <li><a href="enter.php"><i class="fa fa-download"></i> Receiving </a></li>
                             <li><a href="depart.php"><i class="fa fa-upload"></i> Shipping </a></li>
                             <li><a href="list.php?check=inventory"><i class="fa fa-cubes"></i> Inventory <span class="fa fa-chevron-down"></span></a>
@@ -426,46 +430,46 @@
 </div>
 
 <!-- jQuery -->
-<script src="../../../p_g_dash/vendors/jquery/dist/jquery.min.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
-<script src="../../../p_g_dash/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- FastClick -->
-<script src="../../../p_g_dash/vendors/fastclick/lib/fastclick.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/fastclick/lib/fastclick.js"></script>
 <!-- NProgress -->
-<script src="../../../p_g_dash/vendors/nprogress/nprogress.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/nprogress/nprogress.js"></script>
 <!-- Chart.js -->
-<script src="../../../p_g_dash/vendors/Chart.js/dist/Chart.min.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/Chart.js/dist/Chart.min.js"></script>
 <!-- gauge.js -->
-<script src="../../../p_g_dash/vendors/gauge.js/dist/gauge.min.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/gauge.js/dist/gauge.min.js"></script>
 <!-- bootstrap-progressbar -->
-<script src="../../../p_g_dash/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
 <!-- iCheck -->
-<script src="../../../p_g_dash/vendors/iCheck/icheck.min.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/iCheck/icheck.min.js"></script>
 <!-- Skycons -->
-<script src="../../../p_g_dash/vendors/skycons/skycons.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/skycons/skycons.js"></script>
 <!-- Flot -->
-<script src="../../../p_g_dash/vendors/Flot/jquery.flot.js"></script>
-<script src="../../../p_g_dash/vendors/Flot/jquery.flot.pie.js"></script>
-<script src="../../../p_g_dash/vendors/Flot/jquery.flot.time.js"></script>
-<script src="../../../p_g_dash/vendors/Flot/jquery.flot.stack.js"></script>
-<script src="../../../p_g_dash/vendors/Flot/jquery.flot.resize.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/Flot/jquery.flot.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/Flot/jquery.flot.pie.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/Flot/jquery.flot.time.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/Flot/jquery.flot.stack.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/Flot/jquery.flot.resize.js"></script>
 <!-- Flot plugins -->
-<script src="../../../p_g_dash/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-<script src="../../../p_g_dash/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-<script src="../../../p_g_dash/vendors/flot.curvedlines/curvedLines.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/flot.curvedlines/curvedLines.js"></script>
 <!-- DateJS -->
-<script src="../../../p_g_dash/vendors/DateJS/build/date.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/DateJS/build/date.js"></script>
 <!-- JQVMap -->
-<script src="../../../p_g_dash/vendors/jqvmap/dist/jquery.vmap.js"></script>
-<script src="../../../p_g_dash/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-<script src="../../../p_g_dash/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/jqvmap/dist/jquery.vmap.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
 <!-- bootstrap-daterangepicker -->
-<script src="../../../p_g_dash/vendors/moment/min/moment.min.js"></script>
-<script src="../../../p_g_dash/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/moment/min/moment.min.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 <!-- Custom Theme Scripts -->
 <!--<script src="p_g_dash/build/js/custom.min.js"></script>-->
-<script src="../../../p_g_dash/build/js/custom.js"></script>
+<script src=" {{ $pathOfRoot }}p_g_dash/build/js/custom.js"></script>
 
 </body>
 </html>

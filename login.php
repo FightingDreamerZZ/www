@@ -28,8 +28,9 @@ if($_GET['do']=='login'){
 	if(strcmp($ew_verified, $pass) == 0){
 	    //warehouse admin
         if($a_check['type'] == 5){
-            setcookie('ew_user_name',$user,time()+7200);//zz in seconds -- 7200=60*60*2=2hrs
-            setcookie('ew_user_verified',$ew_verified,time()+7200);
+            /*setcookie('ew_user_name',$user,time()+7200);*///zz in seconds -- 7200=60*60*2=2hrs
+            setcookie('ew_user_name',$user,time()+29000);
+            setcookie('ew_user_verified',$ew_verified,time()+29000);/*time()+7200*/
             setcookie('ea_user_name',$user,time()+7200);
             setcookie('ea_user_verified',$ew_verified,time()+7200);
             setcookie('ec_user_name',$user,time()+7200);

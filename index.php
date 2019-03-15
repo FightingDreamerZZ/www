@@ -77,6 +77,7 @@ include_template_header_css_sidebar_topbar("","Index","")
 //echo date("Ymd") . sprintf("%04s", 1);
 ?>
 <script>
+    alert("C:\\xampp\\htdocs\\www");
     if("<?php echo $enable_noti_carts_tbp;?>" == "true"){
         alert("Cart proceeding requests: There are <?php echo $stats[total_count_of_carts_tbp];?> carts need to be proceeded, please check the Pending Carts function to begin with.")
     }
@@ -180,6 +181,15 @@ include_template_header_css_sidebar_topbar("","Index","")
     .btn.btn-app div.function-caption {
         margin-top: 6px;
     }
+    hr {
+
+        margin-top: 0px;
+        margin-bottom: 10px;
+        border: 0;
+
+        border-top: 1px solid #eee;
+
+    }
 </style>
 
 <!--    <div id="dialog_count_of_carts_tbp" title="Download complete">-->
@@ -198,7 +208,7 @@ include_template_header_css_sidebar_topbar("","Index","")
         <!--page-title-->
         <div class="page-title">
             <div class="title_left">
-                <h2>Index</h2>
+                <h2>Index Page</h2>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -212,47 +222,91 @@ include_template_header_css_sidebar_topbar("","Index","")
                         <div class="clearfix"></div>
                     </div>-->
                     <div class="x_content">
-                        <h3>Inventory Management<small></small></h3>
+                        <h4>Inventory Management<small></small></h4>
                         <br />
-                        <a class="btn btn-app">
+                        <a href="search.php" class="btn btn-app">
                             <img src="images/icon/barcode.png">
                             <div class="function-caption">Search Part</div>
                         </a>
-                        <a class="btn btn-app">
+                        <a href="new_part.php" class="btn btn-app">
                             <img src="images/icon/part.png" style=""/>
                             <div class="function-caption">Add New Part</div>
                         </a>
-                        <a class="btn btn-app">
+                        <a href="list.php?check=inventory" class="btn btn-app">
                             <img src="images/icon/partinven.png">
                             <div class="function-caption">List All Parts</div>
                         </a>
-                        <a class="btn btn-app">
+                        <a href="list.php?check=short" class="btn btn-app">
+                            <span class="badge bg-red"><?php echo $stats[total_short]; ?></span>
                             <img src="images/icon/short.png">
                             <div class="function-caption">Parts in Shortage</div>
                         </a>
-                        <a class="btn btn-app">
+                        <a href="list.php?check=out" class="btn btn-app">
+                            <span class="badge bg-red"><?php echo $stats[total_out]; ?></span>
                             <img src="images/icon/out.png">
                             <div class="function-caption">Out of Stock</div>
                         </a>
-                        <a class="btn btn-app">
+                        <a href="list.php?check=bin" class="btn btn-app">
+                            <span class="badge bg-red"><?php echo $stats[total_bin]; ?></span>
                             <img src="images/icon/bin.png">
                             <div class="function-caption">Disabled Parts</div>
                         </a>
-                        <a class="btn btn-app">
-                            <i class="fa fa-pause"></i> Pause
-                        </a>
-                        <a class="btn btn-app">
-                            <i class="fa fa-save"></i> Save
-                        </a>
-                        <a class="btn btn-app">
-                            <span class="badge bg-red">6</span>
-                            <i class="fa fa-bullhorn"></i> Notifications
-                        </a>
-
-                        <h3>Warehouse Operations<small></small></h3>
+                        <hr/>
+                        <h4>Warehouse Operations<small></small></h4>
                         <br />
-                        <h3>Utility Functions<small></small></h3>
+                        <a href="depart.php" class="btn btn-app">
+                            <img src="images/icon/shipping.png" width="90px" height="90px">
+                            <div class="function-caption">Shipping</div>
+                        </a>
+                        <a href="enter.php" class="btn btn-app">
+                            <img src="images/icon/receiving.png" style=""  width="90px" height="90px"/>
+                            <div class="function-caption">Receiving</div>
+                        </a>
+                        <a href="stock_counting.php" class="btn btn-app">
+                            <img src="images/icon/stock-counting.png" width="90px" height="90px">
+                            <div class="function-caption">Stock-counting</div>
+                        </a>
+                        <a href="tran_list.php" class="btn btn-app">
+                            <img src="images/icon/trans.png">
+                            <div class="function-caption">Trans history</div>
+                        </a>
+                        <a href="pending.php" class="btn btn-app">
+                            <img src="images/icon/pending.png">
+                            <div class="function-caption">Pending</div>
+                        </a>
+                        <a href="serial.php" class="btn btn-app">
+                            <img src="images/icon/serial.png">
+                            <div class="function-caption">Serial Input</div>
+                        </a>
+                        <hr/>
+                        <h4>Utility Functions<small></small></h4>
                         <br />
+                        <a href="cart.php" class="btn btn-app">
+                            <span class="badge bg-red"><?php echo $stats[total_cart]; ?></span>
+                            <img src="images/icon/my_cart.png" width="90px" height="90px">
+                            <div class="function-caption">MyCart</div>
+                        </a>
+                        <a href="images/map.gif" target="_blank" class="btn btn-app">
+                            <img src="images/icon/map.png" style=""  width="90px" height="90px"/>
+                            <div class="function-caption">Map</div>
+                        </a>
+                        <a href="stats.php" class="btn btn-app">
+                            <img src="images/icon/stats.png" width="90px" height="90px">
+                            <div class="function-caption">Stats</div>
+                        </a>
+                        <a href="msg.php" class="btn btn-app">
+                            <img src="images/icon/msg.png">
+                            <div class="function-caption">Message</div>
+                        </a>
+                        <a class="btn btn-app">
+                            <img src="images/icon/pending.png">
+                            <div class="function-caption">Log</div>
+                        </a>
+                        <a href="carts_to_proceed.php" class="btn btn-app">
+                            <span class="badge bg-red"><?php echo $stats[total_count_of_carts_tbp]; ?></span>
+                            <img src="images/icon/pending_carts.png" width="90px" height="90px">
+                            <div class="function-caption">Pending Carts</div>
+                        </a>
                     </div><!--x_content-->
                 </div><!--x_panel-->
             </div><!--col-->

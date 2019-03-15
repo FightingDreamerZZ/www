@@ -132,11 +132,11 @@ include_template_header_css_sidebar_topbar(" onload=\"load()\"","View Part","");
                                            data-toggle="tooltip" data-original-title='Edit this part.' data-placement="bottom">
                                             Edit <i class="fa fa-pencil"></i>
                                         </a>
-                                        <a class="btn btn-primary" href="edit_part.php?barcode=<?php echo $a_check["barcode"]; ?>"
+                                        <a class="btn btn-primary" href="enter.php?barcode=<?php echo $a_check["barcode"]; ?>"
                                            data-toggle="tooltip" data-original-title='Quick enter to inventory.' data-placement="bottom">
                                             Receiving <i class="fa fa-download"></i>
                                         </a>
-                                        <a class="btn btn-primary" href="edit_part.php?barcode=<?php echo $a_check["barcode"]; ?>"
+                                        <a class="btn btn-primary" href="depart.php?barcode=<?php echo $a_check["barcode"]; ?>"
                                            data-toggle="tooltip" data-original-title='Quick depart from inventory' data-placement="bottom">
                                             Shipping <i class="fa fa-upload"></i>
                                         </a>

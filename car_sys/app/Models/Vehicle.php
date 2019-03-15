@@ -11,6 +11,8 @@ class Vehicle extends Model {
 
     protected $table = 'ew_vehicles';
     protected $primaryKey = 'vehicle_id';
+//    const UPDATED_AT = 'update_at';
+    public  $timestamps = false;
     protected $fillable = ['vin_num',
         'eg_order_num',
         'original_eg_model_id',

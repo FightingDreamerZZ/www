@@ -6,16 +6,27 @@
     <bookmark url="file://$PROJECT_DIR$/depart.php" description="depart: main handler for final submit and write to DB, also cart edit" line="136" />
     <bookmark url="file://$PROJECT_DIR$/depart.php" description="depart: JS ending" line="466" />
     <bookmark url="file://$PROJECT_DIR$/depart.php" description="depart: JS beginning" line="209" />
-    <bookmark url="file://$PROJECT_DIR$/enter.php" description="enter: handler barcode scan --filling inputs and auto +1" line="59" />
-    <bookmark url="file://$PROJECT_DIR$/enter.php" description="enter: handler submit custom enter request" line="72" />
-    <bookmark url="file://$PROJECT_DIR$/enter.php" description="enter: JS ending" line="261" />
-    <bookmark url="file://$PROJECT_DIR$/enter.php" description="enter: form1 for barcode search only" line="281" />
-    <bookmark url="file://$PROJECT_DIR$/enter.php" description="enter: form2 --submit" line="314" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a8b43f7-a8f2-4712-8c3c-590e8c6c4a4f" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/11 notes/11.txt" beforeDir="false" afterPath="$PROJECT_DIR$/11 notes/11.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ajax/attach_part.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax/attach_part.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ajax/search_suggestion.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax/search_suggestion.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/car_sys/app/Http/Controllers/ControllerVehicle.php" beforeDir="false" afterPath="$PROJECT_DIR$/car_sys/app/Http/Controllers/ControllerVehicle.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/car_sys/app/Http/routes.php" beforeDir="false" afterPath="$PROJECT_DIR$/car_sys/app/Http/routes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/car_sys/app/Models/BusinessLogics/LogicVehicle.php" beforeDir="false" afterPath="$PROJECT_DIR$/car_sys/app/Models/BusinessLogics/LogicVehicle.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/car_sys/app/Models/Vehicle.php" beforeDir="false" afterPath="$PROJECT_DIR$/car_sys/app/Models/Vehicle.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/car_sys/resources/views/layouts/main.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/car_sys/resources/views/layouts/main.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/car_sys/resources/views/vehicle/listAll.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/car_sys/resources/views/vehicle/listAll.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/cart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depart.php" beforeDir="false" afterPath="$PROJECT_DIR$/depart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/enter.php" beforeDir="false" afterPath="$PROJECT_DIR$/enter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/search.php" beforeDir="false" afterPath="$PROJECT_DIR$/search.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/share/Code_temp" beforeDir="false" afterPath="$PROJECT_DIR$/share/Code_temp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view_part.php" beforeDir="false" afterPath="$PROJECT_DIR$/view_part.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -36,7 +47,38 @@
     <option name="HIDDEN_KINDS">
       <set />
     </option>
-    <expand />
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="eware@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="eware@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="eware@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="eware: schema" type="c314c289:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="eware@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="eware: schema" type="c314c289:MysqlImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="eware@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="eware: schema" type="c314c289:MysqlImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="ew_part: table" type="98d5ac3d:MysqlImplModel$Table" />
+      </path>
+    </expand>
     <select />
   </component>
   <component name="FavoritesManager">
@@ -45,86 +87,56 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MeetingRoomController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/car_sys/app/Http/Controllers/MeetingRoomController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="29" column="26" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="26" />
-              <folding>
-                <element signature="e#39#59#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="listAll.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/car_sys/resources/views/vehicle/listAll.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manageParts.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/car_sys/resources/views/bookingMeetingRoom/manageParts.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="34" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ControllerVehicle.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/car_sys/app/Http/Controllers/ControllerVehicle.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="850">
+              <caret line="62" column="38" selection-start-line="62" selection-start-column="38" selection-end-line="62" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="11.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/11 notes/11.txt">
+      <file leaf-file-name="addNew.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/car_sys/resources/views/vehicle/addNew.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="105" column="11" selection-start-line="105" selection-start-column="11" selection-end-line="105" selection-end-column="11" />
+            <state relative-caret-position="867">
+              <caret line="51" column="94" selection-start-line="51" selection-start-column="94" selection-end-line="51" selection-end-column="94" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="11.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/11.txt">
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/foodfun/accounting/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="426" selection-start-line="426" selection-end-line="426" />
+            <state relative-caret-position="517">
+              <caret line="381" column="21" lean-forward="true" selection-start-line="381" selection-start-column="21" selection-end-line="381" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RequiremntTemp - ProjectOfficialSiteMaintainance" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/11 notes/RequiremntTemp - ProjectOfficialSiteMaintainance">
+      <file leaf-file-name="stock_counting_list.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stock_counting_list.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="656">
-              <caret line="129" lean-forward="true" selection-start-line="129" selection-end-line="129" />
+            <state relative-caret-position="4471">
+              <caret line="263" column="5" selection-start-line="263" selection-start-column="5" selection-end-line="263" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calculate_price/index.php">
+      <file leaf-file-name="tran_list.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tran_list.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="10" column="75" selection-start-line="10" selection-start-column="75" selection-end-line="10" selection-end-column="75" />
+            <state relative-caret-position="221">
+              <caret line="17" column="22" selection-start-line="17" selection-end-line="18" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/car_sys/resources/views/layouts/main.blade.php">
+      <file leaf-file-name="sqlTemp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/foodfun/sqlTemp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="26" column="24" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
+            <state relative-caret-position="238">
+              <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
             </state>
           </provider>
         </entry>
@@ -140,36 +152,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>$c_event_name</find>
-      <find>style</find>
-      <find>DB Error!</find>
-      <find>&lt;label class=&quot;col-sm-3 control-label&quot;&gt;Button addons&lt;/label&gt;</find>
-      <find>iradio_flat-green</find>
-      <find>Checkboxes and radios</find>
-      <find>form_confirm_decrease</find>
-      <find>Add .form-inline to your form</find>
-      <find>@mdo</find>
-      <find>row</find>
-      <find>$load</find>
-      <find>loadXMLDoc</find>
-      <find>onload</find>
-      <find>footer</find>
-      <find>mycart</find>
-      <find>output_buffer</find>
-      <find>output_buffering</find>
-      <find>&lt;code&gt;.btn .btn-app&lt;/code&gt;</find>
-      <find>xdebug</find>
-      <find>$cost_at_entry</find>
-      <find>MeetingRoomController</find>
-      <find>p_g_dash</find>
-      <find>opcache</find>
-      <find>$</find>
-      <find>open_cart_2</find>
-      <find>ew_user_name</find>
-      <find>$attributes</find>
-      <find>../../</find>
-      <find>allVehicles</find>
       <find>request</find>
+      <find>pagedAllVehicle</find>
+      <find>$data</find>
+      <find>currentPage</find>
+      <find>../../../</find>
+      <find>{{}}</find>
+      <find>formatValidationErrors</find>
+      <find>ew_vehi</find>
+      <find>hidden</find>
+      <find>created_at</find>
+      <find>Not se</find>
+      <find>Not set</find>
+      <find>@if(isset</find>
+      <find>&lt;?php echo $stats</find>
+      <find>Styled &amp; Custom notifications</find>
+      <find>noti</find>
+      <find>image_wrapper</find>
+      <find>withborder</find>
+      <find>style</find>
+      <find>setcookie</find>
+      <find>attach_part</find>
+      <find>search_result</find>
+      <find>focus_on</find>
+      <find>form1</find>
+      <find>form_confirm_decrease</find>
+      <find>client</find>
+      <find>$is_warehouse_admin</find>
+      <find>depart</find>
+      <find>$msg_direct_depart</find>
+      <find>foreach</find>
     </findStrings>
     <replaceStrings>
       <replace>radio_application</replace>
@@ -192,6 +204,8 @@
       <replace>../../</replace>
       <replace>pagedAllVehicle</replace>
       <replace>../../../</replace>
+      <replace>input('page')</replace>
+      <replace>{{ $pathOfRoot }}</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\xampp\htdocs\www\crm</dir>
@@ -203,33 +217,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/edit_part.php" />
-        <option value="$PROJECT_DIR$/new_part_old.php" />
-        <option value="$PROJECT_DIR$/stock_counting.php" />
-        <option value="$PROJECT_DIR$/new_part.php" />
-        <option value="$PROJECT_DIR$/list.php" />
-        <option value="$PROJECT_DIR$/depart_old.php" />
-        <option value="$PROJECT_DIR$/ajax/search_suggestion.php" />
-        <option value="$PROJECT_DIR$/template_header_css_sidebar_topbar.php" />
-        <option value="$PROJECT_DIR$/p_g_dash/build/css/custom.css" />
-        <option value="$PROJECT_DIR$/template_footer_scripts.php" />
-        <option value="$PROJECT_DIR$/ajax/cart.php" />
-        <option value="$PROJECT_DIR$/../../php/php.ini" />
-        <option value="$PROJECT_DIR$/login.php" />
-        <option value="$PROJECT_DIR$/lib/user_lib.php" />
-        <option value="$PROJECT_DIR$/depart.php" />
-        <option value="$PROJECT_DIR$/index_old.php" />
-        <option value="$PROJECT_DIR$/p_g_dash/production/form_buttons.html" />
-        <option value="$PROJECT_DIR$/index.php" />
-        <option value="$PROJECT_DIR$/ajax/test_calc.php" />
-        <option value="$PROJECT_DIR$/calc1.php" />
-        <option value="$PROJECT_DIR$/calculate_price/test_calc.php" />
-        <option value="$PROJECT_DIR$/car_sys/.env" />
-        <option value="$PROJECT_DIR$/car_sys/app/Ew_part.php" />
-        <option value="$PROJECT_DIR$/car_sys/app/Http/Models/Part.php" />
-        <option value="$PROJECT_DIR$/php.ini" />
-        <option value="$PROJECT_DIR$/car_sys/resources/views/bookingMeetingRoom/manageParts.blade.php" />
-        <option value="$PROJECT_DIR$/../open_cart_2.sql" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/index.php" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/config.php" />
         <option value="$PROJECT_DIR$/share/SQL_temp" />
@@ -239,13 +226,6 @@
         <option value="$PROJECT_DIR$/car_sys/app/Models/EgModel.php" />
         <option value="$PROJECT_DIR$/car_sys/app/Models/VehicleColor.php" />
         <option value="$PROJECT_DIR$/car_sys/app/Models/Dealer.php" />
-        <option value="$PROJECT_DIR$/car_sys/app/Models/BusinessLogics/LogicVehicle.php" />
-        <option value="$PROJECT_DIR$/car_sys/app/Models/Vehicle.php" />
-        <option value="$PROJECT_DIR$/share/Code_temp" />
-        <option value="$PROJECT_DIR$/car_sys/app/Http/routes.php" />
-        <option value="$PROJECT_DIR$/car_sys/resources/views/layouts/main.blade.php" />
-        <option value="$PROJECT_DIR$/car_sys/resources/views/vehicle/listAll.blade.php" />
-        <option value="$PROJECT_DIR$/car_sys/app/Http/Controllers/ControllerVehicle.php" />
         <option value="$PROJECT_DIR$/calculate_price/index.php" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.txt" />
         <option value="$PROJECT_DIR$/11 notes/11" />
@@ -254,6 +234,40 @@
         <option value="$PROJECT_DIR$/11 notes/agtWMSProj -- general (mainly design)" />
         <option value="$PROJECT_DIR$/11 notes/learn others" />
         <option value="$PROJECT_DIR$/11 notes/RequiremntTemp - ProjectOfficialSiteMaintainance" />
+        <option value="$PROJECT_DIR$/car_sys/app/Models/BusinessLogics/LogicVehicle.php" />
+        <option value="$PROJECT_DIR$/testzz1.html" />
+        <option value="$PROJECT_DIR$/car_sys/app/Http/Controllers/ControllerEgModel.php" />
+        <option value="$PROJECT_DIR$/car_sys/resources/views/layouts/main.blade.php" />
+        <option value="$PROJECT_DIR$/car_sys/resources/views/vehicle/listAll.blade.php" />
+        <option value="$PROJECT_DIR$/car_sys/vendor/laravel/framework/src/Illuminate/Routing/Controller.php" />
+        <option value="$PROJECT_DIR$/share/Code_temp" />
+        <option value="$PROJECT_DIR$/../open_cart_2/catalog/view/theme/default/template/extension/payment/pp_express.twig" />
+        <option value="$PROJECT_DIR$/../open_cart_2/system/library/template/Twig/Environment.php" />
+        <option value="$PROJECT_DIR$/car_sys/app/Http/routes.php" />
+        <option value="$PROJECT_DIR$/car_sys/resources/views/vehicle/addNew.blade.php" />
+        <option value="$PROJECT_DIR$/car_sys/app/Models/Vehicle.php" />
+        <option value="$PROJECT_DIR$/car_sys/resources/views/vehicle/viewDetail.blade.php" />
+        <option value="$PROJECT_DIR$/index_old.php" />
+        <option value="$PROJECT_DIR$/template_header_css_sidebar_topbar.php" />
+        <option value="$PROJECT_DIR$/index.php" />
+        <option value="$PROJECT_DIR$/p_g_dash/production/general_elements.html" />
+        <option value="//HP_WORKSTATION/SharedFolder/view_part.php" />
+        <option value="$PROJECT_DIR$/login.php" />
+        <option value="$PROJECT_DIR$/ajax/attach_part.php" />
+        <option value="$PROJECT_DIR$/search.php" />
+        <option value="$PROJECT_DIR$/../open_cart_2/config adm.php" />
+        <option value="$PROJECT_DIR$/depart.php" />
+        <option value="$PROJECT_DIR$/enter.php" />
+        <option value="$PROJECT_DIR$/ajax/search_suggestion.php" />
+        <option value="$PROJECT_DIR$/view_part.php" />
+        <option value="$PROJECT_DIR$/cart_old.php" />
+        <option value="$PROJECT_DIR$/cart.php" />
+        <option value="$PROJECT_DIR$/car_sys/app/Http/Controllers/ControllerVehicle.php" />
+        <option value="$PROJECT_DIR$/foodfun/Database.php" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/05513a0c-f616-4a39-8a69-2682af1c06f0/console.sql" />
+        <option value="$PROJECT_DIR$/tran_list.php" />
+        <option value="$PROJECT_DIR$/foodfun/sqlTemp" />
+        <option value="$PROJECT_DIR$/foodfun/accounting/index.php" />
       </list>
     </option>
   </component>
@@ -294,7 +308,7 @@
       <path value="$PROJECT_DIR$/p_g_dash/vendors/transitionize/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="PhpDebugGeneral" xdebug_debug_port="9005" hide_empty_superglobals="false" listening_started="true" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
+  <component name="PhpDebugGeneral" xdebug_debug_port="9005" hide_empty_superglobals="false" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
   <component name="PhpServers">
     <servers>
       <server host="localhost" id="c89e1384-5026-405d-90e8-3f8e9284ea7b" name="localhost" />
@@ -315,6 +329,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -325,131 +340,28 @@
             <path>
               <item name="www" type="b2602c69:ProjectViewProjectNode" />
               <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="11 notes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
               <item name="calculate_price" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="www" type="b2602c69:ProjectViewProjectNode" />
               <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
+              <item name="foodfun" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="www" type="b2602c69:ProjectViewProjectNode" />
               <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="foodfun" type="462c0819:PsiDirectoryNode" />
+              <item name="accounting" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="www" type="b2602c69:ProjectViewProjectNode" />
               <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Models" type="462c0819:PsiDirectoryNode" />
-              <item name="BusinessLogics" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="bookingMeetingRoom" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="layouts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="vehicle" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="storage" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="storage" type="462c0819:PsiDirectoryNode" />
-              <item name="framework" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="car_sys" type="462c0819:PsiDirectoryNode" />
-              <item name="storage" type="462c0819:PsiDirectoryNode" />
-              <item name="framework" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="share" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -458,7 +370,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="database.console.LAST_STATE" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../open_cart_2" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -466,6 +379,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\www\foodfun" />
+      <recent name="C:\xampp\htdocs\www\foodfun\accounting" />
       <recent name="C:\xampp\htdocs\www" />
       <recent name="C:\xampp\htdocs\www\ajax" />
     </key>
@@ -482,18 +397,20 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="PHP Web Page.Unnamed">
+  <component name="RunManager" selected="PHP Web Page.http://localhost/www/foodfun/accounting">
     <configuration name="cart.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost/www/ajax/cart.php" />
     <configuration name="search.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/www/search.php" />
     <configuration name="localhost/www/car_sys/public" type="PhpBuiltInWebServerConfigurationType" factoryName="PHP Built-in Web Server" document_root="$PROJECT_DIR$/car_sys/public" />
     <configuration name="C:\xampp\htdocs\www\calc1.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/calc1.php" />
     <configuration name="index.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/index.php" />
     <configuration name="login.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/login.php" />
-    <configuration name="Unnamed" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" browser="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" server_name="localhost" start_url="/www/calculate_price/index.php" />
+    <configuration name="http://localhost/www/foodfun/accounting" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" browser="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" server_name="localhost" start_url="http://localhost/www/foodfun/accounting" />
     <configuration name="localhost/www/car_sys/public/test" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" browser="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" server_name="localhost" start_url="localhost/www/car_sys/public/test" />
+    <configuration name="temp" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application" browser="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" server_name="localhost" start_url="/www/car_sys/public/vehicle/add_new" />
     <list>
       <item itemvalue="PHP Built-in Web Server.localhost/www/car_sys/public" />
-      <item itemvalue="PHP Web Page.Unnamed" />
+      <item itemvalue="PHP Web Page.temp" />
+      <item itemvalue="PHP Web Page.http://localhost/www/foodfun/accounting" />
       <item itemvalue="PHP Web Page.localhost/www/car_sys/public/test" />
       <item itemvalue="JavaScript Debug.search.php" />
       <item itemvalue="JavaScript Debug.cart.php" />
@@ -650,12 +567,36 @@
       <workItem from="1548166027293" duration="7701000" />
       <workItem from="1548373604208" duration="1339000" />
       <workItem from="1548424077796" duration="24930000" />
-      <workItem from="1548536516810" duration="1895000" />
+      <workItem from="1548536516810" duration="15779000" />
+      <workItem from="1548639730312" duration="6533000" />
+      <workItem from="1548688647452" duration="10206000" />
+      <workItem from="1548743428839" duration="1058000" />
+      <workItem from="1548779970965" duration="787000" />
+      <workItem from="1548808353344" duration="3131000" />
+      <workItem from="1548886512348" duration="8571000" />
+      <workItem from="1548943165408" duration="10244000" />
+      <workItem from="1549035463171" duration="5104000" />
+      <workItem from="1549085541824" duration="2639000" />
+      <workItem from="1549157326818" duration="633000" />
+      <workItem from="1549291078768" duration="6474000" />
+      <workItem from="1549484595568" duration="14000" />
+      <workItem from="1550702238458" duration="1052000" />
+      <workItem from="1550757272157" duration="6704000" />
+      <workItem from="1550844923464" duration="3968000" />
+      <workItem from="1551609039143" duration="1537000" />
+      <workItem from="1551732991846" duration="1296000" />
+      <workItem from="1551991103768" duration="5704000" />
+      <workItem from="1552098880408" duration="13750000" />
+      <workItem from="1552326870674" duration="6551000" />
+      <workItem from="1552395619333" duration="9021000" />
+      <workItem from="1552482071025" duration="5920000" />
+      <workItem from="1552502683192" duration="1381000" />
+      <workItem from="1552579606088" duration="3161000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="680330000" />
+    <option name="totallyTimeSpent" value="809653000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -670,8 +611,8 @@
     <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.60167134" visible="true" weight="0.18389262" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3286908" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.60167134" visible="true" weight="0.2590604" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32729805" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50067115" side_tool="true" weight="0.39972144" />
       <window_info anchor="right" id="Database" order="3" weight="0.3295302" />
@@ -687,9 +628,11 @@
       <window_info anchor="bottom" id="PHP-CGI Server" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="SQL Generator" order="12" weight="0.3286908" />
       <window_info anchor="right" x="0" y="0" width="337" height="648" id="Documentation" order="4" side_tool="true" type="FLOATING" weight="0.3295302" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Database Console" order="12" weight="0.32729805" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32729805" />
     </layout>
     <layout-to-restore>
@@ -751,362 +694,397 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/car_sys/app/Http/Controllers/ControllerVehicle.php</url>
-          <line>25</line>
-          <option name="timeStamp" value="28" />
+          <line>51</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/foodfun/accounting/index.php</url>
+          <line>132</line>
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/foodfun/accounting/index.php</url>
+          <line>119</line>
+          <option name="timeStamp" value="48" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="29" />
+      <option name="time" value="49" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>count($allVehicles)</expression-string>
+        <expression-string>$query</expression-string>
         <language-id>PHP</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>$d</expression-string>
+        <expression-string>$aaa = new DateTime($start_date);</expression-string>
         <language-id>PHP</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>$d[0]</expression-string>
+        <expression-string>$a = new DateTime($start_date);</expression-string>
         <language-id>PHP</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>Vehicle::find(1)['vin_num']</expression-string>
+        <expression-string>new DateTime($start_date)</expression-string>
+        <language-id>PHP</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>$pointer_datetime</expression-string>
+        <language-id>PHP</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>$pointer_datetime_plus1</expression-string>
+        <language-id>PHP</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>$result_set -&gt; fetch_assoc()</expression-string>
+        <language-id>PHP</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>\APP\Models\Vehicle::find(7)</expression-string>
+        <language-id>PHP</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>\APP\Models\Vehicle::find(6)</expression-string>
         <language-id>PHP</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/template_footer_scripts.php">
+    <entry file="file://$PROJECT_DIR$/template_header_css_sidebar_topbar.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="62" column="7" selection-start-line="8" selection-end-line="62" selection-end-column="7" />
+        <state relative-caret-position="289">
+          <caret line="203" column="37" selection-start-line="203" selection-start-column="35" selection-end-line="203" selection-end-column="60" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/php.ini">
+    <entry file="file://$PROJECT_DIR$/index_old.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32946">
-          <caret line="1938" column="21" selection-start-line="1938" selection-start-column="21" selection-end-line="1938" selection-end-column="21" />
+        <state relative-caret-position="3400">
+          <caret line="204" column="25" selection-start-line="204" selection-start-column="23" selection-end-line="204" selection-end-column="50" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../open_cart_2.sql" />
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/index.php" />
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/Database.php" />
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/config.php" />
-    <entry file="file://$PROJECT_DIR$/calculate_price/test_calc.php">
+    <entry file="file://$PROJECT_DIR$/p_g_dash/build/js/custom.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="1898" column="75" selection-start-line="1898" selection-start-column="71" selection-end-line="1898" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:////HP_WORKSTATION/SharedFolder/view_part.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="568">
+          <caret line="166" column="26" lean-forward="true" selection-start-line="166" selection-start-column="26" selection-end-line="166" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:////HP_WORKSTATION/SharedFolder/error.log">
+      <provider selected="true" editor-type-id="LogFileEditorProvider">
+        <state relative-caret-position="-13383" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/user_lib.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="343" column="77" lean-forward="true" selection-start-line="343" selection-start-column="77" selection-end-line="343" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/error.log">
+      <provider selected="true" editor-type-id="LogFileEditorProvider">
+        <state relative-caret-position="-13369" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/view_part_old(also test modal).php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="152" column="41" lean-forward="true" selection-start-line="152" selection-start-column="41" selection-end-line="152" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/p_g_dash/production/general_elements.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="1630" column="10" lean-forward="true" selection-start-line="1630" selection-start-column="10" selection-end-line="1630" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/login.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1173">
+          <caret line="31" column="55" selection-start-line="31" selection-start-column="55" selection-end-line="31" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ajax/attach_part.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="7" column="28" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/edit_part_old.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
+          <caret line="311" column="63" selection-start-line="311" selection-start-column="63" selection-end-line="311" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/edit_part.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="276" column="61" lean-forward="true" selection-start-line="276" selection-start-column="61" selection-end-line="276" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testzz1.php" />
+    <entry file="file://$PROJECT_DIR$/ups_api_url_tester.php" />
+    <entry file="file://$PROJECT_DIR$/se.php" />
+    <entry file="file://$PROJECT_DIR$/search.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="155" column="28" selection-start-line="155" selection-start-column="28" selection-end-line="155" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/search_old.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="637">
+          <caret line="305" column="18" lean-forward="true" selection-start-line="305" selection-start-column="4" selection-end-line="305" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../open_cart_2/config adm.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="48" selection-start-line="10" selection-start-column="48" selection-end-line="10" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../open_cart_2/config cat.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="22" lean-forward="true" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="633">
-          <caret line="180" column="21" selection-start-line="180" selection-start-column="21" selection-end-line="180" selection-end-column="21" />
+        <state relative-caret-position="387">
+          <caret line="261" column="60" selection-start-line="261" selection-start-column="58" selection-end-line="261" selection-end-column="67" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/template_header_css_sidebar_topbar.php">
+    <entry file="file://$PROJECT_DIR$/enter_old.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="51" selection-start-line="10" selection-start-column="51" selection-end-line="10" selection-end-column="51" />
+        <state relative-caret-position="215">
+          <caret line="347" column="29" selection-start-line="347" selection-start-column="11" selection-end-line="347" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/resources/views/layouts/main_old.blade.php">
+    <entry file="file://$PROJECT_DIR$/depart.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="54" column="21" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="21" />
+        <state relative-caret-position="12665">
+          <caret line="758" column="2" selection-start-line="754" selection-start-column="4" selection-end-line="758" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/share/SQL_temp">
+    <entry file="file://$PROJECT_DIR$/ajax/search_suggestion.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="90" column="191" selection-start-line="90" selection-start-column="191" selection-end-line="90" selection-end-column="191" />
+        <state relative-caret-position="1105">
+          <caret line="69" column="27" selection-start-line="69" selection-start-column="27" selection-end-line="69" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/list.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="218" column="112" selection-start-line="218" selection-start-column="36" selection-end-line="218" selection-end-column="112" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Desktop/ew_vehicles.sql">
+    <entry file="file://$PROJECT_DIR$/view_part.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
-          <caret line="48" column="6" selection-start-line="48" selection-start-column="6" selection-end-line="48" selection-end-column="6" />
+          <caret line="123" column="76" selection-start-line="123" selection-start-column="76" selection-end-line="123" selection-end-column="76" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/MeetingRoom.php">
+    <entry file="file://$PROJECT_DIR$/cart_old.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3213">
+          <caret line="189" column="28" lean-forward="true" selection-start-line="189" selection-start-column="28" selection-end-line="189" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/new_part.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3138">
+          <caret line="337" column="42" lean-forward="true" selection-start-line="337" selection-start-column="42" selection-end-line="337" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ajax/cart.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="132" column="11" lean-forward="true" selection-start-line="132" selection-start-column="4" selection-end-line="132" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cart.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="192" column="30" lean-forward="true" selection-start-line="192" selection-start-column="30" selection-end-line="192" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/car_sys/app/Http/Controllers/ControllerEgModel.php">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Models/VehicleColor.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Models/AgtModel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="21" lean-forward="true" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Models/Dealer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Http/Controllers/Controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#40#85#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/vendor/laravel/framework/src/Illuminate/View/View.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2125">
-          <caret line="174" column="20" selection-start-line="174" selection-start-column="20" selection-end-line="174" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Models/BusinessLogics/LogicVehicle.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Models/Part.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="14" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/vendor/laravel/framework/src/Illuminate/Support/Collection.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="999" selection-start-line="999" selection-end-line="999" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/vendor/laravel/framework/src/Illuminate/Foundation/AliasLoader.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="67" selection-start-line="67" selection-end-line="67" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/car_sys/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="101" selection-start-line="101" selection-end-line="101" />
+        <state relative-caret-position="1377">
+          <caret line="88" selection-start-line="88" selection-end-line="88" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/public/index.php">
+    <entry file="file:////HP_WORKSTATION/SharedFolder/11 new - POSS update190228/new/search.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="548">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
+        <state relative-caret-position="30">
+          <caret line="270" column="28" lean-forward="true" selection-start-line="296" selection-start-column="47" selection-end-line="296" selection-end-column="59" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/vendor/composer/ClassLoader.php">
+    <entry file="file://E:/360Downloads/11 downloads/array_column-master (for PHP 5.5-)/array_column-master/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/car_sys/resources/views/vehicle/addNew.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="323" selection-start-line="323" selection-end-line="323" />
+        <state relative-caret-position="867">
+          <caret line="51" column="94" selection-start-line="51" selection-start-column="94" selection-end-line="51" selection-end-column="94" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/vendor/monolog/monolog/src/Monolog/Handler/AbstractHandler.php">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/05513a0c-f616-4a39-8a69-2682af1c06f0/console.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="175" selection-start-line="175" selection-end-line="175" />
+        <state>
+          <caret column="37" lean-forward="true" selection-start-column="37" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php">
+    <entry file="das://05513a0c-f616-4a39-8a69-2682af1c06f0/schema/eware/table/ew_part">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/foodfun/Database.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="119" selection-start-line="119" selection-end-line="119" />
+        <state relative-caret-position="221">
+          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Models/EgModel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="51" lean-forward="true" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/resources/views/vehicle/listAllVehicle.blade.php" />
-    <entry file="file://$PROJECT_DIR$/depart.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1013">
-          <caret line="749" column="31" selection-start-line="749" selection-start-column="4" selection-end-line="749" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stock_counting_list.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6171">
-          <caret line="363" column="24" selection-start-line="287" selection-start-column="24" selection-end-line="363" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/share/Code_temp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23902">
-          <caret line="1406" column="43" selection-start-line="1406" selection-start-column="31" selection-end-line="1406" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Models/Vehicle.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="31" column="35" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="614" column="27" selection-start-line="614" selection-start-column="27" selection-end-line="614" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="31" column="25" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/resources/views/layouts/main.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="26" column="24" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/app/Http/Controllers/MeetingRoomController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="29" column="26" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="26" />
-          <folding>
-            <element signature="e#39#59#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/resources/views/vehicle/listAll.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car_sys/resources/views/bookingMeetingRoom/manageParts.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="34" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testzz.html">
+    <entry file="file://$PROJECT_DIR$/lib/sql.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/calculate_price/index.php">
+    <entry file="file://$PROJECT_DIR$/depart_old.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="75" selection-start-line="10" selection-start-column="75" selection-end-line="10" selection-end-column="75" />
+        <state relative-caret-position="17">
+          <caret line="565" column="27" selection-start-line="495" selection-start-column="20" selection-end-line="565" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://E:/360Downloads/11 foodfun/11 shell scripts from alex/scripts/st_catharines/create_comboitems.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://E:/360Downloads/11 foodfun/11 shell scripts from alex/scripts/Hamilton/create_comboitems.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="45" column="93" selection-start-line="45" selection-start-column="93" selection-end-line="45" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/enter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-159">
+          <caret line="284" column="38" selection-start-line="284" selection-start-column="38" selection-end-line="284" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stock_counting.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1810">
+          <caret line="522" column="52" lean-forward="true" selection-start-line="522" selection-end-line="529" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tran_list.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="17" column="22" selection-start-line="17" selection-end-line="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/car_sys/app/Http/Controllers/ControllerVehicle.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="850">
+          <caret line="62" column="38" selection-start-line="62" selection-start-column="38" selection-end-line="62" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/11 notes/11.txt">
+    <entry file="file://$PROJECT_DIR$/stats.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="105" column="11" selection-start-line="105" selection-start-column="11" selection-end-line="105" selection-end-column="11" />
+        <state relative-caret-position="221">
+          <caret line="59" column="10" lean-forward="true" selection-start-line="59" selection-start-column="10" selection-end-line="59" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/11 notes/AGT General">
+    <entry file="file://$PROJECT_DIR$/stock_counting_list.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="702" lean-forward="true" selection-start-line="702" selection-end-line="702" />
+        <state relative-caret-position="4471">
+          <caret line="263" column="5" selection-start-line="263" selection-start-column="5" selection-end-line="263" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/11 notes/11">
+    <entry file="file://$PROJECT_DIR$/foodfun/sqlTemp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="479" selection-start-line="479" selection-end-line="479" />
+        <state relative-caret-position="238">
+          <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/11 notes/agtPOSS general (mainly design)">
+    <entry file="file://$PROJECT_DIR$/list.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="467" column="54" selection-start-line="467" selection-start-column="54" selection-end-line="467" selection-end-column="54" />
+        <state relative-caret-position="-1165">
+          <caret line="47" column="62" selection-start-line="47" selection-start-column="62" selection-end-line="47" selection-end-column="62" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/11 notes/agtWMSProj -- general (mainly design)">
+    <entry file="file://$PROJECT_DIR$/foodfun/accounting/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="423" column="3" selection-start-line="423" selection-start-column="3" selection-end-line="423" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/11 notes/learn others">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="722" lean-forward="true" selection-start-line="722" selection-end-line="722" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/11.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="426" selection-start-line="426" selection-end-line="426" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/11 notes/RequiremntTemp - ProjectOfficialSiteMaintainance">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="129" lean-forward="true" selection-start-line="129" selection-end-line="129" />
+        <state relative-caret-position="517">
+          <caret line="381" column="21" lean-forward="true" selection-start-line="381" selection-start-column="21" selection-end-line="381" selection-end-column="21" />
         </state>
       </provider>
     </entry>

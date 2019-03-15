@@ -1405,3 +1405,30 @@ $a = Vehicle::find(1)->vin_num;
                     $f = $e;
                 }
 {{/*($vehicle->originalEgModel)->model_name*/}}
+
+
+    ... ctrlrMethodXX(Request $req){
+        $this->validate($req, [
+            'strField'=>'required|max:15',
+            'numericField'=>'numeric|size:5',
+            'date'=>'date',
+            'email'=>'email',
+            'fileImage'=>'image',
+            'fixLengthDigit'=>'digits:15',
+            'boolean'=>'boolean',
+            'date1'=>'after:tomorrow']);
+    ...
+
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    validate($req, [
+        'arrayField.field1'=>'required...'
+    ...]);

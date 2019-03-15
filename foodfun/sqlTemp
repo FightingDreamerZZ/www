@@ -1,0 +1,24 @@
+--zz sum sales
+SELECT SUM(subtotal+tax+delivery_fee)
+FROM orders as o
+WHERE timestamp>=UNIX_TIMESTAMP(STR_TO_DATE('03 03 2019 00:00:00', '%m %d %Y %H:%i:%s'))
+AND timestamp<=UNIX_TIMESTAMP(STR_TO_DATE('03 04 2019 00:00:00', '%m %d %Y %H:%i:%s'))
+AND payment_method='CREDIT CARD';
+
+
+select CONVERT_TZ(STR_TO_DATE('03 03 2019 00:00:00', '%m %d %Y %H:%i:%s'),'GMT','-05:00');
+
+select UNIX_TIMESTAMP(CONVERT_TZ(STR_TO_DATE('20190306 00:00:00', '%Y%m%d %H:%i:%s'),'GMT','-05:00'));
+
+SELECT SUM(subtotal+tax+delivery_fee)
+FROM orders as o
+WHERE timestamp>=UNIX_TIMESTAMP(CONVERT_TZ(STR_TO_DATE('20190306 00:00:00', '%Y%m%d %H:%i:%s'),'GMT','-05:00'))
+AND timestamp<=UNIX_TIMESTAMP(CONVERT_TZ(STR_TO_DATE('20190307 00:00:00', '%Y%m%d %H:%i:%s'),'GMT','-05:00'))
+AND payment_method='CREDIT CARD';
+
+SELECT SUM(subtotal+tax+delivery_fee)
+FROM orders as o
+WHERE timestamp>=UNIX_TIMESTAMP(CONVERT_TZ(STR_TO_DATE('20190306 00:00:00', '%Y%m%d %H:%i:%s'),'-05:00','GMT'))
+AND timestamp<=UNIX_TIMESTAMP(CONVERT_TZ(STR_TO_DATE('20190307 00:00:00', '%Y%m%d %H:%i:%s'),'-05:00','GMT'))
+AND payment_method='CREDIT CARD';
+

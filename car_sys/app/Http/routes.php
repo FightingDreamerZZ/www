@@ -30,6 +30,9 @@ Route::get('searchEmployeeResult', function () {
 //zz
 Route::get('/allParts', 'MeetingRoomController@mngPartsIndex');
 Route::get('/vehicle/list','ControllerVehicle@listAll');
+Route::get('/vehicle/view_details/{id}','ControllerVehicle@viewDetail');
+Route::get('/vehicle/add_new','ControllerVehicle@addNewRenderForm');
+Route::post('/vehicle/add_new_save','ControllerVehicle@addNewSaveToDB');
 
 //booking meeting room
 

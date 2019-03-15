@@ -1,4 +1,4 @@
-<?PHP
+﻿<?PHP
 /*
 * Copyright © 2013 Elaine Warehouse
 * File: depart.php
@@ -493,11 +493,11 @@ include_template_header_css_sidebar_topbar(" onload=\"load()\"","Shipping","depa
 <!--                        <div class="clearfix"></div>-->
 <!--                    </div>-->
                     <div class="x_content">
-                        <h3>Parts to be shipped<small></small></h3>
+                        <h3>Part to be shipped<small></small></h3>
                         <br />
                         <form class="form-horizontal form-label-left" name="form_barcode_scan" method="post" action="depart.php">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" style="font-size: medium">Scan Barcode:</label>
+                                <label class="col-sm-3 control-label" style="font-size: medium">Scan Barcode <i class="fa fa-question-circle" title="also auto-submit one unit to MyCart..."></i></label>
                                 <div class="col-sm-9">
                                     <div class="input-group">
                                         <input type="text" name="focus_on" class="form-control">
@@ -569,7 +569,12 @@ include_template_header_css_sidebar_topbar(" onload=\"load()\"","Shipping","depa
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="
+                                <?php
+                                if(!$is_warehouse_admin){
+                                    echo "display:none;";
+                                }
+                                ?>">
                                 <label class="col-md-3 col-sm-3 col-xs-12 control-label">Omit Otto's Cart</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <div class="checkbox">

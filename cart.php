@@ -4,8 +4,8 @@
 * File: car.php
 * This file offers cart operations such as edit, clear, del etc.
 */
-error_reporting(E_ALL ^ E_NOTICE);
-//error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 include('lib/sql.php');
 include('lib/user_lib.php');
 
@@ -39,8 +39,9 @@ $result_cart = mysql_query($sql_get_cart);
 $sql_get_cart_submitted = "SELECT * FROM `ew_cart` WHERE `user` = '".$_COOKIE['ew_user_name']."' AND `pending` = 'true';";
 $result_cart_submitted = mysql_query($sql_get_cart_submitted);
 
-include('header.php');
-
+//$title_by_page = "My Cart";
+//include('header.php');
+include_template_header_css_sidebar_topbar("","My Cart","");
 ?>
 
 <script type="text/javascript">
@@ -141,9 +142,61 @@ include('header.php');
 	xmlhttp.send();
 	}
 	}
-	
-
 </script>
+    <style>
+        .a-underline-zz {
+
+            text-decoration: underline;
+
+        }
+    </style>
+
+    <!-- page content -->
+    <div class="right_col" role="main">
+
+        <div class="row">
+            <!--zz x_panel-->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>My Cart<small></small></h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <p>Hint: double click on the target amount would activate edit mode.</p>
+                        <button type="button" class="submit_btn" onclick="clearcart()">Clear</button>
+                        <button type="button" class="submit_btn" onclick="submit_or_proceed_cart()"><?php echo ($is_warehouse_admin)?"Proceed":"Submit";?></button>
+                        <button type="button" class="submit_btn" onclick="pending()">Pend to</button>
+                        <input type="text" id="client" class="input_field_w w180" value="" autocomplete="off"/>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Name</th>
+                                    <th>Application</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            while ($row_1 = mysql_fetch_assoc($result_cart)) {
+                                ?>
+                                <tr>
+                                    <td><?php echo $row_1["barcode"]; ?></td>
+                                    <td><?php echo get_name($row_1["barcode"]); ?></td>
+                                    <td><?php echo $row_1["application"]; ?></td>
+                                    <td id="<?php echo $row_1["barcode"]; ?>" ondblclick="change('<?php echo $row_1["barcode"]; ?>')" onblur="changed()"><?php echo $row_1["quantity"]; ?></td>
+                                </tr>
+                                <?php
+                            };
+                            ?>
+                            </tbody>
+                        </table>
+                        <!--TODO TBC cart edit amount's ajax remove 'Deprecated '-->
+
+
+
 <div id="main">
      
 <div class="content_box_top"></div>
